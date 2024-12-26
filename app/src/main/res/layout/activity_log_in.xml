@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/Background"
     tools:context=".ActivityLogIn">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,76 +13,74 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <include layout="@layout/signing_header"/>
+        <include layout="@layout/header_sign_up" />
 
         <EditText
             android:id="@+id/email_log_in"
-            android:layout_width="0dp"
+            style="@style/EditTextHintStyle"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:hint="@string/correo_electronico"
+            android:autofillHints=""
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-            app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
             android:padding="12dp"
-            style="@style/EditTextHintStyle"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
+            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/password_log_in"
-            android:layout_width="0dp"
+            style="@style/EditTextHintStyle"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:hint="@string/contraseña"
+            android:autofillHints=""
+            android:hint="@string/enter_password"
             android:inputType="textPassword"
-            app:layout_constraintTop_toBottomOf="@id/email_log_in"
-            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-            app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
             android:padding="12dp"
-            style="@style/EditTextHintStyle"
-            />
+            app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
+            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+            app:layout_constraintTop_toBottomOf="@id/email_log_in" />
 
         <Button
-            android:id="@+id/boton_log_in"
-            android:layout_width="0dp"
+            android:id="@+id/log_in_button"
+            style="@style/NormalText"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/Red"
-            android:padding="12dp"
-            android:text="@string/iniciar_sesión"
             android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/password_log_in"
-            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+            android:backgroundTint="@color/Red"
+            android:padding="12dp"
+            android:text="@string/login"
             app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
-            style="@style/TextoNormal"
-            />
+            app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+            app:layout_constraintTop_toBottomOf="@id/password_log_in" />
 
         <Button
-            android:id="@+id/boton_cambiar_a_sign_up"
-            android:layout_width="match_parent"
+            android:id="@+id/new_user_button"
+            style="@style/NormalText"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/Red"
-            android:text="@string/no_tienes_cuenta"
+            android:text="@string/no_account"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/TextoNormal"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_margen_izquierda"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05"/>
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_margen_derecha"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95"/>
+            app:layout_constraintGuide_percent="0.95" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

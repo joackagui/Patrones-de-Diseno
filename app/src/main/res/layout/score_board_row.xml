@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/team_name"
+        style="@style/ScoreBoardText"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_5"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team_matches_played"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/DarkestGray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_4"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team_matches_won"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_3"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team_matches_lost"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/DarkestGray"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_2"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team_final_points"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_1"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team_ingame_points"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/White"
+        android:gravity="center"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_izquierda"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.86" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.53" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.42" />
+</androidx.constraintlayout.widget.ConstraintLayout>

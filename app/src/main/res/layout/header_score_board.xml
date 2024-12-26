@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/DarkGray">
+
+    <TextView
+        android:id="@+id/team_name"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/team"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_5"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/matches_played"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/matches_played"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_4"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/marches_won"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/matches_won"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_3"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/matches_lost"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/matches_lost"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_2"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/final_points"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/pts"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_1"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ingame_points"
+        style="@style/ScoreBoardHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/CommonRed"
+        android:text="@string/pts_ingame"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_izquierda"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.86" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.53" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha_5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.42" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,19 +16,7 @@
         android:theme="@style/Theme.SCOREIT"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityConfiguracionInternaEquipo"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityDefinirEquipos"
-            android:exported="false" />
-        <activity
-            android:name=".ActivitySigningUp"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityDentroDelCampeonato"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityLogIn"
+            android:name=".ActivitySelectUser"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,18 +24,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ActivityPanelArbitraje"
+            android:name=".ActivityNewTeamSettings"
             android:exported="false" />
         <activity
-            android:name=".ActivityCrearNuevoCampeonato"
+            android:name=".ActivityAddTeam"
             android:exported="false" />
+
         <activity
-            android:name=".ActivityMenuPrincipal"
+            android:name=".ActivitySignUp"
             android:exported="false" />
+
+        <activity
+            android:name=".ActivityCupInsight"
+            android:exported="false" />
+
+        <activity
+            android:name=".ActivityLogIn"
+            android:exported="false"/>
+
+        <activity
+            android:name=".ActivityRefereeButtons"
+            android:exported="false" />
+
+        <activity
+            android:name=".ActivityNewCupSettings"
+            android:exported="false" />
+
+        <activity
+            android:name=".ActivityMainMenu"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

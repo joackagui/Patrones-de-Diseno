@@ -3,8 +3,6 @@ package com.example.scoreit
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.scoreit.componentes.Campeonato
-import com.example.scoreit.componentes.Partido
 import com.example.scoreit.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,26 +13,21 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.buttonPasar.setOnClickListener {
-            val intentMain = Intent(this, ActivityMenuPrincipal::class.java)
-            startActivity(intentMain)
-        }
-
     }
 
-    /*fun emparejamientoPartidos(campeonato: Campeonato){
+    /*fun emparejamientoPartidos(campeonato: Cup){
         val listaDeEquipos = campeonato.listaDeEquipos
-        val listaDePartidos = mutableListOf<Partido>()
+        val listaDePartidos = mutableListOf<Match>()
         val numeroDeEquipos = listaDeEquipos.size
-        val matrizDePartidos = Array(numeroDeEquipos){Array<Partido?>(numeroDeEquipos){null} }
+        val matrizDePartidos = Array(numeroDeEquipos){Array<Match?>(numeroDeEquipos){null} }
 
         for (i in 0..<numeroDeEquipos) {
             matrizDePartidos[i][i] = null
             for (j in 0..<numeroDeEquipos) {
-                val nuevoPartido = Partido(listaDeEquipos[i], listaDeEquipos[j], 0, 0, 0, 0, null, null, null)
+                val nuevoPartido = Match(listaDeEquipos[i], listaDeEquipos[j], 0, 0, 0, 0, null, null, null)
                 matrizDePartidos[i][j] = nuevoPartido
                 if(campeonato.dosPartidos) {
-                    val nuevoPartido2 = Partido(listaDeEquipos[j], listaDeEquipos[i], 0, 0,0,0, null, null, null)
+                    val nuevoPartido2 = Match(listaDeEquipos[j], listaDeEquipos[i], 0, 0,0,0, null, null, null)
                     matrizDePartidos[j][i] = nuevoPartido2
                 }
             }

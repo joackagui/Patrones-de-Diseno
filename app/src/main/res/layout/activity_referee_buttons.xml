@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/panelArbitraje"
+    style="@style/Background"
+    tools:context=".ActivityRefereeButtons">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/first_team_frame"
+        style="@style/card_buttons"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/CommonRed"
+        app:cardCornerRadius="25dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline_mitad_vertical"
+        app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda">
+
+        <TextView
+            android:id="@+id/first_team_score"
+            style="@style/point_text"
+            android:text="@string/initial_score" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/second_team_frame"
+        style="@style/card_buttons"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="@color/White"
+        app:cardCornerRadius="25dp"
+        app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toBottomOf="@id/guideline_mitad_vertical">
+
+        <TextView
+            android:id="@+id/second_team_score"
+            style="@style/inverted_point_text"
+            android:text="@string/initial_score" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/first_team_name_display"
+        style="@style/HeaderTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@id/first_team_frame"
+        app:layout_constraintTop_toBottomOf="@id/first_team_frame" />
+
+    <TextView
+        android:id="@+id/second_team_name_display"
+        style="@style/HeaderTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@id/second_team_frame"
+        app:layout_constraintEnd_toEndOf="@id/second_team_frame" />
+
+    <TextView
+        android:id="@+id/timer"
+        style="@style/TimeIndicatorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startPauseButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:background="@drawable/fondo_para_botones_mas_redondos_score_it"
+        app:icon="@drawable/playbutton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/timer"
+        app:layout_constraintStart_toEndOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/resetButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/fondo_para_botones_mas_redondos_score_it"
+        android:gravity="center"
+        app:icon="@drawable/resetbutton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toEndOf="@id/timer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/second_team_rest_button"
+        style="@style/NormalText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/CommonRed"
+        android:text="@string/rest"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toBottomOf="@id/second_team_frame" />
+
+    <Button
+        android:id="@+id/first_team_rest_button"
+        style="@style/NormalText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/White"
+        android:text="@string/rest"
+        android:textColor="@color/CommonRed"
+        app:layout_constraintBottom_toTopOf="@id/first_team_frame"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"/>
+
+
+    <Button
+        android:id="@+id/finish_match_button"
+        style="@style/NormalText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/CommonRed"
+        android:text="@string/finish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha" />
+
+    <Button
+        android:id="@+id/suspend_button"
+        style="@style/NormalText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/CommonRed"
+        android:text="@string/suspend"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_izquierda"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_derecha"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_mitad_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_mitad_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_margen_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.scoreit.ActivityMenuPrincipal.Companion.USER_EMAIL
-import com.example.scoreit.componentes.Campeonato
+import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityLogInBinding
@@ -17,6 +16,10 @@ class ActivityLogIn : AppCompatActivity() {
     private lateinit var binding: ActivityLogInBinding
     private lateinit var dbAccess: AppDataBase
 
+    companion object {
+        const val ID_USER_LI: String = "ID_USER"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLogInBinding.inflate(layoutInflater)
@@ -24,102 +27,101 @@ class ActivityLogIn : AppCompatActivity() {
         setContentView(view)
 
         dbAccess = getDatabase(this)
-        lifecycleScope.launch {
-            login()
-            cambiarASignUp()
-        }
+
+        loginButton()
+        changeActivityToSignUp()
     }
 
-    private fun cambiarASignUp() {
-        binding.botonCambiarASignUp.setOnClickListener {
-            val activitySignUp = Intent(this, ActivitySigningUp::class.java)
+    private fun changeActivityToSignUp() {
+        binding.newUserButton.setOnClickListener {
+            val activitySignUp = Intent(this, ActivitySignUp::class.java)
             startActivity(activitySignUp)
         }
     }
 
-    private fun login() {
+    private fun changeToActivityMainMenu() {
+        val userId = intent.getStringExtra(ID_USER_LI)
+        if (userId != null) {
+            lifecycleScope.launch {
+                val user = dbAccess.userDao().getUserById(userId)
+                val activityMainMenu = Intent(this@ActivityLogIn, ActivityMainMenu::class.java)
+                activityMainMenu.putExtra(ID_USER_MM, user.id.toString())
+                startActivity(activityMainMenu)
+            }
+        }
+    }
+
+    private fun loginButton() {
         lifecycleScope.launch {
-            binding.botonLogIn.setOnClickListener {
+            binding.logInButton.setOnClickListener {
                 if (binding.emailLogIn.text.toString() == "" || binding.passwordLogIn.text.toString() == "") {
-                    mensaje(1)
+                    message(1)
                 } else if (binding.passwordLogIn.text.toString().length < 8) {
-                    mensaje(2)
+                    message(2)
                 } else {
-                    logInUsuario()
+                    logInVerification()
                 }
             }
         }
     }
 
-    private fun logInUsuario() {
-        lifecycleScope.launch {
-            val usuario = dbAccess.usuarioDao().obternerPorEmail(binding.emailLogIn.text.toString())
-            val email = binding.emailLogIn.text.toString()
-            val password = binding.passwordLogIn.text.toString()
-            if (usuario == null) {
-                mensaje(3)
-            } else if (usuario.email != email || usuario.password != password) {
-                mensaje(4)
-            } else {
-                mensaje(5)
-                cambioAMenuPrincipal()
-            }
-        }
-    }
+    private fun logInVerification() {
+        val userId = intent.getStringExtra(ID_USER_LI)
+        if (userId != null) {
+            lifecycleScope.launch {
+                val user = dbAccess.userDao().getUserById(userId)
+                val email = binding.emailLogIn.text.toString()
+                val password = binding.passwordLogIn.text.toString()
 
-    private fun cambioAMenuPrincipal() {
-        val intentMenuPrincipal = Intent(this, ActivityMenuPrincipal::class.java)
-        intentMenuPrincipal.putExtra(USER_EMAIL, binding.emailLogIn.text.toString())
-        insertarCampeonatos()
-        startActivity(intentMenuPrincipal)
-    }
-
-    private fun insertarCampeonatos(){
-        val listaCampeonatos: MutableList <Campeonato> = mutableListOf()
-        lifecycleScope.launch {
-            val cantidadDeCampeonatos = dbAccess.campeonatoDao().obtenerTodosLosCampeonatos().size
-            if(cantidadDeCampeonatos == 0){
-                for (i in 1..10){
-                    val nuevoCampeonato = Campeonato(
-                        nombreCampeonato = "Campeonato $i",
-                        fechaDeInicio = "--:--:--",
-                        seJuegaPorPuntosMaximos = false,
-                        puntosParaGanar = 100,
-                        seJuegaPorTiempoMaximo = false,
-                        tiempoDeJuego = 45,
-                        modoDeJuego = "Round Robin",
-                        permisoDeDescanso = false,
-                        tiempoDeDescanso = 1,
-                        cantidadDeDescansos = 2,
-                        permisoDeRonda = false,
-                        cantidadDeRondas = 2,
-                        idaYVuelta = false,
-                        siempreUnGanador = true,
-                        diferenciaDosPuntos = false
-                    )
-                    listaCampeonatos.add(nuevoCampeonato)
+                if (user.email != email || user.password != password) {
+                    message(4)
+                } else {
+                    message(5)
+                    lastUserUpdate()
+                    changeToActivityMainMenu()
                 }
-                dbAccess.campeonatoDao().insertarVariosCampeonatos(listaCampeonatos)
             }
         }
     }
 
-    private fun mensaje(numero: Int){
-        when (numero) {
+    private fun lastUserUpdate() {
+        lifecycleScope.launch {
+            val listOfUsers = dbAccess.userDao().getEveryUser().toMutableList()
+            for (user in listOfUsers) {
+                if (user.lastUser) {
+                    user.lastUser = false
+                    dbAccess.userDao().update(user)
+                }
+            }
+            val idUser = intent.getStringExtra(ID_USER_LI)
+            if (idUser != null) {
+                val user = dbAccess.userDao().getUserById(idUser)
+                user.lastUser = true
+                dbAccess.userDao().update(user)
+            }
+        }
+    }
+
+    private fun message(number: Int) {
+        when (number) {
             1 -> {
-                Toast.makeText(this, "Debes llenar todos los campos", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "You must fill in all fields", Toast.LENGTH_LONG).show()
             }
+
             2 -> {
-                Toast.makeText(this, "Contraseña muy corta", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Password too short", Toast.LENGTH_LONG).show()
             }
+
             3 -> {
-                Toast.makeText(this, "Usuario no existente", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "User does not exist", Toast.LENGTH_LONG).show()
             }
+
             4 -> {
-                Toast.makeText(this, "Email o Contraseña incorrectos", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Incorrect email or password", Toast.LENGTH_LONG).show()
             }
+
             5 -> {
-                Toast.makeText(this, "Ingreso exitoso", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show()
             }
         }
     }

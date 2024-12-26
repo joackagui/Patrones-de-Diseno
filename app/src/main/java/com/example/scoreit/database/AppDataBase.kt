@@ -5,23 +5,23 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.scoreit.componentes.Usuario
-import com.example.scoreit.componentes.Campeonato
-import com.example.scoreit.componentes.Partido
-import com.example.scoreit.componentes.Equipo
+import com.example.scoreit.componentes.User
+import com.example.scoreit.componentes.Cup
+import com.example.scoreit.componentes.Match
+import com.example.scoreit.componentes.Team
 
 @Database(
-    entities = [Usuario::class, Campeonato::class, Partido::class, Equipo::class],
-    version = 2,
+    entities = [User::class, Cup::class, Match::class, Team::class],
+    version = 3,
     exportSchema = false
 )
 
 @TypeConverters(Converters::class)
 abstract class AppDataBase: RoomDatabase() {
-    abstract fun usuarioDao(): UsuarioDao
-    abstract fun campeonatoDao(): CampeonatoDao
-    abstract fun partidoDao(): PartidoDao
-    abstract fun equipoDao(): EquipoDao
+    abstract fun userDao(): UserDao
+    abstract fun cupDao(): CupDao
+    abstract fun matchDao(): MatchDao
+    abstract fun teamDao(): TeamDao
 
     companion object{
         @Volatile

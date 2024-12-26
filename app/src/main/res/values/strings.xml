@@ -1,73 +1,76 @@
 <resources>
     <string name="app_name">SCORE IT</string>
-    <string name="nombre_campeonato">Nombre del Campeonato</string>
-    <string name="menu_pricipal_text">Menú principal</string>
-    <string name="ver_campenatos_creados">Ver campenatos creados</string>
-    <string name="crear_un_nuevo_campeonato">Nuevo campeonato</string>
-    <string name="pasar_a_la_pantalla_de_usuario">Pasar a la pantalla de usuario\n</string>
-    <string name="Icono_la_app">Icono de la app\n</string>
-    <string name="anade_un_logo">Añade un logo</string>
-    <string name="anadir_el_logo_boton">+</string>
-    <string name="fecha_del_campeonato">Fecha del campeonato\n</string>
+    <string name="cup_name">Cup Name</string>
+    <string name="main_menu_text">Main Menu</string>
+    <string name="view_created_cups">View Created Cups</string>
+    <string name="create_new_cup">New Cup</string>
+    <string name="go_to_user_screen">Go to User Screen</string>
+    <string name="app_icon">App Icon</string>
+    <string name="add_logo">Add a Logo</string>
+    <string name="add_logo_button">+</string>
+    <string name="cup_date">Cup Date</string>
 
-
-    <string name="nombre_usuario">Nombre de Usuario</string>
-    <string name="correo_electronico">Correo Electrónico</string>
-    <string name="contraseña">Ingresar Contraseña</string>
-    <string name="repita_contraseña">Confirmar Contraseña</string>
-    <string name="iniciar_sesión">Iniciar Sesión</string>
-    <string name="marcador_inicial">0</string>
-    <string name="siempre_un_ganador">Siempre un ganador</string>
-    <string name="diferencia_de_dos_puntos">Diferencia de dos puntos</string>
-    <string name="ida_y_vuelta">Ida y Vuelta</string>
-    <string name="se_quiere_tiempo">Se quiere tiempo</string>
-    <string name="se_quiere_el_puntaje">Se quiere el puntaje</string>
-    <string name="cantidad_de_tiempo">Tiempo</string>
-    <string name="puntaje_del_campeonato_text">Puntaje</string>
-    <string name="tiempos_de_descanso_text">Tiempos de descanso</string>
-    <string name="rondas_text">Canchas/Rondas</string>
-    <string name="diferencia_de_dos_rondas_text">Diferencia de \ndos rondas</string>
-    <string name="cantidad_de_descansos_edit_text">Cantidad de descansos</string>
-    <string name="tiempo_de_descansos_edit_text">Tiempo</string>
-    <string name="cantidad_de_rondas_edit_text">Rondas para ganar:</string>
+    <string name="username">Username</string>
+    <string name="email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="login">Login</string>
+    <string name="initial_score">0</string>
+    <string name="always_a_winner">Always a Winner</string>
+    <string name="two_point_difference">Two Point Difference</string>
+    <string name="home_and_away">Home and Away</string>
+    <string name="want_time">Set Time</string>
+    <string name="want_score">Set Score</string>
+    <string name="time_amount">Time</string>
+    <string name="cup_score_text">Score</string>
+    <string name="rest_times_text">Rest Times</string>
+    <string name="rounds_text">Rounds</string>
+    <string name="two_round_difference_text">Two Round Difference</string>
+    <string name="rest_quantity_edit_text">Number of Rests</string>
+    <string name="rest_time_edit_text">Rest Time</string>
+    <string name="rounds_to_win_edit_text">Rounds to Win:</string>
     <string name="jan_01_2020">JAN 01 2020</string>
-    <string name="guardar">Guardar</string>
-    <string name="cantidad_para_ganar_text">Cantidad de rondas para ganar:</string>
-    <string name="atras_boton"><![CDATA[< Atrás]]></string>
-    <string name="minutos_text">Minutos:</string>
-    <string name="seleccionar_los_minutos">Seleccionar los minutos</string>
-    <string name="seleccionar_la_cantidad_de_descasos">Seleccionar la cantidad de Descasos</string>
-    <string name="cantidad_de_rondas_para_ganar">Cantidad de rondas para ganar</string>
-    <string name="campeonatos_creados_por">Campeonatos creados por:</string>
+    <string name="save">Save</string>
+    <string name="rounds_to_win_text">Rounds to Win:</string>
+    <string name="back_button"><![CDATA[< Back]]></string>
+    <string name="minutes_text">Minutes:</string>
+    <string name="select_minutes">Select Minutes</string>
+    <string name="select_rest_quantity">Select Number of Rests</string>
+    <string name="rounds_to_win">Rounds to Win</string>
+    <string name="cups_created_by">Cups Created By:</string>
 
-    <string name="no_tienes_cuenta">¿No tienes cuenta?</string>
-    <string name="crear_cuenta">Crear Cuenta</string>
+    <string name="no_account">No account? Create one</string>
+    <string name="create_account">Create Account</string>
 
-    <string name="partidos">Partidos:</string>
-    <string name="numero_de_equipos">Número de equipos</string>
-    <string name="configura_tus_equipos">Configura tus equipos</string>
-    <string name="guardar_cambios">Guardar cambios</string>
-    <string name="tabla_de_posiciones">Tabla de Posiciones</string>
-    <string name="jornada">Jornada</string>
-    <string name="tiempo">Tiempo:</string>
-    <string name="puntos">Puntos:</string>
-    <string name="descanso">Descanso</string>
-    <string name="finalizar">Finalizar</string>
-    <string name="suspender">Suspender</string>
+    <string name="matches">Matches:</string>
+    <string name="team_number">Number of Teams</string>
+    <string name="configure_teams">Configure Teams</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="position_table">Position Table</string>
+    <string name="time">Time:</string>
+    <string name="points">Points:</string>
+    <string name="rest">Rest</string>
+    <string name="finish">Finish</string>
+    <string name="suspend">Suspend</string>
     <string name="timer">00:00:00</string>
-    <string name="doble_partido">Doble partido:</string>
-    <string name="por_rondas">Por rondas:</string>
-    <string name="siempre_ganador">Siempre ganador:</string>
-    <string name="fecha">Fecha:</string>
-    <string name="modo_de_juego">Modo:</string>
-    <string name="equipo">Equipo</string>
+    <string name="double_match">Double Match:</string>
+    <string name="by_rounds">By Rounds:</string>
+    <string name="always_winner">Always Winner:</string>
+    <string name="date">Start date:</string>
+    <string name="game_mode">Mode:</string>
+    <string name="team">Team</string>
     <string name="pts">Pts</string>
-    <string name="pts_int">Pts Int</string>
-    <string name="pj">PJ</string>
-    <string name="pg">PG</string>
+    <string name="pts_ingame">pts</string>
+    <string name="matches_played">MP</string>
+    <string name="matches_won">W</string>
+    <string name="matches_lost">L</string>
+    <string name="user_logo">User Logo</string>
+    <string name="choose_account">Who are you? Choose your account</string>
+    <string name="rounds">Rounds:</string>
 
-    <string-array name="opciones_para_modo_de_juego">
+    <string-array name="game_mode_options">
         <item>Round Robin</item>
-        <item>Llaves</item>
+        <item>Brackets</item>
+        <item>Both</item>
     </string-array>
 </resources>

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/Background"
+    tools:context=".ActivityNewCupSettings">
+
+    <include layout="@layout/header_main" />
+
+    <TextView
+        android:id="@+id/current_screen_info"
+        style="@style/HeaderTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/DarkRed"
+        android:gravity="center"
+        android:text="@string/create_new_cup"
+        app:layout_constraintTop_toBottomOf="@+id/header_main" />
+
+    <ScrollView
+        android:id="@+id/scrollview_information_score_it"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_screen_info">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/add_logo_text"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/add_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/add_button_logo"
+                style="@style/NormalText"
+                android:layout_width="54dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/CommonRed"
+                android:padding="12dp"
+                android:text="@string/add_logo_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_logo_text" />
+
+            <EditText
+                android:id="@+id/new_cup_name"
+                style="@style/EditTextHintStyle"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:autofillHints="name"
+                android:backgroundTint="@color/DarkestRed"
+                android:hint="@string/cup_name"
+                android:inputType="text"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_button_logo" />
+
+            <Button
+                android:id="@+id/new_start_date"
+                style="?android:spinnerStyle"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/DarkestRed"
+                android:fontFamily="@font/score_it"
+                android:padding="12dp"
+                android:text="@string/jan_01_2020"
+                android:textColor="@color/TransparentWhite"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_cup_name" />
+
+            <Spinner
+                android:id="@+id/game_mode_spinner"
+                android:layout_width="320dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/DarkestRed"
+                android:entries="@array/game_mode_options"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/new_start_date" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/time_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/want_time"
+                android:padding="12dp"
+                android:thumb="@drawable/thumb"
+                app:layout_constraintStart_toStartOf="@id/new_cup_name"
+                app:layout_constraintTop_toBottomOf="@id/game_mode_spinner"
+                app:track="@drawable/track" />
+
+            <EditText
+                android:id="@+id/new_match_time"
+                style="@style/EditTextHintStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:autofillHints="time"
+                android:backgroundTint="@color/DarkestRed"
+                android:enabled="false"
+                android:hint="@string/time_amount"
+                android:inputType="time"
+                app:layout_constraintBottom_toBottomOf="@id/time_switch"
+                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
+                app:layout_constraintStart_toEndOf="@+id/time_switch"
+                app:layout_constraintTop_toTopOf="@id/time_switch" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/points_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:contentDescription="@string/want_score"
+                android:padding="12dp"
+                android:thumb="@drawable/thumb"
+                app:layout_constraintStart_toStartOf="@id/new_cup_name"
+                app:layout_constraintTop_toBottomOf="@id/time_switch"
+                app:track="@drawable/track" />
+
+            <EditText
+                android:id="@+id/new_match_points"
+                style="@style/EditTextHintStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:autofillHints="number"
+                android:backgroundTint="@color/DarkestRed"
+                android:enabled="false"
+                android:hint="@string/cup_score_text"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="@id/points_switch"
+                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
+                app:layout_constraintStart_toEndOf="@+id/points_switch"
+                app:layout_constraintTop_toTopOf="@id/points_switch" />
+
+            <CheckBox
+                android:id="@+id/two_points_difference_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/two_point_difference"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@id/points_switch" />
+
+            <CheckBox
+                android:id="@+id/always_winner_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/always_a_winner"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@id/two_points_difference_checkbox" />
+
+            <CheckBox
+                android:id="@+id/two_matches_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/home_and_away"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@id/always_winner_checkbox" />
+
+            <CheckBox
+                android:id="@+id/resting_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/rest_times_text"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/two_matches_checkbox" />
+
+            <TextView
+                android:id="@+id/resting_amount_text"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:padding="12dp"
+                android:text="@string/rest_quantity_edit_text"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/resting_checkbox" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/resting_amount_number_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/select_rest_quantity"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/resting_amount_text"
+                app:np_dividerColor="@color/DarkestRed"
+                app:np_max="10"
+                app:np_orientation="horizontal"
+                app:np_selectedTextColor="@color/White"
+                app:np_textColor="@color/White" />
+
+            <TextView
+                android:id="@+id/resting_minutes_text"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="100dp"
+                android:padding="12dp"
+                android:text="@string/minutes_text"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/resting_amount_number_picker" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/resting_minutes_number_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/select_minutes"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/resting_minutes_text"
+                app:np_dividerColor="@color/DarkestRed"
+                app:np_max="20"
+                app:np_orientation="horizontal"
+                app:np_selectedTextColor="@color/White"
+                app:np_textColor="@color/White" />
+
+            <CheckBox
+                android:id="@+id/rounds_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/rounds_text"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/resting_minutes_number_picker" />
+
+            <TextView
+                android:id="@+id/rounds_amount_text"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:padding="12dp"
+                android:text="@string/rounds_to_win"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/rounds_checkbox" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/rounds_amount_number_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/rounds_to_win_text"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/rounds_amount_text"
+                app:np_dividerColor="@color/DarkestRed"
+                app:np_max="10"
+                app:np_orientation="horizontal"
+                app:np_selectedTextColor="@color/White"
+                app:np_textColor="@color/White" />
+
+            <CheckBox
+                android:id="@+id/two_rounds_checkbox"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="@string/two_round_difference_text"
+                android:textColorHint="@color/DarkestRed"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/rounds_amount_number_picker" />
+
+            <Button
+                android:id="@+id/save_button"
+                style="@style/NormalText"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_margin="15dp"
+                android:backgroundTint="@color/CommonRed"
+                android:text="@string/save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/two_rounds_checkbox" />
+
+            <Button
+                android:id="@+id/back_button"
+                style="@style/NormalText"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_margin="15dp"
+                android:backgroundTint="@color/CommonRed"
+                android:text="@string/back_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_mitad_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,10 @@
 package com.example.scoreit.database
 
 import androidx.room.TypeConverter
-import com.example.scoreit.componentes.Campeonato
-import com.example.scoreit.componentes.Equipo
-import com.example.scoreit.componentes.Partido
-import com.example.scoreit.componentes.Usuario
+import com.example.scoreit.componentes.Cup
+import com.example.scoreit.componentes.Team
+import com.example.scoreit.componentes.Match
+import com.example.scoreit.componentes.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -13,61 +13,67 @@ class Converters {
     private val gson = Gson()
 
     @TypeConverter
-    fun fromEquipo(equipo: Equipo): String {
-        return gson.toJson(equipo)
+    fun fromTeam(team: Team): String {
+        return gson.toJson(team)
     }
 
     @TypeConverter
-    fun toEquipo(json: String): Equipo {
+    fun toTeam(json: String): Team {
         return try {
-            gson.fromJson(json, Equipo::class.java)
+            gson.fromJson(json, Team::class.java)
         } catch (e: Exception) {
-            Equipo(
+            Team(
                 id = -1,
-                nombre = "Equipo Default",
-                idCampeonato = -1
+                name = "Default Team",
+                idCup = -1,
+                finalPoints = "0",
+                ingamePoints = "0",
+                matchesPlayed = "0",
+                roundsInFavor = "0",
+                roundsAgainst = "0",
+                matchesWon = "0"
             )
         }
     }
 
     @TypeConverter
-    fun fromEquipoList(equipos: List<Equipo>): String {
-        return gson.toJson(equipos)
+    fun fromEquipoList(teams: List<Team>): String {
+        return gson.toJson(teams)
     }
 
     @TypeConverter
-    fun toEquipoList(json: String): List<Equipo> {
+    fun toEquipoList(json: String): List<Team> {
         return try {
-            val listType = object : TypeToken<List<Equipo>>() {}.type
+            val listType = object : TypeToken<List<Team>>() {}.type
             gson.fromJson(json, listType)
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    // Partido
+    // Match
     @TypeConverter
-    fun fromPartido(partido: Partido?): String? = gson.toJson(partido)
+    fun fromPartido(match: Match?): String? = gson.toJson(match)
 
     @TypeConverter
-    fun toPartido(partidoString: String?): Partido? =
-        partidoString?.let { gson.fromJson(it, Partido::class.java) }
+    fun toPartido(partidoString: String?): Match? =
+        partidoString?.let { gson.fromJson(it, Match::class.java) }
 
-    // Campeonato
+    // Cup
     @TypeConverter
-    fun fromCampeonato(campeonato: Campeonato?): String? = gson.toJson(campeonato)
-
-    @TypeConverter
-    fun toCampeonato(campeonatoString: String?): Campeonato? =
-        campeonatoString?.let { gson.fromJson(it, Campeonato::class.java) }
-
-    // Usuario
-    @TypeConverter
-    fun fromUsuario(usuario: Usuario?): String? = gson.toJson(usuario)
+    fun fromCampeonato(cup: Cup?): String? = gson.toJson(cup)
 
     @TypeConverter
-    fun toUsuario(usuarioString: String?): Usuario? =
-        usuarioString?.let { gson.fromJson(it, Usuario::class.java) }
+    fun toCampeonato(campeonatoString: String?): Cup? =
+        campeonatoString?.let { gson.fromJson(it, Cup::class.java) }
+
+    // User
+    @TypeConverter
+    fun fromUsuario(user: User?): String? = gson.toJson(user)
+
+    @TypeConverter
+    fun toUsuario(usuarioString: String?): User? =
+        usuarioString?.let { gson.fromJson(it, User::class.java) }
 
     @TypeConverter
     fun fromList(value: List<String>?): String? = value?.joinToString(",")
@@ -79,7 +85,7 @@ class Converters {
     fun fromIntList(value: List<Int>?): String? = value?.joinToString(",")
 
     @TypeConverter
-    fun toIntList(value: String?): List<Int>? = value?.split(",")?.map { it.toInt() } ?: emptyList()
+    fun toIntList(value: String?): List<Int> = value?.split(",")?.map { it.toInt() } ?: emptyList()
 
     @TypeConverter
     fun fromBoolean(value: Boolean): Int = if (value) 1 else 0
