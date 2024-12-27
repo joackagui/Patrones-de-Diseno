@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scoreit.componentes.Team
+import com.example.scoreit.components.Team
 import com.example.scoreit.databinding.ScoreBoardRowBinding
 
 class RecyclerScoreBoardRows : RecyclerView.Adapter<RecyclerScoreBoardRows.ScoreBoardViewHolder>() {

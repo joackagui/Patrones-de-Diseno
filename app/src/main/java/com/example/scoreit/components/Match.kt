@@ -1,4 +1,4 @@
-package com.example.scoreit.componentes
+package com.example.scoreit.components
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -14,17 +14,15 @@ import java.io.Serializable
     ]
 )
 
-data class Team(
+data class Match(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val logo: String? = null,
-    val name: String,
-    var finalPoints: String = "0",
-    var ingamePoints: String = "0",
-    var matchesPlayed: String = "0",
-    var matchesWon: String = "0",
-    var matchesLost: String = "0",
-    var roundsInFavor: String? = null,
-    var roundsAgainst: String? = null,
+    val stage: String,
+    val firstTeamJson: String,
+    val secondTeamJson: String,
+    var firstTeamPoints: Int = 0,
+    var secondTeamPoints: Int = 0,
+    var firstTeamRounds: String = "",
+    var secondTeamRounds: String = "",
     val idCup: Int
 ): Serializable

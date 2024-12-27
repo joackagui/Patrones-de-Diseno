@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.scoreit.componentes.User
-import com.example.scoreit.componentes.Cup
-import com.example.scoreit.componentes.Match
-import com.example.scoreit.componentes.Team
+import com.example.scoreit.components.User
+import com.example.scoreit.components.Cup
+import com.example.scoreit.components.Match
+import com.example.scoreit.components.Team
 
 @Database(
     entities = [User::class, Cup::class, Match::class, Team::class],

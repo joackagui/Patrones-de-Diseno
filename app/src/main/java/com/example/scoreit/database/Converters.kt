@@ -1,10 +1,10 @@
 package com.example.scoreit.database
 
 import androidx.room.TypeConverter
-import com.example.scoreit.componentes.Cup
-import com.example.scoreit.componentes.Team
-import com.example.scoreit.componentes.Match
-import com.example.scoreit.componentes.User
+import com.example.scoreit.components.Cup
+import com.example.scoreit.components.Team
+import com.example.scoreit.components.Match
+import com.example.scoreit.components.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

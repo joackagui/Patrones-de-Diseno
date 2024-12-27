@@ -2,13 +2,15 @@ package com.example.scoreit
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
+import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_CUP_NT
 import com.example.scoreit.adapters.RecyclerTeams
-import com.example.scoreit.componentes.Team
-import com.example.scoreit.componentes.Match
+import com.example.scoreit.components.Team
+import com.example.scoreit.components.Match
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.database.Converters
@@ -21,15 +23,9 @@ class ActivityAddTeam : AppCompatActivity() {
     private lateinit var binding: ActivityAddTeamBinding
     private lateinit var dbAccess: AppDataBase
 
-    private var num = 3
-
     companion object {
-        const val ID_USER_AT: String = "ID_USER"
         const val ID_CUP_AT: String = "ID_CUP"
     }
-
-    private val idUser = intent.getStringExtra(ID_USER_AT)
-    private val idCup = intent.getStringExtra(ID_CUP_AT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +36,7 @@ class ActivityAddTeam : AppCompatActivity() {
 
         setHeader()
         defaultTeams()
-
         addButton()
-
         setUpRecyclerView()
         saveButton()
     }
@@ -93,55 +87,65 @@ class ActivityAddTeam : AppCompatActivity() {
     }
 
     private fun defaultTeams() {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
             lifecycleScope.launch {
-                val firstTwoTeams: MutableList<Team> = mutableListOf()
-                val firstTeam = Team(name = "Team 1", idCup = idCup.toInt())
-                val secondTeam = Team(name = "Team 2", idCup = idCup.toInt())
-                dbAccess.teamDao().insert(firstTeam)
-                dbAccess.teamDao().insert(secondTeam)
-                firstTwoTeams.add(firstTeam)
-                firstTwoTeams.add(secondTeam)
-                recyclerTeams.addDataToList(firstTwoTeams)
-                setUpRecyclerView()
+                val listOfTeams = dbAccess.teamDao().getTeamsByCupId(idCup.toString())
+                if (listOfTeams.isEmpty()) {
+                    val firstTeam = Team(name = "Team 1", idCup = idCup.toInt())
+                    val secondTeam = Team(name = "Team 2", idCup = idCup.toInt())
+                    dbAccess.teamDao().insert(firstTeam)
+                    dbAccess.teamDao().insert(secondTeam)
+                    val firstTwoTeams: MutableList<Team> = mutableListOf(firstTeam, secondTeam)
+                    recyclerTeams.addDataToList(firstTwoTeams)
+                    setUpRecyclerView()
+                }
             }
         }
     }
 
     private fun addButton() {
         binding.addTeamButton.setOnClickListener {
-            addNewTeam()
+            changeToActivityNewTeamSettings()
         }
     }
 
     private fun saveButton() {
         binding.saveButton.setOnClickListener {
+            val idCup = intent.getStringExtra(ID_CUP_AT)
             if (idCup != null) {
                 createMatches()
-                changeToActivityMainMenu()
-            }
 
+                val idUser = getIdUser()
+                if (idUser != null) {
+                    Toast.makeText(this, "matches created", Toast.LENGTH_LONG).show()
+                    changeToActivityMainMenu(idUser)
+                }
+            }
         }
     }
 
     private fun createMatches() {
-        lifecycleScope.launch {
-            val cup = dbAccess.cupDao().getCupById(idCup.toString())
-            when (cup.gameMode) {
-                "Round Robin" -> {
-                    roundRobin()
-                }
-
-                "Brackets" -> {
-                    brackets()
-                }
-
-                else -> {
-                    roundRobin()
-                    brackets()
-                }
-            }
-        }
+//        val idCup = intent.getStringExtra(ID_CUP_AT)
+//        if (idCup != null) {
+//            lifecycleScope.launch {
+//                val cup = dbAccess.cupDao().getCupById(idCup.toString())
+//                when (cup.gameMode) {
+//                    "Round Robin" -> {
+//                        roundRobin()
+//                    }
+//
+//                    "Brackets" -> {
+//                        brackets()
+//                    }
+//
+//                    else -> {
+//                        roundRobin()
+//                        brackets()
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun brackets() {
@@ -223,7 +227,8 @@ class ActivityAddTeam : AppCompatActivity() {
     }
 
     private fun roundRobin() {
-        if(idCup != null){
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
             lifecycleScope.launch {
                 val cup = dbAccess.cupDao().getCupById(idCup.toString())
                 val listOfTeams =
@@ -261,7 +266,7 @@ class ActivityAddTeam : AppCompatActivity() {
                                     idCup = idCup.toInt()
                                 )
                             )
-                            if (cup.twoMatches) {
+                            if (cup.doubleMatch) {
                                 val newStage = "Match day ${matchDaysAmount + 1 - matchDay}"
                                 matches.add(
                                     Match(
@@ -283,7 +288,8 @@ class ActivityAddTeam : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        if(idCup != null){
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
             lifecycleScope.launch {
                 val listOfTeams = dbAccess.teamDao().getTeamsByCupId(idCup).toMutableList()
                 recyclerTeams.addDataToList(listOfTeams)
@@ -295,20 +301,33 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
-    private fun addNewTeam() {
-        if (idCup != null) {
-            lifecycleScope.launch {
-                val newTeam = Team(name = "Team $num", idCup = idCup.toInt())
-                num += 1
-                dbAccess.teamDao().insert(newTeam)
-                setUpRecyclerView()
-            }
-        }
-    }
-
-    private fun changeToActivityMainMenu() {
+    private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ID_USER_MM, idUser)
         startActivity(activityMainMenu)
+    }
+
+    private fun getIdUser(): String? {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            var idUser = ""
+            lifecycleScope.launch {
+                idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+            }
+            if(idUser.isNotEmpty() && idUser.isNotBlank()){
+                Toast.makeText(this, "good", Toast.LENGTH_LONG).show()
+                return idUser
+            }
+        }
+        return null
+    }
+
+    private fun changeToActivityNewTeamSettings() {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            val activityNewTeamSettings = Intent(this, ActivityNewTeamSettings::class.java)
+            activityNewTeamSettings.putExtra(ID_CUP_NT, idCup)
+            startActivity(activityNewTeamSettings)
+        }
     }
 }

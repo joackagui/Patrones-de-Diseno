@@ -1,4 +1,4 @@
-package com.example.scoreit.componentes
+package com.example.scoreit.components
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

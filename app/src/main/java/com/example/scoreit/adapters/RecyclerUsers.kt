@@ -11,7 +11,7 @@ import com.example.scoreit.ActivityMainMenu
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.ActivitySignUp
 import com.example.scoreit.ActivitySignUp.Companion.ID_USER_SU
-import com.example.scoreit.componentes.User
+import com.example.scoreit.components.User
 import com.example.scoreit.databinding.FrameUserBinding
 
 class RecyclerUsers :

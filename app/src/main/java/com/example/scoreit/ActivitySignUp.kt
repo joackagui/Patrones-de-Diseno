@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.componentes.User
+import com.example.scoreit.components.User
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivitySignUpBinding

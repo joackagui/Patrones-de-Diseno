@@ -5,13 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityAddTeam.Companion.ID_CUP_AT
-import com.example.scoreit.ActivityAddTeam.Companion.ID_USER_AT
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.componentes.Cup
+import com.example.scoreit.components.Cup
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityNewCupSettingsBinding
@@ -48,31 +48,29 @@ class ActivityNewCupSettings : AppCompatActivity() {
 
     private fun AppCompatActivity.setHeader() {
 //        val userButton = findViewById<Button>(R.id.user_button)
-//        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
+        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
 //
 //        userButton.setOnClickListener {
 //            val intent = Intent(this, ActivityLogIn::class.java)
 //            startActivity(intent)
 //        }
 //
-//        scoreItCup.setOnClickListener {
-//            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-//            activityMainMenu.putExtra(USER_EMAIL, intent.getStringExtra(USER_EMAIL_NC))
-//            startActivity(activityMainMenu)
-//        }
+        scoreItCup.setOnClickListener {
+            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+            activityMainMenu.putExtra(ID_USER_MM, intent.getStringExtra(ID_USER_NC))
+            startActivity(activityMainMenu)
+        }
     }
 
     private fun saveButton() {
         binding.saveButton.setOnClickListener {
-            val idUser = intent.getStringExtra(ID_USER_NC)
-            if (idUser != null) {
-                createCup(idUser)
-            }
+            createCup()
         }
     }
 
-    private fun createCup(idUser: String) {
-        lifecycleScope.launch {
+    private fun createCup() {
+        val idUser = intent.getStringExtra(ID_USER_NC)
+        if (idUser != null) {
             val name = binding.newCupName.text.toString()
             val startDate = binding.newStartDate.text.toString()
             var winningPoints: Int? = null
@@ -81,23 +79,17 @@ class ActivityNewCupSettings : AppCompatActivity() {
             var restingTime: Int? = null
             var restingAmount: Int? = null
             var roundsAmount: Int? = null
-            val twoMatches = binding.twoMatchesCheckbox.text.toString().toBoolean()
+            val doubleMatch = binding.twoMatchesCheckbox.text.toString().toBoolean()
             val alwaysWinner = binding.alwaysWinnerCheckbox.text.toString().toBoolean()
             val twoPointsDifference =
                 binding.twoPointsDifferenceCheckbox.text.toString().toBoolean()
 
-            if (binding.newMatchPoints.isEnabled) {
+            if (binding.newMatchPoints.isEnabled && binding.newMatchTime.text.toString() != "") {
                 winningPoints = binding.newMatchPoints.text.toString().toInt()
             }
 
-            if (binding.newMatchTime.isEnabled) {
-                finishTime = binding.newMatchPoints.text.toString().toInt()
-            }
-
-            if (binding.newMatchTime.isEnabled && binding.newMatchPoints.isEnabled
-                || !binding.newMatchTime.isEnabled && !binding.newMatchPoints.isEnabled
-            ) {
-                throw IllegalStateException("What have you done? you must only choose one option")
+            if (binding.newMatchTime.isEnabled && binding.newMatchTime.text.toString() != "") {
+                finishTime = binding.newMatchTime.text.toString().toInt()
             }
 
             if (binding.restingMinutesNumberPicker.isEnabled) {
@@ -112,6 +104,12 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 roundsAmount = binding.roundsAmountNumberPicker.value
             }
 
+            if (binding.newMatchTime.isEnabled && binding.newMatchPoints.isEnabled
+                || !binding.newMatchTime.isEnabled && !binding.newMatchPoints.isEnabled
+            ) {
+                throw IllegalStateException("What have you done? you must only choose one option")
+            }
+
             val newCup = Cup(
                 selected = true,
                 name = name,
@@ -122,26 +120,47 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 restingTime = restingTime,
                 restingAmount = restingAmount,
                 roundsAmount = roundsAmount,
-                twoMatches = twoMatches,
+                doubleMatch = doubleMatch,
                 alwaysWinner = alwaysWinner,
                 twoPointsDifference = twoPointsDifference,
                 idUser = idUser.toInt()
             )
-            dbAccess.cupDao().insert(newCup)
-            message()
-            //TODO changeToActivityAddTeam(idCup)
+
+            if (binding.newMatchTime.isEnabled && binding.newMatchTime.text.toString() == "") {
+                message(1)
+            } else if (binding.newMatchPoints.isEnabled && binding.newMatchPoints.text.toString() == "") {
+                message(2)
+            } else {
+                lifecycleScope.launch {
+                    val idCup = dbAccess.cupDao().insert(newCup).toInt()
+                    message(3)
+                    changeToActivityAddTeam(idCup)
+                }
+            }
         }
     }
 
-    private fun message() {
-        Toast.makeText(this, "New Cup saved", Toast.LENGTH_LONG).show()
+    private fun message(number: Int) {
+        when (number) {
+            1 -> {
+                Toast.makeText(this, "You must insert Time", Toast.LENGTH_LONG).show()
+            }
+
+            2 -> {
+                Toast.makeText(this, "You must insert Points", Toast.LENGTH_LONG).show()
+            }
+
+            else -> {
+                Toast.makeText(this, "New Cup saved", Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
 
     private fun changeToActivityAddTeam(idCup: Int) {
         val idUser = intent.getStringExtra(ID_USER_NC)
         if (idUser != null) {
             val activityAddTeam = Intent(this, ActivityAddTeam::class.java)
-            activityAddTeam.putExtra(ID_USER_AT, idUser)
             activityAddTeam.putExtra(ID_CUP_AT, idCup.toString())
             startActivity(activityAddTeam)
         }
@@ -188,9 +207,11 @@ class ActivityNewCupSettings : AppCompatActivity() {
 
         binding.timeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.pointsSwitch.isChecked = false
                 binding.newMatchTime.isEnabled = true
+
+                binding.pointsSwitch.isChecked = false
                 binding.newMatchPoints.isEnabled = false
+                //binding.newMatchPoints.text = null
             } else {
                 if (!binding.pointsSwitch.isChecked) {
                     binding.timeSwitch.isChecked = true
@@ -200,9 +221,10 @@ class ActivityNewCupSettings : AppCompatActivity() {
 
         binding.pointsSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.timeSwitch.isChecked = false
                 binding.newMatchPoints.isEnabled = true
+                binding.timeSwitch.isChecked = false
                 binding.newMatchTime.isEnabled = false
+                //binding.newMatchTime.text = null
             } else {
                 if (!binding.timeSwitch.isChecked) {
                     binding.pointsSwitch.isChecked = true

@@ -23,9 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="20dp"
-                android:background="@color/CommonRed"
                 android:contentDescription="@string/user_logo"
-
+                android:src="@color/CommonRed"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +43,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/user_logo"
                 app:layout_constraintStart_toEndOf="@id/user_logo"
                 app:layout_constraintTop_toTopOf="@id/user_logo" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

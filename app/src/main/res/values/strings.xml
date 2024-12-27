@@ -3,7 +3,7 @@
     <string name="cup_name">Cup Name</string>
     <string name="main_menu_text">Main Menu</string>
     <string name="view_created_cups">View Created Cups</string>
-    <string name="create_new_cup">New Cup</string>
+    <string name="create_new_cup">Create New Cup</string>
     <string name="go_to_user_screen">Go to User Screen</string>
     <string name="app_icon">App Icon</string>
     <string name="add_logo">Add a Logo</string>
@@ -40,7 +40,7 @@
     <string name="cups_created_by">Cups Created By:</string>
 
     <string name="no_account">No account? Create one</string>
-    <string name="create_account">Create Account</string>
+    <string name="create_account">Create New Account</string>
 
     <string name="matches">Matches:</string>
     <string name="team_number">Number of Teams</string>
@@ -67,6 +67,8 @@
     <string name="user_logo">User Logo</string>
     <string name="choose_account">Who are you? Choose your account</string>
     <string name="rounds">Rounds:</string>
+    <string name="create_new_team">Create New Team</string>
+    <string name="team_name">Team Name</string>
 
     <string-array name="game_mode_options">
         <item>Round Robin</item>

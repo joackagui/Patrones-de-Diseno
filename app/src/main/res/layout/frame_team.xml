@@ -8,13 +8,13 @@
     <View
         android:id="@+id/top_space"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="5dp"
         android:background="@color/Transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/current_match"
+        android:id="@+id/enter_team"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="25dp"
@@ -23,10 +23,10 @@
         app:layout_constraintTop_toBottomOf="@id/top_space">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/enter_team_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/CommonRed">
+            android:background="@color/CommonRed"
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/team_name_text"
@@ -52,7 +52,7 @@
         android:layout_height="15dp"
         android:background="@color/Transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_match" />
+        app:layout_constraintTop_toBottomOf="@id/enter_team" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.scoreit.componentes.Match
+import com.example.scoreit.components.Match
 
 @Dao
 interface MatchDao {
@@ -29,7 +29,7 @@ interface MatchDao {
 
     @Query(
         """
-        SELECT c.twoMatches
+        SELECT c.doubleMatch
         FROM `Match` m
         INNER JOIN Cup c ON m.idCup = c.id
         WHERE m.id = :idMatch

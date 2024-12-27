@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.scoreit.componentes.Cup
+import com.example.scoreit.components.Cup
 
 @Dao
 interface CupDao {
@@ -21,7 +21,7 @@ interface CupDao {
     suspend fun update(cup: Cup)
 
     @Insert
-    suspend fun insert(cup: Cup)
+    suspend fun insert(cup: Cup): Long
 
     @Insert
     suspend fun insertListOfCups(cups: MutableList<Cup>)

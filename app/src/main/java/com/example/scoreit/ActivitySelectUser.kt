@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.adapters.RecyclerUsers
-import com.example.scoreit.componentes.User
+import com.example.scoreit.components.User
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivitySelectUserBinding
@@ -26,7 +26,7 @@ class ActivitySelectUser : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         createAccounts()
-        setUpRecyclerView()
+        //setUpRecyclerView()
     }
 
     private fun createAccounts() {
@@ -35,9 +35,9 @@ class ActivitySelectUser : AppCompatActivity() {
                 for (i in 1..5) {
                     val nuevoUser = User(name = "User $i")
                     dbAccess.userDao().insert(nuevoUser)
-
                 }
             }
+            setUpRecyclerView()
         }
     }
 

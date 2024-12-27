@@ -15,251 +15,111 @@
         android:layout_height="wrap_content"
         android:background="@color/DarkRed"
         android:text=""
-        app:layout_constraintTop_toBottomOf="@+id/header_main" />
+        app:layout_constraintTop_toBottomOf="@+id/header_main"
+        />
 
-    <TextView
-        android:id="@+id/game_mode_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/game_mode"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cup_name" />
-
-    <TextView
-        android:id="@+id/double_match_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/double_match"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/game_mode_text" />
-
-    <TextView
-        android:id="@+id/rounds_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/rounds"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/double_match_text" />
-
-    <TextView
-        android:id="@+id/always_winner_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/always_winner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rounds_text" />
-
-    <TextView
-        android:id="@+id/time_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/time"
-        app:layout_constraintStart_toStartOf="@id/guideline_mitad_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/cup_name" />
-
-    <TextView
-        android:id="@+id/points_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/points"
-        app:layout_constraintStart_toStartOf="@id/guideline_mitad_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/time_text" />
-
-    <TextView
-        android:id="@+id/date_text"
-        style="@style/SmallText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:maxLines="2"
-        android:text="@string/date"
-        app:layout_constraintStart_toStartOf="@id/guideline_mitad_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/points_text" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerScoreBoard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
-        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/team_name" />
-
-    <TextView
-        android:id="@+id/matches_text"
-        style="@style/NormalText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:maxLines="2"
-        android:text="@string/matches"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerScoreBoard" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPartidosCreados"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/cup_name"
         app:layout_constraintBottom_toTopOf="@id/back_button"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
-        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/matches_text" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <android.widget.Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/game_mode_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="@string/game_mode" />
+
+            <TextView
+                android:id="@+id/time_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/time" />
+
+            <TextView
+                android:id="@+id/points_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/points" />
+
+            <TextView
+                android:id="@+id/double_match_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/double_match" />
+
+            <TextView
+                android:id="@+id/always_winner_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/always_winner" />
+
+            <TextView
+                android:id="@+id/rounds_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/rounds" />
+
+            <include layout="@layout/header_score_board"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerScoreBoard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/matches_text"
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/matches" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPartidosCreados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
         android:id="@+id/back_button"
         style="@style/NormalText"
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_margin="15dp"
-        android:background="@drawable/fondo_para_botones_score_it"
+        android:backgroundTint="@color/CommonRed"
         android:text="@string/back_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/team_name"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/team"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_5"
-        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <TextView
-        android:id="@+id/matches_played"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/matches_played"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_4"
-        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_5"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <TextView
-        android:id="@+id/marches_won"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/matches_won"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_3"
-        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_4"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <TextView
-        android:id="@+id/matches_lost"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/matches_lost"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_2"
-        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_3"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <TextView
-        android:id="@+id/final_points"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/pts"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_1"
-        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_2"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <TextView
-        android:id="@+id/ingame_points"
-        style="@style/ScoreBoardHeaderText"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/CommonRed"
-        android:text="@string/pts_ingame"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
-        app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_1"
-        app:layout_constraintTop_toBottomOf="@id/always_winner_text" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_izquierda"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.03" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.97" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha_1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.86" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha_2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha_3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.64" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha_4"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.53" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_margen_derecha_5"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.42" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_mitad_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

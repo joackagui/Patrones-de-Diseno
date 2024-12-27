@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.ActivityNewCupSettings.Companion.ID_USER_NC
 import com.example.scoreit.adapters.RecyclerCups
 import com.example.scoreit.databinding.ActivityMainMenuBinding
-import com.example.scoreit.componentes.User
+import com.example.scoreit.components.User
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import kotlinx.coroutines.launch
@@ -61,7 +61,7 @@ class ActivityMainMenu : AppCompatActivity() {
     private fun changeToNewCupSettings(user: User) {
         binding.createNewCup.setOnClickListener {
             val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-            activityNewCupSettings.putExtra(ID_USER_NC, user.id)
+            activityNewCupSettings.putExtra(ID_USER_NC, user.id.toString())
             startActivity(activityNewCupSettings)
         }
     }
@@ -88,7 +88,7 @@ class ActivityMainMenu : AppCompatActivity() {
         if (idUser != null) {
             lifecycleScope.launch {
                 val userCup: TextView = binding.createdCupsText
-                val userName = dbAccess.userDao().getUserById(idUser.toString()).name
+                val userName = dbAccess.userDao().getUserById(idUser).name
                 val finalText = "${userName}'s cups"
                 userCup.text = finalText
             }

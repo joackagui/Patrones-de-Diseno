@@ -29,15 +29,15 @@ class ActivityLogIn : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         loginButton()
-        changeActivityToSignUp()
+        //changeActivityToSignUp()
     }
 
-    private fun changeActivityToSignUp() {
-        binding.newUserButton.setOnClickListener {
-            val activitySignUp = Intent(this, ActivitySignUp::class.java)
-            startActivity(activitySignUp)
-        }
-    }
+//    private fun changeActivityToSignUp() {
+//        binding.newUserButton.setOnClickListener {
+//            val activitySignUp = Intent(this, ActivitySignUp::class.java)
+//            startActivity(activitySignUp)
+//        }
+//    }
 
     private fun changeToActivityMainMenu() {
         val userId = intent.getStringExtra(ID_USER_LI)

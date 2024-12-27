@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scoreit.ActivityRefereeButtons
-import com.example.scoreit.componentes.Match
+import com.example.scoreit.components.Match
 import com.example.scoreit.databinding.FrameMatchBinding
 import com.example.scoreit.database.Converters
 

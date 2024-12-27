@@ -1,10 +1,13 @@
 package com.example.scoreit.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scoreit.componentes.Team
+import com.example.scoreit.ActivityNewTeamSettings
+import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_TEAM_NT
+import com.example.scoreit.components.Team
 import com.example.scoreit.databinding.FrameTeamBinding
 
 class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
@@ -27,11 +30,10 @@ class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
         fun binding(team: Team) {
             binding.teamNameText.text = team.name
 
-            binding.enterTeamButton.setOnClickListener {
-                //TODO: Ir al team
-//                val activityEntrarAlEquipo = Intent(context, ActivityGogo::class.java)
-//                activityEntrarAlEquipo.putExtra(EQUIPO_ID, team.id.toString())
-//                context?.startActivity(activityEntrarAlEquipo)
+            binding.enterTeam.setOnClickListener {
+                val activityNewTeamSettings = Intent(context, ActivityNewTeamSettings::class.java)
+                activityNewTeamSettings.putExtra(ID_TEAM_NT, team.id.toString())
+                context?.startActivity(activityNewTeamSettings)
             }
         }
     }
