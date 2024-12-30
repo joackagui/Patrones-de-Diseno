@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scoreit.ActivityLogIn
 import com.example.scoreit.ActivityLogIn.Companion.ID_USER_LI
@@ -50,6 +51,7 @@ class RecyclerUsers :
                     if(user.lastUser){
                         val activityMainMenu = Intent(context, ActivityMainMenu::class.java)
                         activityMainMenu.putExtra(ID_USER_MM, user.id.toString())
+                        successfulMessage(user)
                         context?.startActivity(activityMainMenu)
                     } else {
                         val activityLogIn = Intent(context, ActivityLogIn::class.java)
@@ -59,6 +61,10 @@ class RecyclerUsers :
                 }
             }
         }
+    }
+
+    private fun successfulMessage(user: User) {
+        Toast.makeText(context, "Welcome ${user.name}", Toast.LENGTH_LONG).show()
     }
 
     fun addDataToList(list: MutableList<User>) {

@@ -17,12 +17,13 @@ import java.io.Serializable
 data class Match(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val stage: String,
+    val stage: Int? = null,
+    val matchDay: Int? = null,
     val firstTeamJson: String,
     val secondTeamJson: String,
     var firstTeamPoints: Int = 0,
     var secondTeamPoints: Int = 0,
-    var firstTeamRounds: String = "",
-    var secondTeamRounds: String = "",
+    var firstTeamRounds: String? = null,
+    var secondTeamRounds: String? = null,
     val idCup: Int
 ): Serializable

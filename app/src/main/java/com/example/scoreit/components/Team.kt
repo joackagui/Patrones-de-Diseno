@@ -18,7 +18,7 @@ data class Team(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val logo: String? = null,
-    val name: String,
+    var name: String,
     var finalPoints: String = "0",
     var ingamePoints: String = "0",
     var matchesPlayed: String = "0",

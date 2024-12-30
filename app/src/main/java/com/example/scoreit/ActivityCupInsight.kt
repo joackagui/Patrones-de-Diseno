@@ -2,6 +2,7 @@ package com.example.scoreit
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +36,7 @@ class ActivityCupInsight : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         setHeader()
-        setUpCupData()
+        setCupData()
         setUpRecyclerScoreBoard()
         setUpRecyclerViewMatches()
         backButton()
@@ -70,32 +71,48 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
-    private fun changeToMainMenu(idUser: String) {
-        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-        activityMainMenu.putExtra(ID_USER_MM, idUser)
-        startActivity(activityMainMenu)
-    }
-
-    private fun setUpCupData() {
+    private fun setCupData() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
             lifecycleScope.launch {
                 val cup = dbAccess.cupDao().getCupById(idCup)
                 val cupName = "${binding.cupName.text} ${cup.name}"
                 val gameMode = "${binding.gameModeText.text} ${cup.gameMode}"
-                val time = "${binding.timeText.text} ${cup.finishTime}"
-                val points = "${binding.pointsText.text} ${cup.winningPoints}"
                 val doubleMatch = "${binding.doubleMatchText.text} ${cup.doubleMatch}"
                 val alwaysWinner = "${binding.alwaysWinnerText.text} ${cup.alwaysWinner}"
-                val rounds = "${binding.roundsText.text} ${cup.roundsAmount}"
 
                 binding.cupName.text = cupName
                 binding.gameModeText.text = gameMode
-                binding.timeText.text = time
-                binding.pointsText.text = points
                 binding.doubleMatchText.text = doubleMatch
                 binding.alwaysWinnerText.text = alwaysWinner
-                binding.roundsText.text = rounds
+
+                val points = "${binding.pointsText.text} ${cup.winningPoints}"
+                if(cup.winningPoints != null){
+                    binding.pointsText.text = points
+                } else {
+                    binding.pointsText.visibility = View.GONE
+                }
+
+                val time = "${binding.timeText.text} ${cup.finishTime}"
+                if(cup.finishTime != null){
+                    binding.timeText.text = time
+                } else {
+                    binding.timeText.visibility = View.GONE
+                }
+
+                val rounds = "${binding.roundsText.text} ${cup.roundsAmount}"
+                if(cup.roundsAmount != null){
+                    binding.roundsText.text = rounds
+                } else {
+                    binding.roundsText.visibility = View.GONE
+                }
+
+                val restTime = "${binding.restingText.text} ${cup.restingAmount} of ${cup.restingTime} minutes"
+                if(cup.restingTime != null && cup.restingAmount != null){
+                    binding.restingText.text = restTime
+                } else {
+                    binding.restingText.visibility = View.GONE
+                }
             }
         }
     }
@@ -134,5 +151,11 @@ class ActivityCupInsight : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun changeToMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        startActivity(activityMainMenu)
     }
 }

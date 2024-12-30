@@ -39,7 +39,7 @@ class RecyclerScoreBoardRows : RecyclerView.Adapter<RecyclerScoreBoardRows.Score
         RecyclerView.ViewHolder(binding.root) {
         fun binding(team: Team) {
             binding.teamName.text = team.name
-            binding.teamIngamePoints.text = team.ingamePoints
+            binding.teamInGamePoints.text = team.ingamePoints
             binding.teamFinalPoints.text = team.finalPoints
             binding.teamMatchesPlayed.text = team.matchesPlayed
             binding.teamMatchesWon.text = team.matchesWon

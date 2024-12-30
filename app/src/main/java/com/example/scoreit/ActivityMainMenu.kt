@@ -58,11 +58,15 @@ class ActivityMainMenu : AppCompatActivity() {
         }
     }
 
-    private fun changeToNewCupSettings(user: User) {
-        binding.createNewCup.setOnClickListener {
-            val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-            activityNewCupSettings.putExtra(ID_USER_NC, user.id.toString())
-            startActivity(activityNewCupSettings)
+    private fun setText() {
+        val idUser = intent.getStringExtra(ID_USER_MM)
+        if (idUser != null) {
+            lifecycleScope.launch {
+                val userCup: TextView = binding.createdCupsText
+                val userName = dbAccess.userDao().getUserById(idUser).name
+                val finalText = "${userName}'s cups"
+                userCup.text = finalText
+            }
         }
     }
 
@@ -70,9 +74,8 @@ class ActivityMainMenu : AppCompatActivity() {
         val idUser = intent.getStringExtra(ID_USER_MM)
         if (idUser != null) {
             lifecycleScope.launch {
-                val cupsCreatedByThisUser =
-                    dbAccess.cupDao().getCupsByUserId(idUser).toMutableList()
-                recyclerCups.addDataToList(cupsCreatedByThisUser)
+                val listOfCups = dbAccess.cupDao().getCupsByUserId(idUser).toMutableList()
+                recyclerCups.addDataToList(listOfCups)
 
                 binding.recyclerCups.apply {
                     layoutManager =
@@ -83,15 +86,11 @@ class ActivityMainMenu : AppCompatActivity() {
         }
     }
 
-    private fun setText() {
-        val idUser = intent.getStringExtra(ID_USER_MM)
-        if (idUser != null) {
-            lifecycleScope.launch {
-                val userCup: TextView = binding.createdCupsText
-                val userName = dbAccess.userDao().getUserById(idUser).name
-                val finalText = "${userName}'s cups"
-                userCup.text = finalText
-            }
+    private fun changeToNewCupSettings(user: User) {
+        binding.createNewCup.setOnClickListener {
+            val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
+            activityNewCupSettings.putExtra(ID_USER_NC, user.id.toString())
+            startActivity(activityNewCupSettings)
         }
     }
 }

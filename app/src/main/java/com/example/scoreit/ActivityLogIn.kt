@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
+import com.example.scoreit.components.User
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityLogInBinding
@@ -55,9 +56,9 @@ class ActivityLogIn : AppCompatActivity() {
         lifecycleScope.launch {
             binding.logInButton.setOnClickListener {
                 if (binding.emailLogIn.text.toString() == "" || binding.passwordLogIn.text.toString() == "") {
-                    message(1)
+                    errorMessage(1)
                 } else if (binding.passwordLogIn.text.toString().length < 8) {
-                    message(2)
+                    errorMessage(2)
                 } else {
                     logInVerification()
                 }
@@ -74,14 +75,18 @@ class ActivityLogIn : AppCompatActivity() {
                 val password = binding.passwordLogIn.text.toString()
 
                 if (user.email != email || user.password != password) {
-                    message(4)
+                    errorMessage(4)
                 } else {
-                    message(5)
+                    successfulMessage(user)
                     lastUserUpdate()
                     changeToActivityMainMenu()
                 }
             }
         }
+    }
+
+    private fun successfulMessage(user: User) {
+        Toast.makeText(this, "Welcome ${user.name}", Toast.LENGTH_LONG).show()
     }
 
     private fun lastUserUpdate() {
@@ -102,7 +107,7 @@ class ActivityLogIn : AppCompatActivity() {
         }
     }
 
-    private fun message(number: Int) {
+    private fun errorMessage(number: Int) {
         when (number) {
             1 -> {
                 Toast.makeText(this, "You must fill in all fields", Toast.LENGTH_LONG).show()
@@ -118,10 +123,6 @@ class ActivityLogIn : AppCompatActivity() {
 
             4 -> {
                 Toast.makeText(this, "Incorrect email or password", Toast.LENGTH_LONG).show()
-            }
-
-            5 -> {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show()
             }
         }
     }

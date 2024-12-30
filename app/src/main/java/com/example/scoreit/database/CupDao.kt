@@ -27,6 +27,5 @@ interface CupDao {
     suspend fun insertListOfCups(cups: MutableList<Cup>)
 
     @Query("DELETE FROM Cup WHERE id =:id")
-    suspend fun deleteById(id: Int)
-
+    suspend fun deleteById(id: String)
 }

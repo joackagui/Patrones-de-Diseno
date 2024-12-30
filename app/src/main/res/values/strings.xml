@@ -18,11 +18,11 @@
     <string name="initial_score">0</string>
     <string name="always_a_winner">Always a Winner</string>
     <string name="two_point_difference">Two Point Difference</string>
-    <string name="home_and_away">Home and Away</string>
+    <string name="home_and_away">Double match</string>
     <string name="want_time">Set Time</string>
     <string name="want_score">Set Score</string>
     <string name="time_amount">Time</string>
-    <string name="cup_score_text">Score</string>
+    <string name="cup_points_text">Points</string>
     <string name="rest_times_text">Rest Times</string>
     <string name="rounds_text">Rounds</string>
     <string name="two_round_difference_text">Two Round Difference</string>
@@ -54,7 +54,6 @@
     <string name="suspend">Suspend</string>
     <string name="timer">00:00:00</string>
     <string name="double_match">Double Match:</string>
-    <string name="by_rounds">By Rounds:</string>
     <string name="always_winner">Always Winner:</string>
     <string name="date">Start date:</string>
     <string name="game_mode">Mode:</string>
@@ -69,6 +68,8 @@
     <string name="rounds">Rounds:</string>
     <string name="create_new_team">Create New Team</string>
     <string name="team_name">Team Name</string>
+    <string name="rest_time">Rest Time:</string>
+    <string name="initial_rounds">(0)</string>
 
     <string-array name="game_mode_options">
         <item>Round Robin</item>

@@ -9,70 +9,52 @@
         style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/Black"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_5"
         app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/team_matches_played"
+        style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/DarkestGray"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_4"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_5"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/team_matches_won"
+        style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/Black"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_3"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_4"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/team_matches_lost"
+        style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/DarkestGray"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_2"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/team_final_points"
+        style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/Black"
-        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha_1"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/team_ingame_points"
+        android:id="@+id/team_inGame_points"
+        style="@style/ScoreBoardText"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@color/White"
-        android:gravity="center"
-        android:textColor="@color/Black"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_1"
         app:layout_constraintTop_toTopOf="parent" />

@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scoreit.ActivityRefereeButtons
+import com.example.scoreit.ActivityRefereeButtons.Companion.ID_MATCH_RB
 import com.example.scoreit.components.Match
 import com.example.scoreit.databinding.FrameMatchBinding
 import com.example.scoreit.database.Converters
@@ -48,25 +50,34 @@ class RecyclerMatches :
             val firstTeamName = firstTeam.name
             val secondTeamName = secondTeam.name
 
-            binding.matchday.text = match.stage
+            if (match.stage != null) {
+                val stages = mapOf(
+                    1 to "Final",
+                    2 to "Semi-final",
+                    4 to "Quarter-final",
+                    8 to "Round of 16",
+                    16 to "Round of 32"
+                )
+                binding.matchType.text = stages[match.stage]
+            } else if (match.matchDay != null) {
+                binding.matchType.text = "Match Day ${match.matchDay}"
+            }
+
             binding.firstTeamName.text = firstTeamName
             binding.secondTeamName.text = secondTeamName
             binding.firstTeamPoints.text = match.firstTeamPoints.toString()
             binding.secondTeamPoints.text = match.secondTeamPoints.toString()
 
-//            if(match){
-//                binding.firstTeamRounds.text = "(${match.firstTeamRounds})"
-//                binding.secondTeamRounds.text = "(${match.secondTeamRounds})"
-//                binding.group.visibility = View.VISIBLE
-//            } else {
-//                binding.group.visibility = View.INVISIBLE
-//            }
+            if(match.firstTeamRounds != null && match.secondTeamRounds != null){
+                binding.firstTeamRounds.text = "(${match.firstTeamRounds})"
+                binding.secondTeamRounds.text = "(${match.secondTeamRounds})"
+                binding.group.visibility = View.VISIBLE
+            } else {
+                binding.group.visibility = View.GONE
+            }
             binding.currentMatchButton.setOnClickListener {
                 val activityRefereeButtons = Intent(context, ActivityRefereeButtons::class.java)
-                activityRefereeButtons.putExtra(
-                    ActivityRefereeButtons.ID_MATCH_RB,
-                    match.id.toString()
-                )
+                activityRefereeButtons.putExtra(ID_MATCH_RB, match.id.toString())
                 context?.startActivity(activityRefereeButtons)
             }
         }
@@ -74,7 +85,8 @@ class RecyclerMatches :
 
     fun addDataToList(list: MutableList<Match>) {
         dataList.clear()
-        dataList.addAll(list)
+        val sortedList = list.sortedBy { it.matchDay }
+        dataList.addAll(sortedList)
     }
 
 }

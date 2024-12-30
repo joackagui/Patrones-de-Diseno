@@ -2,10 +2,13 @@ package com.example.scoreit
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
+import kotlinx.coroutines.launch
 
 
 class ActivityRefereeButtons : AppCompatActivity() {
@@ -14,14 +17,8 @@ class ActivityRefereeButtons : AppCompatActivity() {
     private lateinit var dbAccess: AppDataBase
 
     companion object {
-        const val ID_USER_RB: String = "ID_USER"
-        const val ID_CUP_RB: String = "ID_CUP"
         const val ID_MATCH_RB: String = "ID_MATCH"
     }
-
-    private val idUser = intent.getStringExtra(ID_USER_RB)
-    private val idCup = intent.getStringExtra(ID_CUP_RB)
-    private val idMatch = intent.getStringExtra(ID_MATCH_RB)
 
     private var countDownTimer: CountDownTimer? = null
     private var timeInMillis: Long = 0L
@@ -34,14 +31,13 @@ class ActivityRefereeButtons : AppCompatActivity() {
         setContentView(binding.root)
 
         dbAccess = getDatabase(this)
-//        lifecycleScope.launch {
+
+        setButtons()
+
+//        aumentarPuntos()
 //            evaluacionDelPartido()
 //            obtenerTiempoDeJuego()
 //            descanso()
-//        }
-
-
-//        aumentarPuntos()
 
 //        binding.botonDescansoSegundoEquipo.setOnClickListener {
 //                iniciarTemporizador()
@@ -61,6 +57,30 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
         //val input = dbAccess.campeonatoDao()
 
+    }
+
+    private fun setButtons() {
+        val idMatch = intent.getStringExtra(ID_MATCH_RB)
+        if (idMatch != null) {
+            lifecycleScope.launch {
+                val match = dbAccess.matchDao().getMatchById(idMatch)
+                val idCup = dbAccess.matchDao().getMatchById(idMatch).idCup
+                val cup = dbAccess.cupDao().getCupById(idCup.toString())
+
+                if (cup.restingAmount == null && cup.restingTime == null) {
+                    binding.firstTeamRestButton.visibility = View.GONE
+                    binding.secondTeamRestButton.visibility = View.GONE
+                }
+
+                if(match.firstTeamRounds == null && match.secondTeamRounds == null){
+                    binding.firstTeamRounds.visibility = View.INVISIBLE
+                    binding.secondTeamRounds.visibility = View.INVISIBLE
+                }
+                if(cup.finishTime == null){
+                    binding.timer.visibility = View.GONE
+                }
+            }
+        }
     }
 
 //    private fun iniciarTemporizador() {
@@ -115,58 +135,58 @@ class ActivityRefereeButtons : AppCompatActivity() {
 //    }
 
     // funciones
-  /*  private fun startTimer() {
-        // Verificar que haya un valor válido en el EditText
-        /*val input = binding.input.text.toString()
-        if (input.isEmpty()) {
-            Toast.makeText(this, "Por favor ingresa un tiempo en minutos", Toast.LENGTH_SHORT).show()
-            return
-        }*/
+    /*  private fun startTimer() {
+          // Verificar que haya un valor válido en el EditText
+          /*val input = binding.input.text.toString()
+          if (input.isEmpty()) {
+              Toast.makeText(this, "Por favor ingresa un tiempo en minutos", Toast.LENGTH_SHORT).show()
+              return
+          }*/
 
-        // Convertir el valor ingresado en minutos a milisegundos
-        val minutes = input.toLong()
-        timeInMillis = minutes * 60 * 1000 // Convertir minutos a milisegundos
-        // Iniciar el temporizador
-       countDownTimer = object : CountDownTimer(timeInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                timeRemaining = millisUntilFinished
-                binding.timer.text = formatTime(millisUntilFinished)
-            }
+          // Convertir el valor ingresado en minutos a milisegundos
+          val minutes = input.toLong()
+          timeInMillis = minutes * 60 * 1000 // Convertir minutos a milisegundos
+          // Iniciar el temporizador
+         countDownTimer = object : CountDownTimer(timeInMillis, 1000) {
+              override fun onTick(millisUntilFinished: Long) {
+                  timeRemaining = millisUntilFinished
+                  binding.timer.text = formatTime(millisUntilFinished)
+              }
 
-            override fun onFinish() {
-                isRunning = false
-                binding.timer.text = "00:00:00"
-                binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
-                Toast.makeText(this@ActivityRefereeButtons, "¡Se terminó el tiempo!", Toast.LENGTH_SHORT).show()
-            }
-        }.start()
+              override fun onFinish() {
+                  isRunning = false
+                  binding.timer.text = "00:00:00"
+                  binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+                  Toast.makeText(this@ActivityRefereeButtons, "¡Se terminó el tiempo!", Toast.LENGTH_SHORT).show()
+              }
+          }.start()
 
-        isRunning = true
-        binding.startPauseButton.icon = getDrawable(R.drawable.pausebutton)
-    }
+          isRunning = true
+          binding.startPauseButton.icon = getDrawable(R.drawable.pausebutton)
+      }
 
-    private fun pauseTimer() {
+      private fun pauseTimer() {
+          countDownTimer?.cancel()
+          isRunning = false
+         binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+     }
+
+      private fun resetTimer() {
         countDownTimer?.cancel()
-        isRunning = false
-       binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
-   }
+          isRunning = false
+          timeInMillis = 0L
+          timeRemaining = 0L
+          binding.timer.text = "00:00:00"
+          binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+          binding.input.text.clear()
+      }
 
-    private fun resetTimer() {
-      countDownTimer?.cancel()
-        isRunning = false
-        timeInMillis = 0L
-        timeRemaining = 0L
-        binding.timer.text = "00:00:00"
-        binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
-        binding.input.text.clear()
-    }
-
-    private fun formatTime(millis: Long): String {
-        val hours = millis / (1000 * 60 * 60)
-        val minutes = (millis / (1000 * 60)) % 60
-        val seconds = (millis / 1000) % 60
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-    } */
+      private fun formatTime(millis: Long): String {
+          val hours = millis / (1000 * 60 * 60)
+          val minutes = (millis / (1000 * 60)) % 60
+          val seconds = (millis / 1000) % 60
+          return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+      } */
 
 //    private fun descanso(){
 //        lifecycleScope.launch {

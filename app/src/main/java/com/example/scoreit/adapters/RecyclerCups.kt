@@ -30,11 +30,11 @@ class RecyclerCups :
     inner class CupViewHolder(val binding: FrameCupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun binding(cup: Cup) {
+
+            binding.name.text = cup.name
+            binding.startDate.text = cup.startDate
+
             binding.currentCup.setOnClickListener {
-
-                binding.name.text = cup.name
-                binding.startDate.text = cup.startDate
-
                 val activityCupInsight = Intent(context, ActivityCupInsight::class.java)
                 activityCupInsight.putExtra(ID_CUP_CI, cup.id.toString())
                 context?.startActivity(activityCupInsight)
@@ -45,6 +45,7 @@ class RecyclerCups :
 
     fun addDataToList(list: MutableList<Cup>) {
         dataList.clear()
-        dataList.addAll(list)
+        //dataList.addAll(list)
+        dataList.addAll(list.sortedByDescending { it.startDate })
     }
 }

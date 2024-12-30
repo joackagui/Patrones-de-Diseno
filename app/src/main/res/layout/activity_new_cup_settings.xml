@@ -76,6 +76,7 @@
             <Button
                 android:id="@+id/new_start_date"
                 style="?android:spinnerStyle"
+                android:theme="@style/Theme.Material3.DynamicColors.Dark"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -101,6 +102,35 @@
                 app:layout_constraintTop_toBottomOf="@id/new_start_date" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/points_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:checked="false"
+                android:contentDescription="@string/want_score"
+                android:padding="12dp"
+                android:thumb="@drawable/thumb"
+                app:layout_constraintStart_toStartOf="@id/new_cup_name"
+                app:layout_constraintTop_toBottomOf="@id/game_mode_spinner"
+                app:track="@drawable/track" />
+
+            <EditText
+                android:id="@+id/new_match_points"
+                style="@style/EditTextHintStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:autofillHints="10"
+                android:backgroundTint="@color/DarkestRed"
+                android:enabled="false"
+                android:hint="@string/cup_points_text"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="@id/points_switch"
+                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
+                app:layout_constraintStart_toEndOf="@+id/points_switch"
+                app:layout_constraintTop_toTopOf="@id/points_switch" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/time_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +139,7 @@
                 android:padding="12dp"
                 android:thumb="@drawable/thumb"
                 app:layout_constraintStart_toStartOf="@id/new_cup_name"
-                app:layout_constraintTop_toBottomOf="@id/game_mode_spinner"
+                app:layout_constraintTop_toBottomOf="@id/points_switch"
                 app:track="@drawable/track" />
 
             <EditText
@@ -128,35 +158,6 @@
                 app:layout_constraintStart_toEndOf="@+id/time_switch"
                 app:layout_constraintTop_toTopOf="@id/time_switch" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/points_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:checked="false"
-                android:contentDescription="@string/want_score"
-                android:padding="12dp"
-                android:thumb="@drawable/thumb"
-                app:layout_constraintStart_toStartOf="@id/new_cup_name"
-                app:layout_constraintTop_toBottomOf="@id/time_switch"
-                app:track="@drawable/track" />
-
-            <EditText
-                android:id="@+id/new_match_points"
-                style="@style/EditTextHintStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:autofillHints="10"
-                android:backgroundTint="@color/DarkestRed"
-                android:enabled="false"
-                android:hint="@string/cup_score_text"
-                android:inputType="number"
-                app:layout_constraintBottom_toBottomOf="@id/points_switch"
-                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
-                app:layout_constraintStart_toEndOf="@+id/points_switch"
-                app:layout_constraintTop_toTopOf="@id/points_switch" />
-
             <CheckBox
                 android:id="@+id/two_points_difference_checkbox"
                 style="@style/NormalText"
@@ -167,7 +168,7 @@
                 android:padding="12dp"
                 android:text="@string/two_point_difference"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@id/points_switch" />
+                app:layout_constraintTop_toBottomOf="@id/time_switch" />
 
             <CheckBox
                 android:id="@+id/always_winner_checkbox"
@@ -182,7 +183,7 @@
                 app:layout_constraintTop_toBottomOf="@id/two_points_difference_checkbox" />
 
             <CheckBox
-                android:id="@+id/two_matches_checkbox"
+                android:id="@+id/double_match_checkbox"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -203,7 +204,7 @@
                 android:padding="12dp"
                 android:text="@string/rest_times_text"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/two_matches_checkbox" />
+                app:layout_constraintTop_toBottomOf="@+id/double_match_checkbox" />
 
             <TextView
                 android:id="@+id/resting_amount_text"

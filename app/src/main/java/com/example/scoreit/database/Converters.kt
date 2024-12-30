@@ -37,6 +37,16 @@ class Converters {
     }
 
     @TypeConverter
+    fun fromCup(cup: Cup): String {
+        return gson.toJson(cup)
+    }
+
+    @TypeConverter
+    fun toCup(json: String): Cup {
+        return gson.fromJson(json, Cup::class.java)
+    }
+
+    @TypeConverter
     fun fromEquipoList(teams: List<Team>): String {
         return gson.toJson(teams)
     }
@@ -51,28 +61,12 @@ class Converters {
         }
     }
 
-    // Match
-    @TypeConverter
-    fun fromPartido(match: Match?): String? = gson.toJson(match)
-
-    @TypeConverter
-    fun toPartido(partidoString: String?): Match? =
-        partidoString?.let { gson.fromJson(it, Match::class.java) }
-
-    // Cup
-    @TypeConverter
-    fun fromCampeonato(cup: Cup?): String? = gson.toJson(cup)
-
-    @TypeConverter
-    fun toCampeonato(campeonatoString: String?): Cup? =
-        campeonatoString?.let { gson.fromJson(it, Cup::class.java) }
-
     // User
     @TypeConverter
-    fun fromUsuario(user: User?): String? = gson.toJson(user)
+    fun fromUser(user: User?): String? = gson.toJson(user)
 
     @TypeConverter
-    fun toUsuario(usuarioString: String?): User? =
+    fun toUser(usuarioString: String?): User? =
         usuarioString?.let { gson.fromJson(it, User::class.java) }
 
     @TypeConverter

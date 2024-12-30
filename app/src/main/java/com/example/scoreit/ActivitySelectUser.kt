@@ -26,7 +26,6 @@ class ActivitySelectUser : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         createAccounts()
-        //setUpRecyclerView()
     }
 
     private fun createAccounts() {
@@ -43,8 +42,8 @@ class ActivitySelectUser : AppCompatActivity() {
 
     private fun setUpRecyclerView() {
         lifecycleScope.launch {
-            val userList = dbAccess.userDao().getEveryUser().toMutableList()
-            recyclerUsers.addDataToList(userList)
+            val listOfUsers = dbAccess.userDao().getEveryUser().toMutableList()
+            recyclerUsers.addDataToList(listOfUsers)
 
             binding.recyclerUsers.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
