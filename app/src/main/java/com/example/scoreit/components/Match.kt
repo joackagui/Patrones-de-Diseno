@@ -18,12 +18,15 @@ data class Match(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val stage: Int? = null,
+    val playable: Boolean = true,
     val matchDay: Int? = null,
+    val firstOfKind: Boolean = false,
     val firstTeamJson: String,
     val secondTeamJson: String,
     var firstTeamPoints: Int = 0,
     var secondTeamPoints: Int = 0,
-    var firstTeamRounds: String? = null,
-    var secondTeamRounds: String? = null,
+    var firstTeamRounds: Int? = null,
+    var secondTeamRounds: Int? = null,
+    val inGamePointsPerRoundList: MutableList<String?> = mutableListOf(),
     val idCup: Int
 ): Serializable

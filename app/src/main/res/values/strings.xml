@@ -43,7 +43,7 @@
     <string name="create_account">Create New Account</string>
 
     <string name="matches">Matches:</string>
-    <string name="team_number">Number of Teams</string>
+    <string name="team_number">Number of Teams:</string>
     <string name="configure_teams">Configure Teams</string>
     <string name="save_changes">Save Changes</string>
     <string name="position_table">Position Table</string>
@@ -65,11 +65,15 @@
     <string name="matches_lost">L</string>
     <string name="user_logo">User Logo</string>
     <string name="choose_account">Who are you? Choose your account</string>
-    <string name="rounds">Rounds:</string>
     <string name="create_new_team">Create New Team</string>
     <string name="team_name">Team Name</string>
     <string name="rest_time">Rest Time:</string>
     <string name="initial_rounds">(0)</string>
+    <string name="edit_button">Edit</string>
+    <string name="user_info">USER INFO</string>
+    <string name="change_user">Change user</string>
+    <string name="rounds">Rounds:</string>
+    <string name="delete_button">Delete</string>
 
     <string-array name="game_mode_options">
         <item>Round Robin</item>

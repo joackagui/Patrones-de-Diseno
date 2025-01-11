@@ -48,7 +48,6 @@ class ActivitySelectUser : AppCompatActivity() {
             binding.recyclerUsers.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = recyclerUsers
-
             }
         }
     }

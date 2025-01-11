@@ -17,14 +17,15 @@ import java.io.Serializable
 data class Team(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val logo: String? = null,
+    var logo: String? = null,
     var name: String,
-    var finalPoints: String = "0",
-    var ingamePoints: String = "0",
-    var matchesPlayed: String = "0",
-    var matchesWon: String = "0",
-    var matchesLost: String = "0",
-    var roundsInFavor: String? = "0",
-    var roundsAgainst: String? = "0",
+    var finalPoints: Int = 0,
+    var inGamePoints: Int = 0,
+    var matchesPlayed: Int = 0,
+    var matchesWon: Int = 0,
+    var matchesLost: Int = 0,
+    var roundsWon: Int? = 0,
+    var roundsLost: Int? = 0,
+    var playersList: MutableList<String?> = mutableListOf(),
     val idCup: Int
 ): Serializable

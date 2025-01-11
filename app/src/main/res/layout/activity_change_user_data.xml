@@ -2,17 +2,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     style="@style/Background"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".ActivityLogIn">
+    android:padding="12dp"
+    tools:context=".ActivityChangeUserData">
 
-    <include layout="@layout/header_sign_up" />
+    <TextView
+        android:id="@+id/title"
+        style="@style/LargeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:text="@string/user_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/email_log_in"
+        android:id="@+id/user_name"
+        style="@style/EditTextHintStyle"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:autofillHints="User 1"
+        android:hint="@string/username"
+        android:inputType="text"
+        android:padding="12dp"
+        app:layout_constraintBottom_toTopOf="@id/user_email"
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda" />
+
+    <EditText
+        android:id="@+id/user_email"
         style="@style/EditTextHintStyle"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
@@ -27,7 +50,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/password_log_in"
+        android:id="@+id/user_password"
         style="@style/EditTextHintStyle"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
@@ -38,20 +61,20 @@
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
         app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/email_log_in" />
+        app:layout_constraintTop_toBottomOf="@id/user_email" />
 
     <Button
-        android:id="@+id/log_in_button"
+        android:id="@+id/save_button"
         style="@style/NormalText"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:backgroundTint="@color/CommonRed"
         android:padding="12dp"
-        android:text="@string/login"
+        android:text="@string/save_changes"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
         app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/password_log_in" />
+        app:layout_constraintTop_toBottomOf="@id/user_password" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_margen_izquierda"
@@ -66,5 +89,29 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
+
+    <Button
+        android:id="@+id/change_user_button"
+        style="@style/NormalText"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/CommonRed"
+        android:text="@string/change_user"
+        app:layout_constraintBottom_toTopOf="@id/delete_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/delete_button"
+        style="@style/NormalText"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/DarkestBlue"
+        android:text="@string/delete_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

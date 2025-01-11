@@ -37,76 +37,6 @@ interface MatchDao {
     )
     suspend fun getIfTwoMatches(idMatch: String): Boolean
 
-    @Query(
-        """
-        SELECT c.roundsAmount
-        FROM `Match` p
-        INNER JOIN Cup c ON p.idCup = c.id
-        WHERE p.id = :idPartido
-    """
-    )
-    suspend fun obtenerSiHayRondas(idPartido: String): Boolean
-
-//    @Query(
-//        """
-//        SELECT c.diferenciaDosPuntos
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerSiHayDiferenciaDeDosPuntos(idPartido: String): Boolean
-//
-//    @Query(
-//        """
-//        SELECT c.seJuegaPorPuntosMaximos
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerSiPartidoPorPuntos(idPartido: String): Boolean
-//
-//    @Query(
-//        """
-//        SELECT c.seJuegaPorTiempoMaximo
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerSiPartidoPorTiempo(idPartido: String): Boolean
-//
-//    @Query(
-//        """
-//        SELECT c.tiempoDeJuego
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerTiempoDelPartido(idPartido: String): Int
-//
-//    @Query(
-//        """
-//        SELECT c.puntosParaGanar
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerPuntosParaGanar(idPartido: String): Int
-//
-//    @Query(
-//        """
-//        SELECT c.siempreUnGanador
-//        FROM `Match` p
-//        INNER JOIN Cup c ON p.idCampeonato = c.id
-//        WHERE p.id = :idPartido
-//    """
-//    )
-//    suspend fun obtenerSiempreUnGanador(idPartido: String): Boolean
-
     @Update
     suspend fun update(match: Match)
 
@@ -115,4 +45,11 @@ interface MatchDao {
 
     @Insert
     suspend fun insertMatches(match: MutableList<Match>)
+
+    @Query("DELETE FROM `Match` WHERE id =:id")
+    suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM `Match` WHERE idCup =:idCup")
+    suspend fun deleteMatchesByIdCup(idCup: String)
+
 }

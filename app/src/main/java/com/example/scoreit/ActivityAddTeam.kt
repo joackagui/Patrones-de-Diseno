@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.ActivityNewCupSettings.Companion.CUP_JSON_NC
-import com.example.scoreit.ActivityNewCupSettings.Companion.ID_USER_NC
 import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_CUP_NT
 import com.example.scoreit.adapters.RecyclerTeams
 import com.example.scoreit.components.Team
@@ -45,40 +45,21 @@ class ActivityAddTeam : AppCompatActivity() {
         saveButton()
     }
 
-    private fun backButton() {
-        val idCup = intent.getStringExtra(ID_CUP_AT)
-        if (idCup != null) {
-            binding.backButton.setOnClickListener {
-                lifecycleScope.launch {
-                    val lastCup = dbAccess.cupDao().getCupById(idCup)
-                    val lastCupJson = Converters().fromCup(lastCup)
+    private fun AppCompatActivity.setHeader() {
+        val userButton = findViewById<ImageView>(R.id.user_button)
+        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
+
+        userButton.setOnClickListener {
+            lifecycleScope.launch {
+                val idCup = intent.getStringExtra(ID_CUP_AT)
+                if (idCup != null) {
                     val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
                     deleteCup()
-                    changeToActivityNewCupSettings(lastCupJson, idUser)
+                    changeToActivityChangeUserData(idUser)
                 }
             }
         }
-    }
 
-    private fun deleteCup() {
-        val idCup = intent.getStringExtra(ID_CUP_AT)
-        if (idCup != null) {
-            lifecycleScope.launch {
-                dbAccess.cupDao().deleteById(idCup)
-            }
-        }
-    }
-
-    private fun AppCompatActivity.setHeader() {
-//        val userButton = findViewById<Button>(R.id.user_button)
-        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
-//
-//        userButton.setOnClickListener {
-//            resetCup()
-//            val intent = Intent(this, ActivityLogIn::class.java)
-//            startActivity(intent)
-//        }
-//
         scoreItCup.setOnClickListener {
             lifecycleScope.launch {
                 val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -87,6 +68,67 @@ class ActivityAddTeam : AppCompatActivity() {
                     val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
                     changeToActivityMainMenu(idUser)
                 }
+            }
+        }
+    }
+
+    private fun backButton() {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            binding.backButton.setOnClickListener {
+                lifecycleScope.launch {
+                    val lastCup = dbAccess.cupDao().getCupById(idCup)
+                    val lastCupJson = Converters().fromCup(lastCup)
+                    deleteCup()
+                    changeToActivityNewCupSettings(lastCupJson)
+                }
+            }
+        }
+    }
+
+    private fun addButton() {
+        binding.addTeamButton.setOnClickListener {
+            changeToActivityNewTeamSettings()
+        }
+    }
+
+    private fun saveButton() {
+        binding.saveButton.setOnClickListener {
+            val idCup = intent.getStringExtra(ID_CUP_AT)
+            if (idCup != null) {
+                lifecycleScope.launch {
+                    if (dbAccess.teamDao().getTeamsByCupId(idCup).size >= 2) {
+                        createMatches()
+                        val user = dbAccess.userDao()
+                            .getUserById(dbAccess.cupDao().getCupById(idCup).idUser.toString())
+                        changeToActivityMainMenu(user.id.toString())
+                        successfulMessage(true)
+                    } else {
+                        successfulMessage(false)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setTeamsAmount() {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            lifecycleScope.launch {
+                val teamsAmount = dbAccess.teamDao().getTeamsByCupId(idCup).size.toString()
+                val newText = "${binding.teamCounter.text} $teamsAmount"
+                binding.teamCounter.text = newText
+            }
+        }
+    }
+
+    private fun deleteCup() {
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            lifecycleScope.launch {
+                dbAccess.matchDao().deleteMatchesByIdCup(idCup)
+                dbAccess.teamDao().deleteTeamsByIdCup(idCup)
+                dbAccess.cupDao().deleteById(idCup)
             }
         }
     }
@@ -102,27 +144,16 @@ class ActivityAddTeam : AppCompatActivity() {
                     dbAccess.teamDao().insert(secondTeam)
                 }
                 setUpRecyclerView()
+                setTeamsAmount()
             }
         }
     }
 
-    private fun addButton() {
-        binding.addTeamButton.setOnClickListener {
-            changeToActivityNewTeamSettings()
-        }
-    }
-
-    private fun saveButton() {
-        binding.saveButton.setOnClickListener {
-            val idCup = intent.getStringExtra(ID_CUP_AT)
-            if (idCup != null) {
-                createMatches()
-                lifecycleScope.launch {
-                    val user = dbAccess.userDao()
-                        .getUserById(dbAccess.cupDao().getCupById(idCup).idUser.toString())
-                    changeToActivityMainMenu(user.id.toString())
-                }
-            }
+    private fun successfulMessage(success: Boolean) {
+        if (success) {
+            Toast.makeText(this, "Creation successful", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "You need at least two teams", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -243,6 +274,7 @@ class ActivityAddTeam : AppCompatActivity() {
                 val teamsHalf = listOfTeams.size / 2
 
                 for (matchDay in 1..matchDaysAmount) {
+                    var firstOfKind = true
                     for (i in 0 until teamsHalf) {
                         val firstTeam = listOfTeams[i]
                         val secondTeam = listOfTeams[listOfTeams.size - 1 - i]
@@ -251,13 +283,14 @@ class ActivityAddTeam : AppCompatActivity() {
                             val firstTeamJson = Converters().fromTeam(firstTeam)
                             val secondTeamJson = Converters().fromTeam(secondTeam)
 
-                            var initialRounds: String? = "0"
-                            if(cup.roundsAmount == null){
+                            var initialRounds: Int? = 0
+                            if (cup.roundsAmount == null) {
                                 initialRounds = null
                             }
                             matches.add(
                                 Match(
                                     matchDay = matchDay,
+                                    firstOfKind = firstOfKind,
                                     firstTeamJson = firstTeamJson,
                                     secondTeamJson = secondTeamJson,
                                     firstTeamRounds = initialRounds,
@@ -269,6 +302,7 @@ class ActivityAddTeam : AppCompatActivity() {
                                 matches.add(
                                     Match(
                                         matchDay = matchDay + matchDaysAmount,
+                                        firstOfKind = firstOfKind,
                                         firstTeamJson = secondTeamJson,
                                         secondTeamJson = firstTeamJson,
                                         firstTeamRounds = initialRounds,
@@ -276,6 +310,9 @@ class ActivityAddTeam : AppCompatActivity() {
                                         idCup = idCup.toInt()
                                     )
                                 )
+                            }
+                            if(firstOfKind){
+                                firstOfKind = false
                             }
                         }
                     }
@@ -306,8 +343,10 @@ class ActivityAddTeam : AppCompatActivity() {
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ID_USER_MM, idUser)
-        Toast.makeText(this, "New Cup saved", Toast.LENGTH_LONG).show()
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         startActivity(activityMainMenu)
+        finish()
     }
 
     private fun changeToActivityNewTeamSettings() {
@@ -315,18 +354,29 @@ class ActivityAddTeam : AppCompatActivity() {
         if (idCup != null) {
             val activityNewTeamSettings = Intent(this, ActivityNewTeamSettings::class.java)
             activityNewTeamSettings.putExtra(ID_CUP_NT, idCup)
+
             startActivity(activityNewTeamSettings)
         }
     }
 
-    private fun changeToActivityNewCupSettings(lastCupJson: String, idUser: String) {
+    private fun changeToActivityNewCupSettings(lastCupJson: String) {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
             val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
             activityNewCupSettings.putExtra(CUP_JSON_NC, lastCupJson)
-            activityNewCupSettings.putExtra(ID_USER_NC, idUser)
+
             startActivity(activityNewCupSettings)
+            finish()
         }
     }
+
+    private fun changeToActivityChangeUserData(idUser: String) {
+        val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
+        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+
+        startActivity(activityChangeUserData)
+    }
 }
+
+
 

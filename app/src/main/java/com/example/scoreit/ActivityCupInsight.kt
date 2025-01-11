@@ -7,8 +7,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
 import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.ActivityNewCupSettings.Companion.ID_USER_NC
+import com.example.scoreit.ActivityNewCupSettings.Companion.ID_CUP_NC
 import com.example.scoreit.adapters.RecyclerMatches
 import com.example.scoreit.adapters.RecyclerScoreBoardRows
 import com.example.scoreit.database.AppDataBase
@@ -40,21 +41,42 @@ class ActivityCupInsight : AppCompatActivity() {
         setUpRecyclerScoreBoard()
         setUpRecyclerViewMatches()
         backButton()
+        editButton()
     }
 
     private fun AppCompatActivity.setHeader() {
-//        val userButton = findViewById<Button>(R.id.user_button)
+        val userButton = findViewById<ImageView>(R.id.user_button)
         val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
-//
-//        userButton.setOnClickListener {
-//            val intent = Intent(this, ActivityLogIn::class.java)
-//            startActivity(intent)
-//        }
-//
+
+        userButton.setOnClickListener {
+            lifecycleScope.launch {
+                val idCup = intent.getStringExtra(ID_CUP_CI)
+                if (idCup != null) {
+                    val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+                    changeToActivityChangeUserData(idUser)
+                }
+            }
+        }
+
         scoreItCup.setOnClickListener {
-            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-            activityMainMenu.putExtra(ID_USER_MM, intent.getStringExtra(ID_USER_NC))
-            startActivity(activityMainMenu)
+            val idCup = intent.getStringExtra(ID_CUP_CI)
+            if (idCup != null) {
+                lifecycleScope.launch {
+                    val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+                    changeToActivityMainMenu(idUser)
+                }
+            }
+        }
+    }
+
+    private fun editButton() {
+        binding.editButton.setOnClickListener {
+            val idCup = intent.getStringExtra(ID_CUP_CI)
+            if (idCup != null) {
+                lifecycleScope.launch {
+                    changeToActivityNewCupSettings(idCup)
+                }
+            }
         }
     }
 
@@ -65,18 +87,18 @@ class ActivityCupInsight : AppCompatActivity() {
                 var idUser: String
                 lifecycleScope.launch {
                     idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
-                    changeToMainMenu(idUser)
+                    changeToActivityMainMenu(idUser)
                 }
             }
         }
     }
 
     private fun setCupData() {
-        val idCup = intent.getStringExtra(ID_CUP_CI)
-        if (idCup != null) {
-            lifecycleScope.launch {
+        lifecycleScope.launch {
+            val idCup = intent.getStringExtra(ID_CUP_CI)
+            if (idCup != null) {
                 val cup = dbAccess.cupDao().getCupById(idCup)
-                val cupName = "${binding.cupName.text} ${cup.name}"
+                val cupName: String = cup.name
                 val gameMode = "${binding.gameModeText.text} ${cup.gameMode}"
                 val doubleMatch = "${binding.doubleMatchText.text} ${cup.doubleMatch}"
                 val alwaysWinner = "${binding.alwaysWinnerText.text} ${cup.alwaysWinner}"
@@ -87,28 +109,29 @@ class ActivityCupInsight : AppCompatActivity() {
                 binding.alwaysWinnerText.text = alwaysWinner
 
                 val points = "${binding.pointsText.text} ${cup.winningPoints}"
-                if(cup.winningPoints != null){
+                if (cup.winningPoints != null) {
                     binding.pointsText.text = points
                 } else {
                     binding.pointsText.visibility = View.GONE
                 }
 
                 val time = "${binding.timeText.text} ${cup.finishTime}"
-                if(cup.finishTime != null){
+                if (cup.finishTime != null) {
                     binding.timeText.text = time
                 } else {
                     binding.timeText.visibility = View.GONE
                 }
 
                 val rounds = "${binding.roundsText.text} ${cup.roundsAmount}"
-                if(cup.roundsAmount != null){
+                if (cup.roundsAmount != null) {
                     binding.roundsText.text = rounds
                 } else {
                     binding.roundsText.visibility = View.GONE
                 }
 
-                val restTime = "${binding.restingText.text} ${cup.restingAmount} of ${cup.restingTime} minutes"
-                if(cup.restingTime != null && cup.restingAmount != null){
+                val restTime =
+                    "${binding.restingText.text} ${cup.restingAmount} of ${cup.restingTime} minutes"
+                if (cup.restingTime != null && cup.restingAmount != null) {
                     binding.restingText.text = restTime
                 } else {
                     binding.restingText.visibility = View.GONE
@@ -116,7 +139,6 @@ class ActivityCupInsight : AppCompatActivity() {
             }
         }
     }
-
 
     private fun setUpRecyclerViewMatches() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
@@ -153,9 +175,26 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
-    private fun changeToMainMenu(idUser: String) {
+    private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         startActivity(activityMainMenu)
+        finish()
+    }
+
+    private fun changeToActivityChangeUserData(idUser: String) {
+        val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
+        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+
+        startActivity(activityChangeUserData)
+    }
+
+    private fun changeToActivityNewCupSettings(idCup: String) {
+        val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
+        activityNewCupSettings.putExtra(ID_CUP_NC, idCup)
+
+        startActivity(activityNewCupSettings)
     }
 }

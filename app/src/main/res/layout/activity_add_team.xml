@@ -30,13 +30,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cup_name" />
 
-    <android.widget.Button
+    <Button
         android:id="@+id/add_team_button"
         style="@style/NormalText"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/fondo_para_botones_mas_redondos_score_it"
+        android:layout_width="54dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/CommonRed"
+        android:padding="12dp"
         android:text="@string/add_logo_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,9 +56,9 @@
     <Button
         android:id="@+id/save_button"
         style="@style/NormalText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
         android:backgroundTint="@color/CommonRed"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,7 +67,7 @@
     <Button
         android:id="@+id/back_button"
         style="@style/NormalText"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_margin="15dp"
         android:backgroundTint="@color/CommonRed"

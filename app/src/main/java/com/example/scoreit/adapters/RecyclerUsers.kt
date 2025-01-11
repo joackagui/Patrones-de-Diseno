@@ -46,16 +46,19 @@ class RecyclerUsers :
                 if(user.email == null && user.password == null){
                     val activitySignUp = Intent(context, ActivitySignUp::class.java)
                     activitySignUp.putExtra(ID_USER_SU, user.id.toString())
+
                     context?.startActivity(activitySignUp)
                 } else {
                     if(user.lastUser){
                         val activityMainMenu = Intent(context, ActivityMainMenu::class.java)
                         activityMainMenu.putExtra(ID_USER_MM, user.id.toString())
                         successfulMessage(user)
+
                         context?.startActivity(activityMainMenu)
                     } else {
                         val activityLogIn = Intent(context, ActivityLogIn::class.java)
                         activityLogIn.putExtra(ID_USER_LI, user.id.toString())
+
                         context?.startActivity(activityLogIn)
                     }
                 }
@@ -71,5 +74,4 @@ class RecyclerUsers :
         dataList.clear()
         dataList.addAll(list)
     }
-
 }

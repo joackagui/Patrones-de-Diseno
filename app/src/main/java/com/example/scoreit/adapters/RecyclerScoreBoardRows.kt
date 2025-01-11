@@ -39,16 +39,23 @@ class RecyclerScoreBoardRows : RecyclerView.Adapter<RecyclerScoreBoardRows.Score
         RecyclerView.ViewHolder(binding.root) {
         fun binding(team: Team) {
             binding.teamName.text = team.name
-            binding.teamInGamePoints.text = team.ingamePoints
-            binding.teamFinalPoints.text = team.finalPoints
-            binding.teamMatchesPlayed.text = team.matchesPlayed
-            binding.teamMatchesWon.text = team.matchesWon
-            binding.teamMatchesLost.text = team.matchesLost
+            val newInGamePoints = team.inGamePoints.toString()
+            val newFinalPoints = team.finalPoints.toString()
+            val newMatchesPlayed = team.matchesPlayed.toString()
+            val newMatchesWon = team.matchesWon.toString()
+            val newMatchesLost = team.matchesLost.toString()
+
+            binding.teamInGamePoints.text = newInGamePoints
+            binding.teamFinalPoints.text = newFinalPoints
+            binding.teamMatchesPlayed.text = newMatchesPlayed
+            binding.teamMatchesWon.text = newMatchesWon
+            binding.teamMatchesLost.text = newMatchesLost
         }
     }
 
     fun addDataToList(list: MutableList<Team>) {
         dataList.clear()
-        dataList.addAll(list)
+        val sortedList = list.sortedBy { it.finalPoints }
+        dataList.addAll(sortedList)
     }
 }

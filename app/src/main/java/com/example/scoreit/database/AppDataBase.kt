@@ -12,7 +12,7 @@ import com.example.scoreit.components.Team
 
 @Database(
     entities = [User::class, Cup::class, Match::class, Team::class],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 
@@ -33,7 +33,7 @@ abstract class AppDataBase: RoomDatabase() {
                     .databaseBuilder(
                         context,
                         AppDataBase::class.java,
-                        "Scoreit_database"
+                        "Score_it_database"
                     ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = room

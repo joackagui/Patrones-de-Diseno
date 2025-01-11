@@ -17,7 +17,6 @@
         android:id="@+id/current_cup"
         android:layout_width="0dp"
         android:layout_height="125dp"
-        android:backgroundTint="@color/CommonRed"
         android:elevation="1dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +25,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/border">
 
             <TextView
                 android:id="@+id/name"

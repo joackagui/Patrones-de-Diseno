@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SCOREIT"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityChangeUserData"
+            android:exported="false" />
+        <activity
             android:name=".ActivitySelectUser"
             android:exported="true">
             <intent-filter>
@@ -24,42 +27,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ActivityNewTeamSettings"
             android:exported="false" />
         <activity
             android:name=".ActivityAddTeam"
             android:exported="false" />
-
         <activity
             android:name=".ActivitySignUp"
             android:exported="false" />
-
         <activity
             android:name=".ActivityCupInsight"
             android:exported="false" />
-
         <activity
             android:name=".ActivityLogIn"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".ActivityRefereeButtons"
             android:exported="false" />
-
         <activity
             android:name=".ActivityNewCupSettings"
             android:exported="false" />
-
         <activity
             android:name=".ActivityMainMenu"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

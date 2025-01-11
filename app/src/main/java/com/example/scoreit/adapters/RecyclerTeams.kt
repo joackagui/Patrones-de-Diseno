@@ -33,6 +33,7 @@ class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
             binding.enterTeam.setOnClickListener {
                 val activityNewTeamSettings = Intent(context, ActivityNewTeamSettings::class.java)
                 activityNewTeamSettings.putExtra(ID_TEAM_NT, team.id.toString())
+
                 context?.startActivity(activityNewTeamSettings)
             }
         }

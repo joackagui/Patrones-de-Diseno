@@ -25,4 +25,10 @@ interface TeamDao {
 
     @Insert
     suspend fun insertListOfTeams(team: List<Team>)
+
+    @Query("DELETE FROM Team WHERE id =:id")
+    suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM Team WHERE idCup =:idCup")
+    suspend fun deleteTeamsByIdCup(idCup: String)
 }

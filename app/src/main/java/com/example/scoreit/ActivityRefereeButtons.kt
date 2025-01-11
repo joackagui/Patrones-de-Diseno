@@ -1,49 +1,24 @@
 package com.example.scoreit
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.scoreit.ActivityCupInsight.Companion.ID_CUP_CI
+import com.example.scoreit.components.Match
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
+import com.example.scoreit.database.Converters
 import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+/*
+binding.botonDescansoSegundoEquipo.setOnClickListener {
+            iniciarTemporizador()
+        }
 
-class ActivityRefereeButtons : AppCompatActivity() {
-
-    private lateinit var binding: ActivityRefereeButtonsBinding
-    private lateinit var dbAccess: AppDataBase
-
-    companion object {
-        const val ID_MATCH_RB: String = "ID_MATCH"
-    }
-
-    private var countDownTimer: CountDownTimer? = null
-    private var timeInMillis: Long = 0L
-    private var isRunning = false
-    private var timeRemaining: Long = 0L
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRefereeButtonsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        dbAccess = getDatabase(this)
-
-        setButtons()
-
-//        aumentarPuntos()
-//            evaluacionDelPartido()
-//            obtenerTiempoDeJuego()
-//            descanso()
-
-//        binding.botonDescansoSegundoEquipo.setOnClickListener {
-//                iniciarTemporizador()
-//        }
-
-        /*binding.startPauseButton.setOnClickListener {
+        binding.startPauseButton.setOnClickListener {
             if (isRunning) {
                 pauseTimer()
             } else {
@@ -53,34 +28,8 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
         binding.resetButton.setOnClickListener {
             resetTimer()
-        }*/
-
-        //val input = dbAccess.campeonatoDao()
-
-    }
-
-    private fun setButtons() {
-        val idMatch = intent.getStringExtra(ID_MATCH_RB)
-        if (idMatch != null) {
-            lifecycleScope.launch {
-                val match = dbAccess.matchDao().getMatchById(idMatch)
-                val idCup = dbAccess.matchDao().getMatchById(idMatch).idCup
-                val cup = dbAccess.cupDao().getCupById(idCup.toString())
-
-                if (cup.restingAmount == null && cup.restingTime == null) {
-                    binding.firstTeamRestButton.visibility = View.GONE
-                    binding.secondTeamRestButton.visibility = View.GONE
-                }
-
-                if(match.firstTeamRounds == null && match.secondTeamRounds == null){
-                    binding.firstTeamRounds.visibility = View.INVISIBLE
-                    binding.secondTeamRounds.visibility = View.INVISIBLE
-                }
-                if(cup.finishTime == null){
-                    binding.timer.visibility = View.GONE
-                }
-            }
         }
+
     }
 
 //    private fun iniciarTemporizador() {
@@ -135,13 +84,13 @@ class ActivityRefereeButtons : AppCompatActivity() {
 //    }
 
     // funciones
-    /*  private fun startTimer() {
+      private fun startTimer() {
           // Verificar que haya un valor válido en el EditText
-          /*val input = binding.input.text.toString()
+          val input = binding.input.text.toString()
           if (input.isEmpty()) {
               Toast.makeText(this, "Por favor ingresa un tiempo en minutos", Toast.LENGTH_SHORT).show()
               return
-          }*/
+          }
 
           // Convertir el valor ingresado en minutos a milisegundos
           val minutes = input.toLong()
@@ -186,9 +135,9 @@ class ActivityRefereeButtons : AppCompatActivity() {
           val minutes = (millis / (1000 * 60)) % 60
           val seconds = (millis / 1000) % 60
           return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-      } */
+      }
 
-//    private fun descanso(){
+    //    private fun descanso(){
 //        lifecycleScope.launch {
 //            val hayDescansos = dbAccess.partidoDao().obtenerSiPartidoPorPuntos("ID_PARTIDO")
 //            binding.botonDescansoPrimerEquipo.setOnClickListener {
@@ -206,104 +155,176 @@ class ActivityRefereeButtons : AppCompatActivity() {
 //        }
 //    }
 //
-//    private fun evaluacionDelPartido() {
-//        lifecycleScope.launch {
-//            val idpartido: String = intent.getStringExtra(ID_PARTIDO_PA).toString()
-//            val partidoActual =
-//                dbAccess.partidoDao().obtenerPorId(idpartido)
-//            val tieneMaximoDePuntos = dbAccess.partidoDao().obtenerSiPartidoPorPuntos(idpartido)
-//            val maximoDePuntos = dbAccess.partidoDao()
-//                .obtenerPuntosParaGanar(idpartido)
-//            val tieneTiempoDeJuego = dbAccess.partidoDao()
-//                .obtenerSiPartidoPorTiempo(idpartido)
-//            val siempreGanador = dbAccess.partidoDao()
-//                .obtenerSiempreUnGanador(idpartido)
-//            var cantidadDescansosPrimerEquipo = dbAccess.partidoDao()
-//                .obtenerCantidadDescansos(idpartido)
-//            var cantidadDescansosSegundoEquipo = cantidadDescansosPrimerEquipo
-//            var diferenciaDeDosPuntos = dbAccess.partidoDao()
-//                .obtenerSiHayDiferenciaDeDosPuntos(idpartido)
-//            var tiempoDelPartido = dbAccess.partidoDao()
-//                .obtenerTiempoDelPartido(idpartido)
-//
-//            arbitrar(
-//                partidoActual,
-//                tieneMaximoDePuntos,
-//                maximoDePuntos,
-//                tieneTiempoDeJuego,
-//                siempreGanador,
-//                diferenciaDeDosPuntos,
-//                cantidadDescansosPrimerEquipo,
-//                cantidadDescansosSegundoEquipo,
-//                tiempoDelPartido
-//            )
-//        }
-//    }
-//
-//    private fun arbitrar(matchActual: Match,
-//                         tieneMaximoDePuntos: Boolean,
-//                         maximoDePuntos: Int,
-//                         tieneTiempoDeJuego: Boolean,
-//                         siempreGanador: Boolean,
-//                         diferenciaDeDosPuntos: Boolean,
-//                         cantidadDescansosPrimerEquipo: Int,
-//                         cantidadDescansosSegundoEquipo: Int, tiempoDelPartido: Int) {
-//        if (matchActual.puntosPrimerEquipo.toInt() >= maximoDePuntos || matchActual.puntosSegundoEquipo.toInt() >= maximoDePuntos) {
-//            finalizar()
-//            //stopTimer()
-//        }
-//        if (tieneTiempoDeJuego && tieneMaximoDePuntos && siempreGanador && diferenciaDeDosPuntos) {
-//
-//        } else if (tieneTiempoDeJuego && tieneMaximoDePuntos && siempreGanador && !diferenciaDeDosPuntos) {
-//
-//        } else if (tieneTiempoDeJuego && !tieneMaximoDePuntos && siempreGanador) {
-//
-//        } else if (tieneTiempoDeJuego && !tieneMaximoDePuntos && !siempreGanador) {
-//
-//        } else if (!tieneTiempoDeJuego && tieneMaximoDePuntos && siempreGanador) {
-//            if(diferenciaDeDosPuntos){
-//
-//            } else {
-//
-//            }
-//
-//        } else if (!tieneTiempoDeJuego && tieneMaximoDePuntos) {
-//            if(!diferenciaDeDosPuntos){
-//
-//            } else {
-//
-//            }
-//
-//        } else if (!tieneTiempoDeJuego && !tieneMaximoDePuntos && siempreGanador && !diferenciaDeDosPuntos) {
-//            if(matchActual.puntosPrimerEquipo != matchActual.puntosSegundoEquipo){
-//                finalizar()
-//            }
-//        } else if (!tieneTiempoDeJuego && !tieneMaximoDePuntos && !siempreGanador && !diferenciaDeDosPuntos) {
-//            finalizar()
-//        }
-//    }
-//
-//    fun finalizarManualmente(){
-//        lifecycleScope.launch {
-//            binding.botonFinalizarPartido.setOnClickListener{
-//                finalizar()
-//            }
-//        }
-//    }
-//
-//    private fun finalizar() {
-//
-//    }
-//
-//    private fun aumentarPuntos() {
-//        binding.botonPrimerEquipo.setOnClickListener {
-//            binding.puntajePrimerEquipo.text =
-//                (binding.puntajePrimerEquipo.text.toString().toInt() + 1).toString()
-//        }
-//        binding.botonSegundoEquipo.setOnClickListener {
-//            binding.puntajeSegundoEquipo.text =
-//                (binding.puntajeSegundoEquipo.text.toString().toInt() + 1).toString()
-//        }
-//    }
+
+
+    private fun addPoint(isFirstTeam: Boolean) {
+        val idMatch = intent.getStringExtra(ID_MATCH_RB)
+        if (idMatch != null) {
+            lifecycleScope.launch {
+                val match_day_sign = dbAccess.matchDao().getMatchById(idMatch)
+                val idCup = match_day_sign.idCup.toString()
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                val winningPoints =
+                    cup.winningPoints ?: Int.MAX_VALUE
+                val roundsLimit = cup.roundsAmount
+
+                val currentScore = if (isFirstTeam) {
+                    binding.firstTeamScore.text.toString().toInt()
+                } else {
+                    binding.secondTeamScore.text.toString().toInt()
+                }
+
+                val currentRounds = if (isFirstTeam) {
+                    match_day_sign.firstTeamRounds?.toInt() ?: 0
+                } else {
+                    match_day_sign.secondTeamRounds?.toInt() ?: 0
+                }
+
+                if (currentScore >= winningPoints) {
+                    if (roundsLimit != null && currentRounds + 1 < roundsLimit) {
+                        val newRound = (currentRounds + 1).toString()
+                        if (isFirstTeam) {
+                            match_day_sign.firstTeamRounds = newRound
+                            binding.firstTeamRounds.text = newRound
+                        } else {
+                            match_day_sign.secondTeamRounds = newRound
+                            binding.secondTeamRounds.text = newRound
+                        }
+                        match_day_sign.firstTeamPoints += binding.firstTeamScore.text.toString().toInt()
+                        match_day_sign.secondTeamPoints += binding.secondTeamScore.text.toString().toInt()
+
+                        binding.firstTeamScore.text = "0"
+                        binding.secondTeamScore.text = "0"
+
+                        dbAccess.matchDao().update(match_day_sign)
+                        // TODO: Guardar los cambios en la base de datos
+                    } else {
+                        //matchEnded(match_day_sign)
+                    }
+                } else {
+                    val newScore = (currentScore + 1).toString()
+                    if (isFirstTeam) {
+                        binding.firstTeamScore.text = newScore
+                    } else {
+                        binding.secondTeamScore.text = newScore
+                    }
+                }
+            }
+        }
+    }
+}*/
+
+class ActivityRefereeButtons : AppCompatActivity() {
+
+    private lateinit var binding: ActivityRefereeButtonsBinding
+    private lateinit var dbAccess: AppDataBase
+
+    companion object {
+        const val ID_MATCH_RB: String = "ID_MATCH"
+    }
+
+    private var firstTeamPoints = 0
+    private var secondTeamPoints = 0
+    private var requiredDifference = 2
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityRefereeButtonsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Inicialización de la base de datos
+        dbAccess = getDatabase(this)
+
+        // Configurar botones y listeners
+        setListeners()
+        setButtons()
+        finishButton()
+    }
+
+    private fun assignPoints(match: Match) {
+        lifecycleScope.launch {
+            val firstTeam = Converters().toTeam(match.firstTeamJson)
+            val secondTeam = Converters().toTeam(match.secondTeamJson)
+
+
+        }
+    }
+
+
+private fun setListeners() {
+    // Escucha de eventos para los botones de sumar y restar puntos
+    binding.firstTeamFrame.setOnClickListener { addPoint(true) }
+    binding.secondTeamFrame.setOnClickListener { addPoint(false) }
+
+    binding.finishButton.setOnClickListener { finishButton() }
 }
 
+private fun setButtons() {
+    // Configurar comportamiento de botones adicionales
+    binding.startPauseButton.setOnClickListener {
+        Snackbar.make(
+            binding.root,
+            "Función Start/Pause pendiente de implementación.",
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+    binding.resetButton.setOnClickListener {
+        resetScores()
+    }
+}
+
+private fun addPoint(isFirstTeam: Boolean) {
+    if (isFirstTeam) {
+        val newPoints = (firstTeamPoints + 1).toString()
+        binding.firstTeamScore.text = newPoints
+    } else {
+        val newPoints = (secondTeamPoints + 1).toString()
+        binding.secondTeamScore.text = newPoints
+    }
+}
+
+private fun resetScores() {
+    firstTeamPoints = 0
+    secondTeamPoints = 0
+    binding.firstTeamScore.text = "0"
+    binding.secondTeamScore.text = "0"
+}
+
+private fun checkForVictory() {
+    if ((firstTeamPoints >= secondTeamPoints + requiredDifference && firstTeamPoints >= 10) ||
+        (secondTeamPoints >= firstTeamPoints + requiredDifference && secondTeamPoints >= 10)
+    ) {
+
+    }
+}
+
+private fun finishButton() {
+    lifecycleScope.launch {
+        val matchId = intent.getStringExtra(ID_MATCH_RB)
+        if (matchId != null) {
+            val match = dbAccess.matchDao().getMatchById(matchId)
+            val idCup = match.idCup.toString()
+            match.firstTeamPoints = firstTeamPoints
+            match.secondTeamPoints = secondTeamPoints
+            dbAccess.matchDao().update(match)
+            val firstTeam = Converters().toTeam(match.firstTeamJson)
+            val secondTeam = Converters().toTeam(match.secondTeamJson)
+            firstTeam.inGamePoints = firstTeamPoints
+            secondTeam.inGamePoints = secondTeamPoints
+            dbAccess.teamDao().update(firstTeam)
+            dbAccess.teamDao().update(secondTeam)
+            changeToActivityCupInsight(idCup)
+        }
+    }
+}
+
+
+private fun changeToActivityCupInsight(idCup: String) {
+    val activityCupInsight = Intent(this, ActivityCupInsight::class.java)
+    activityCupInsight.putExtra(ID_CUP_CI, idCup)
+
+    startActivity(activityCupInsight)
+    finish()
+}
+
+}

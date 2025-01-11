@@ -25,20 +25,18 @@
             <TextView
                 android:id="@+id/first_team_rounds"
                 style="@style/point_text"
-                android:text="@string/initial_rounds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                />
+                android:text="@string/initial_rounds" />
 
             <TextView
                 android:id="@+id/first_team_score"
                 style="@style/point_text"
-                android:text="@string/initial_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                />
+                android:text="@string/initial_score" />
 
         </LinearLayout>
 
@@ -63,20 +61,18 @@
             <TextView
                 android:id="@+id/second_team_rounds"
                 style="@style/inverted_point_text"
-                android:text="@string/initial_rounds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                />
+                android:text="@string/initial_rounds" />
 
             <TextView
                 android:id="@+id/second_team_score"
                 style="@style/inverted_point_text"
-                android:text="@string/initial_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                />
+                android:text="@string/initial_score" />
 
         </LinearLayout>
 
@@ -119,8 +115,8 @@
         android:id="@+id/startPauseButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:paddingEnd="2dp"
         android:paddingStart="16dp"
+        android:paddingEnd="2dp"
         app:backgroundTint="@color/CommonRed"
         app:icon="@drawable/playbutton"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,10 +128,10 @@
         android:id="@+id/resetButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:paddingEnd="2dp"
-        android:paddingStart="16dp"
-        app:backgroundTint="@color/CommonRed"
         android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="2dp"
+        app:backgroundTint="@color/CommonRed"
         app:icon="@drawable/resetbutton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
@@ -163,11 +159,11 @@
         android:text="@string/rest"
         android:textColor="@color/CommonRed"
         app:layout_constraintBottom_toTopOf="@id/first_team_frame"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"/>
+        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha" />
 
 
     <Button
-        android:id="@+id/finish_match_button"
+        android:id="@+id/finish_button"
         style="@style/NormalText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

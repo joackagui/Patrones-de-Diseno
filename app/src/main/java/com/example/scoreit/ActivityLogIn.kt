@@ -30,26 +30,6 @@ class ActivityLogIn : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         loginButton()
-        //changeActivityToSignUp()
-    }
-
-//    private fun changeActivityToSignUp() {
-//        binding.newUserButton.setOnClickListener {
-//            val activitySignUp = Intent(this, ActivitySignUp::class.java)
-//            startActivity(activitySignUp)
-//        }
-//    }
-
-    private fun changeToActivityMainMenu() {
-        val userId = intent.getStringExtra(ID_USER_LI)
-        if (userId != null) {
-            lifecycleScope.launch {
-                val user = dbAccess.userDao().getUserById(userId)
-                val activityMainMenu = Intent(this@ActivityLogIn, ActivityMainMenu::class.java)
-                activityMainMenu.putExtra(ID_USER_MM, user.id.toString())
-                startActivity(activityMainMenu)
-            }
-        }
     }
 
     private fun loginButton() {
@@ -67,10 +47,10 @@ class ActivityLogIn : AppCompatActivity() {
     }
 
     private fun logInVerification() {
-        val userId = intent.getStringExtra(ID_USER_LI)
-        if (userId != null) {
+        val idUser = intent.getStringExtra(ID_USER_LI)
+        if (idUser != null) {
             lifecycleScope.launch {
-                val user = dbAccess.userDao().getUserById(userId)
+                val user = dbAccess.userDao().getUserById(idUser)
                 val email = binding.emailLogIn.text.toString()
                 val password = binding.passwordLogIn.text.toString()
 
@@ -79,7 +59,7 @@ class ActivityLogIn : AppCompatActivity() {
                 } else {
                     successfulMessage(user)
                     lastUserUpdate()
-                    changeToActivityMainMenu()
+                    changeToActivityMainMenu(idUser)
                 }
             }
         }
@@ -125,5 +105,16 @@ class ActivityLogIn : AppCompatActivity() {
                 Toast.makeText(this, "Incorrect email or password", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun changeToActivityMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this@ActivityLogIn, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+
+        activityMainMenu.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        startActivity(activityMainMenu)
+        finish()
     }
 }

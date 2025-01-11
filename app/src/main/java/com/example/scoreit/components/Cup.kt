@@ -15,9 +15,9 @@ import androidx.room.PrimaryKey
 
 data class Cup(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    val id: Int = 0,
     var logo: String? = null,
-    var selected: Boolean = false,
+    var hasStarted: Boolean = false,
     var name: String,
     var startDate: String,
     var winningPoints: Int?,

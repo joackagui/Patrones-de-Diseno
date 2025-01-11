@@ -5,13 +5,34 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/match_day_sign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/CommonRed"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/match_section"
+            style="@style/NormalText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:id="@+id/top_space"
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:background="@color/Transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/match_day_sign" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/current_match_button"
@@ -26,133 +47,79 @@
             style="@style/point_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/CommonRed">
+            android:background="@drawable/border">
 
             <TextView
-                android:id="@+id/matchType"
+                android:id="@+id/first_team_name"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:elevation="2dp"
                 android:gravity="center"
-                android:maxLines="1"
-                android:text=""
-                app:layout_constraintBottom_toTopOf="@id/first_team_name"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/first_team_name"
-                style="@style/HeaderTitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:elevation="2dp"
-                android:gravity="center"
                 android:maxLines="2"
                 android:text=""
-                app:layout_constraintBottom_toTopOf="@id/second_team_name"
+                app:layout_constraintTop_toTopOf="@id/first_team_points"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/second_team_name"
-                style="@style/HeaderTitleText"
+                style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginStart="20dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text=""
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="@id/second_team_points"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/ingame_points"
+                android:id="@+id/in_game_points"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
+                android:layout_margin="20dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="@string/points"
-                app:layout_constraintBottom_toTopOf="@id/first_team_points"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/first_team_points"
-                style="@style/HeaderTitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text=""
-                app:layout_constraintBottom_toTopOf="@id/second_team_points"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/second_team_points"
-                style="@style/HeaderTitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="3dp"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text=""
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/ingame_rounds"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="@string/rounds"
-                app:layout_constraintBottom_toTopOf="@id/first_team_points"
-                app:layout_constraintEnd_toStartOf="@id/ingame_points" />
-
-            <TextView
-                android:id="@+id/first_team_rounds"
-                style="@style/HeaderTitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="75dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="1"
                 android:text=""
-                app:layout_constraintBottom_toTopOf="@id/second_team_points"
-                app:layout_constraintEnd_toStartOf="@id/first_team_points" />
+                app:layout_constraintEnd_toEndOf="@id/in_game_points"
+                app:layout_constraintStart_toStartOf="@id/in_game_points"
+                app:layout_constraintTop_toBottomOf="@id/in_game_points" />
 
             <TextView
-                android:id="@+id/second_team_rounds"
-                style="@style/HeaderTitleText"
+                android:id="@+id/second_team_points"
+                style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="75dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="1"
                 android:text=""
-                app:layout_constraintEnd_toStartOf="@id/first_team_points"
+                app:layout_constraintEnd_toEndOf="@id/in_game_points"
+                app:layout_constraintStart_toStartOf="@id/in_game_points"
                 app:layout_constraintTop_toBottomOf="@id/first_team_points" />
+
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="ingame_rounds,first_team_rounds, second_team_rounds" />
+                android:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

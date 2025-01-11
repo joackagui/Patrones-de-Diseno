@@ -58,35 +58,41 @@ class RecyclerMatches :
                     8 to "Round of 16",
                     16 to "Round of 32"
                 )
-                binding.matchType.text = stages[match.stage]
-            } else if (match.matchDay != null) {
-                binding.matchType.text = "Match Day ${match.matchDay}"
             }
 
-            binding.firstTeamName.text = firstTeamName
-            binding.secondTeamName.text = secondTeamName
-            binding.firstTeamPoints.text = match.firstTeamPoints.toString()
-            binding.secondTeamPoints.text = match.secondTeamPoints.toString()
+                binding.firstTeamName.text = firstTeamName
+                binding.secondTeamName.text = secondTeamName
 
-            if(match.firstTeamRounds != null && match.secondTeamRounds != null){
-                binding.firstTeamRounds.text = "(${match.firstTeamRounds})"
-                binding.secondTeamRounds.text = "(${match.secondTeamRounds})"
-                binding.group.visibility = View.VISIBLE
-            } else {
-                binding.group.visibility = View.GONE
-            }
-            binding.currentMatchButton.setOnClickListener {
-                val activityRefereeButtons = Intent(context, ActivityRefereeButtons::class.java)
-                activityRefereeButtons.putExtra(ID_MATCH_RB, match.id.toString())
-                context?.startActivity(activityRefereeButtons)
+                if (!match.firstOfKind) {
+                    binding.matchSection.visibility = View.GONE
+                } else {
+                    if (match.stage != null) {
+                        binding.matchSection.text = match.stage.toString()
+                    } else if (match.matchDay != null) {
+                        binding.matchSection.text = "Match Day ${match.matchDay}"
+                    }
+                }
+
+                if (match.firstTeamRounds != null && match.secondTeamRounds != null) {
+                    binding.firstTeamPoints.text = "(${match.firstTeamRounds})"
+                    binding.secondTeamPoints.text = "(${match.secondTeamRounds})"
+                    binding.inGamePoints.text = "Rounds:"
+                } else {
+                    binding.firstTeamPoints.text = match.firstTeamPoints.toString()
+                    binding.secondTeamPoints.text = match.secondTeamPoints.toString()
+                }
+                binding.currentMatchButton.setOnClickListener {
+                    val activityRefereeButtons = Intent(context, ActivityRefereeButtons::class.java)
+                    activityRefereeButtons.putExtra(ID_MATCH_RB, match.id.toString())
+
+                    context?.startActivity(activityRefereeButtons)
+                }
             }
         }
-    }
 
     fun addDataToList(list: MutableList<Match>) {
         dataList.clear()
         val sortedList = list.sortedBy { it.matchDay }
         dataList.addAll(sortedList)
     }
-
 }

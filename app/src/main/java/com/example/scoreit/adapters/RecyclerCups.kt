@@ -37,15 +37,15 @@ class RecyclerCups :
             binding.currentCup.setOnClickListener {
                 val activityCupInsight = Intent(context, ActivityCupInsight::class.java)
                 activityCupInsight.putExtra(ID_CUP_CI, cup.id.toString())
+
                 context?.startActivity(activityCupInsight)
             }
         }
     }
 
-
     fun addDataToList(list: MutableList<Cup>) {
         dataList.clear()
-        //dataList.addAll(list)
-        dataList.addAll(list.sortedByDescending { it.startDate })
+        dataList.addAll(list)
+        //dataList.addAll(list.sortedByDescending { it.startDate })
     }
 }

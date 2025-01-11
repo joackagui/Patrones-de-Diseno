@@ -66,7 +66,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ingame_points"
+        android:id="@+id/in_game_points"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"

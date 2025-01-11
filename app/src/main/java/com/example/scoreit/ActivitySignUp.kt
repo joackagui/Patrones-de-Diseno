@@ -37,25 +37,15 @@ class ActivitySignUp : AppCompatActivity() {
             if (binding.usernameSignUp.text.toString() == "" || binding.emailSignUp.text.toString() == ""
                 || binding.passwordSignUp.text.toString() == "" || binding.passwordSafetySignUp.text.toString() == ""
             ) {
-                message(1)
+                errorMessage(1)
             } else if (binding.passwordSignUp.text.toString() != binding.passwordSafetySignUp.text.toString()) {
-                message(3)
+                errorMessage(3)
             } else if (binding.passwordSignUp.text.toString().length < 8) {
-                message(2)
+                errorMessage(2)
             } else {
                 noOneIsLastUser()
                 saveUser()
-                changeToActivityMainMenu()
             }
-        }
-    }
-
-    private fun changeToActivityMainMenu() {
-        val idUser = intent.getStringExtra(ID_USER_SU)
-        if(idUser != null){
-            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-            activityMainMenu.putExtra(ID_USER_MM, idUser)
-            startActivity(activityMainMenu)
         }
     }
 
@@ -64,13 +54,20 @@ class ActivitySignUp : AppCompatActivity() {
             val email = binding.emailSignUp.text.toString()
             val password = binding.passwordSignUp.text.toString()
             val name = binding.usernameSignUp.text.toString()
-            val id = intent.getStringExtra(ID_USER_SU)
-            if (id != null) {
+            val idUser = intent.getStringExtra(ID_USER_SU)
+            if (idUser != null) {
                 val newUser =
-                    User(email = email, name = name, password = password, lastUser = true, id = id.toInt())
+                    User(
+                        email = email,
+                        name = name,
+                        password = password,
+                        lastUser = true,
+                        id = idUser.toInt()
+                    )
 
                 dbAccess.userDao().update(newUser)
-                message(4)
+                successfulMessage()
+                changeToActivityMainMenu(idUser)
             }
         }
     }
@@ -87,7 +84,7 @@ class ActivitySignUp : AppCompatActivity() {
         }
     }
 
-    private fun message(number: Int) {
+    private fun errorMessage(number: Int) {
         when (number) {
             1 -> {
                 Toast.makeText(this, "You must fill in all fields", Toast.LENGTH_LONG).show()
@@ -100,11 +97,23 @@ class ActivitySignUp : AppCompatActivity() {
             3 -> {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show()
             }
-
-            4 -> {
-                Toast.makeText(this, "User successfully created", Toast.LENGTH_LONG).show()
-            }
         }
+    }
+
+    private fun successfulMessage() {
+        Toast.makeText(this, "User successfully created", Toast.LENGTH_LONG).show()
+    }
+
+    private fun changeToActivityMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        startActivity(activityMainMenu)
+
+        finish()
+
     }
 }
 

@@ -28,4 +28,7 @@ interface CupDao {
 
     @Query("DELETE FROM Cup WHERE id =:id")
     suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM Cup WHERE idUser =:idUser")
+    suspend fun deleteCupsByIdUser(idUser: String)
 }

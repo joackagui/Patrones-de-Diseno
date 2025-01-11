@@ -2,9 +2,13 @@ package com.example.scoreit
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityAddTeam.Companion.ID_CUP_AT
+import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
+import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
@@ -28,50 +32,77 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         dbAccess = getDatabase(this)
 
         setHeader()
-        fillBlankSpaces()
+        setData()
         backButton()
         saveButton()
+        deleteButton()
     }
 
     private fun AppCompatActivity.setHeader() {
-//        val userButton = findViewById<Button>(R.id.user_button)
-//        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
-//
-//        userButton.setOnClickListener {
-//            val intent = Intent(this, ActivityLogIn::class.java)
-//            startActivity(intent)
-//        }
-//
-//        scoreItCup.setOnClickListener {
-//            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-//            val idCup = intent.getStringExtra(ID_CUP_NT)
-//            var idUser = ""
-//            lifecycleScope.launch {
-//                idUser = dbAccess.cupDao().getCupById(idCup.toString()).idUser.toString()
-//            }
-//            activityMainMenu.putExtra(ID_USER_MM, idUser)
-//            startActivity(activityMainMenu)
-//        }
+        val userButton = findViewById<ImageView>(R.id.user_button)
+        val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
+        val idTeam = intent.getStringExtra(ID_TEAM_NT)
+        val idCup = intent.getStringExtra(ID_CUP_NT)
+
+        userButton.setOnClickListener {
+            if(idTeam == null && idCup != null){
+                lifecycleScope.launch {
+                    val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+                    deleteCup(idCup)
+                    changeToActivityChangeUserData(idUser)
+                }
+
+            } else if(idTeam != null && idCup == null){
+                lifecycleScope.launch {
+                    val newIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
+                    val idUser = dbAccess.cupDao().getCupById(newIdCup).idUser.toString()
+                    deleteCup(newIdCup)
+                    changeToActivityChangeUserData(idUser)
+                }
+            }
+        }
+
+        scoreItCup.setOnClickListener {
+            if(idTeam == null && idCup != null){
+                lifecycleScope.launch {
+                    val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+                    deleteCup(idCup)
+                    changeToActivityMainMenu(idUser)
+                }
+
+            } else if(idTeam != null && idCup == null){
+                lifecycleScope.launch {
+                    val newIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
+                    val idUser = dbAccess.cupDao().getCupById(newIdCup).idUser.toString()
+                    deleteCup(newIdCup)
+                    changeToActivityMainMenu(idUser)
+                }
+            }
+        }
     }
 
     private fun backButton() {
         binding.backButton.setOnClickListener {
-            changeToActivityAddTeam()
+            val idCup = intent.getStringExtra(ID_CUP_NT)
+            val idTeam = intent.getStringExtra(ID_TEAM_NT)
+            if (idCup != null) {
+                changeToActivityAddTeam(idCup)
+            } else if (idTeam != null) {
+                lifecycleScope.launch {
+                    val team = dbAccess.teamDao().getTeamById(idTeam)
+                    val newIdCup = team.idCup.toString()
+                    changeToActivityAddTeam(newIdCup)
+                }
+            }
         }
     }
 
-    private fun fillBlankSpaces() {
+    private fun deleteButton() {
         val idTeam = intent.getStringExtra(ID_TEAM_NT)
         val idCup = intent.getStringExtra(ID_CUP_NT)
-        if (idTeam != null && idCup == null) {
-            lifecycleScope.launch {
-                val teamName = dbAccess.teamDao().getTeamById(idTeam).name
-                binding.newTeamName.setText(teamName)
-            }
-        } else if (idTeam == null && idCup != null) {
-            lifecycleScope.launch {
-                val teamName = "Team ${dbAccess.teamDao().getTeamsByCupId(idCup).size + 1}"
-                binding.newTeamName.setText(teamName)
+        binding.deleteButton.setOnClickListener {
+            if (idTeam != null && idCup == null) {
+                deleteTeam(idTeam)
             }
         }
     }
@@ -89,6 +120,38 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         }
     }
 
+    private fun deleteTeam(idTeam: String){
+        lifecycleScope.launch {
+            val actualIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
+            dbAccess.teamDao().deleteById(idTeam)
+            changeToActivityAddTeam(actualIdCup)
+        }
+    }
+
+    private fun deleteCup(idCup: String) {
+        lifecycleScope.launch {
+            dbAccess.cupDao().deleteById(idCup)
+        }
+    }
+
+    private fun setData() {
+        val idTeam = intent.getStringExtra(ID_TEAM_NT)
+        val idCup = intent.getStringExtra(ID_CUP_NT)
+        if (idTeam != null && idCup == null) {
+            lifecycleScope.launch {
+                val teamName = dbAccess.teamDao().getTeamById(idTeam).name
+                binding.newTeamName.setText(teamName)
+                binding.deleteButton.visibility = View.VISIBLE
+            }
+        } else if (idTeam == null && idCup != null) {
+            lifecycleScope.launch {
+                val teamName = "Team ${dbAccess.teamDao().getTeamsByCupId(idCup).size + 1}"
+                binding.newTeamName.setText(teamName)
+                binding.deleteButton.visibility = View.GONE
+            }
+        }
+    }
+
     private fun addTeam() {
         val idCup = intent.getStringExtra(ID_CUP_NT)
         if (idCup != null) {
@@ -99,7 +162,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
                 }
                 val newTeam = Team(name = teamName, idCup = idCup.toInt())
                 dbAccess.teamDao().insert(newTeam)
-                changeToActivityAddTeam()
+                changeToActivityAddTeam(idCup.toString())
             }
         }
     }
@@ -115,25 +178,33 @@ class ActivityNewTeamSettings : AppCompatActivity() {
                     idCup = team.idCup
                 )
                 dbAccess.teamDao().update(newTeam)
-                changeToActivityAddTeam()
+                changeToActivityAddTeam(team.idCup.toString())
             }
         }
     }
 
-    private fun changeToActivityAddTeam() {
+    private fun changeToActivityAddTeam(idCup: String) {
         val activityAddTeam = Intent(this, ActivityAddTeam::class.java)
-        val idCup = intent.getStringExtra(ID_CUP_NT)
-        val idTeam = intent.getStringExtra(ID_TEAM_NT)
-        if (idCup != null) {
-            activityAddTeam.putExtra(ID_CUP_AT, idCup)
-            startActivity(activityAddTeam)
-        } else if (idTeam != null) {
-            lifecycleScope.launch {
-                val team = dbAccess.teamDao().getTeamById(idTeam)
-                val newIdCup = team.idCup.toString()
-                activityAddTeam.putExtra(ID_CUP_AT, newIdCup)
-                startActivity(activityAddTeam)
-            }
-        }
+        activityAddTeam.putExtra(ID_CUP_AT, idCup)
+
+        startActivity(activityAddTeam)
+        finish()
+    }
+
+    private fun changeToActivityMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        startActivity(activityMainMenu)
+        finish()
+    }
+
+    private fun changeToActivityChangeUserData(idUser: String) {
+        val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
+        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+
+        startActivity(activityChangeUserData)
+        finish()
     }
 }
