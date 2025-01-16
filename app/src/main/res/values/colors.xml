@@ -9,11 +9,11 @@
     <color name="Transparent">#00000000</color>
     <color name="TransparentWhite">#BFFFFFFF</color>
 
+    <color name="LightRed">#FFD0D0</color>
     <color name="CommonRed">#CC0000</color>
     <color name="DarkestRed">#990000</color>
     <color name="DarkRed">#8B0000</color>
     <color name="Maroon">#800000</color>
-    <color name="Brown">#A52A2A</color>
     <color name="FireBrick">#B22222</color>
     <color name="Red">#FF0000</color>
     <color name="OrangeRed">#FF4500</color>
@@ -22,7 +22,7 @@
     <color name="DarkOrange">#FF8C00</color>
     <color name="LightOrange">#FFA500</color>
     <color name="Goldenrod">#DAA520</color>
-    <color name="GoldMustad">#e6b121</color>
+    <color name="GoldMustard">#e6b121</color>
     <color name="Gold">#FFD700</color>
     <color name="Yellow">#FFFF00</color>
     <color name="YellowGreen">#9ACD32</color>

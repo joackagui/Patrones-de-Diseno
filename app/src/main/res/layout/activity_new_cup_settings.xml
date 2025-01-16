@@ -46,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/add_button_logo"
+                android:id="@+id/add_logo_button"
                 style="@style/NormalText"
                 android:layout_width="54dp"
                 android:layout_height="60dp"
@@ -71,7 +71,7 @@
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_button_logo" />
+                app:layout_constraintTop_toBottomOf="@+id/add_logo_button" />
 
             <Button
                 android:id="@+id/new_start_date"
@@ -114,7 +114,7 @@
                 app:track="@drawable/track" />
 
             <EditText
-                android:id="@+id/new_match_points"
+                android:id="@+id/required_points"
                 style="@style/EditTextHintStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                 app:track="@drawable/track" />
 
             <EditText
-                android:id="@+id/new_match_time"
+                android:id="@+id/required_time"
                 style="@style/EditTextHintStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -158,16 +158,16 @@
                 app:layout_constraintTop_toTopOf="@id/time_switch" />
 
             <CheckBox
-                android:id="@+id/two_points_difference_checkbox"
+                android:id="@+id/double_match_checkbox"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:checked="false"
                 android:padding="12dp"
-                android:text="@string/two_point_difference"
+                android:text="@string/home_and_away"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@id/time_switch" />
+                app:layout_constraintTop_toBottomOf="@id/required_time" />
 
             <CheckBox
                 android:id="@+id/always_winner_checkbox"
@@ -179,17 +179,19 @@
                 android:padding="12dp"
                 android:text="@string/always_a_winner"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@id/two_points_difference_checkbox" />
+                app:layout_constraintTop_toBottomOf="@id/double_match_checkbox" />
 
             <CheckBox
-                android:id="@+id/double_match_checkbox"
+                android:id="@+id/two_points_difference_checkbox"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:checked="false"
                 android:padding="12dp"
-                android:text="@string/home_and_away"
+                android:enabled="false"
+                android:textColor="@color/TransparentWhite"
+                android:text="@string/two_point_difference"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
                 app:layout_constraintTop_toBottomOf="@id/always_winner_checkbox" />
 
@@ -203,7 +205,7 @@
                 android:padding="12dp"
                 android:text="@string/rest_times_text"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/double_match_checkbox" />
+                app:layout_constraintTop_toBottomOf="@+id/two_points_difference_checkbox" />
 
             <TextView
                 android:id="@+id/resting_amount_text"

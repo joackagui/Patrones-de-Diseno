@@ -12,8 +12,8 @@ import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.ActivityNewCupSettings.Companion.CUP_JSON_NC
 import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_CUP_NT
 import com.example.scoreit.adapters.RecyclerTeams
-import com.example.scoreit.components.Team
 import com.example.scoreit.components.Match
+import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.database.Converters
@@ -137,9 +137,22 @@ class ActivityAddTeam : AppCompatActivity() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
             lifecycleScope.launch {
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                val rounds = cup.requiredRounds
+
                 if (dbAccess.teamDao().getTeamsByCupId(idCup).isEmpty()) {
-                    val firstTeam = Team(name = "Team 1", idCup = idCup.toInt())
-                    val secondTeam = Team(name = "Team 2", idCup = idCup.toInt())
+                    val firstTeam = Team(
+                        name = "Team 1",
+                        idCup = idCup.toInt(),
+                        roundsWon = rounds,
+                        roundsLost = rounds
+                    )
+                    val secondTeam = Team(
+                        name = "Team 2",
+                        idCup = idCup.toInt(),
+                        roundsWon = rounds,
+                        roundsLost = rounds
+                    )
                     dbAccess.teamDao().insert(firstTeam)
                     dbAccess.teamDao().insert(secondTeam)
                 }
@@ -181,75 +194,87 @@ class ActivityAddTeam : AppCompatActivity() {
     }
 
     private fun brackets() {
-//        val idCup = intent.getStringExtra(ID_CUP_AT)
-//        if(idCup != null){
-//            lifecycleScope.launch {
-//                val listOfTeams =
-//                    dbAccess.teamDao().getTeamsByCupId(idCup.toString()).toMutableList()
-//
-//                if (listOfTeams.size < 2) {
-//                    throw IllegalArgumentException("You need at least two teams")
-//                }
-//
-//                val teamsAmount = listOfTeams.size
-//                val nextTwoExponential =
-//                    Integer.highestOneBit(teamsAmount).takeIf { it == teamsAmount }
-//                        ?: (Integer.highestOneBit(teamsAmount) * 2)
-//
-//                while (listOfTeams.size < nextTwoExponential) {
-//                    listOfTeams.add(
-//                        Team(
-//                            id = -1,
-//                            name = "Team Default",
-//                            idCup = idCup.toInt()
-//                        )
-//                    )
-//                }
-//
-//                val stages = mapOf(
-//                    1 to "Final",
-//                    2 to "Semi-final",
-//                    4 to "Quarter-final",
-//                    8 to "Round of 16",
-//                    16 to "Round of 32"
-//                )
-//
-//                var rondaEquipos = listOfTeams
-//                var rondaActual = nextTwoExponential
-//                var stage = 1
-//
-//                val matches = mutableListOf<Match>()
-//
-//                while (rondaActual > 1) {
-//                    val stageName = stages[rondaActual] ?: "Fase $stage"
-//                    val nuevaRonda = mutableListOf<Team>()
-//
-//                    for (i in 0 until rondaEquipos.size / 2) {
-//                        val local = rondaEquipos[i]
-//                        val visitante = rondaEquipos[rondaEquipos.size - 1 - i]
-//
-//                        val localGson = Converters().fromTeam(local)
-//                        val visitanteGson = Converters().fromTeam(visitante)
-//
-//                        matches.add(
-//                            Match(
-//
-//                            )
-//                        )
-//
-//                        nuevaRonda.add(if (local.id != -1) local else visitante)
-//                    }
-//
-//                    rondaEquipos = nuevaRonda
-//                    rondaActual /= 2
-//                    stage++
-//                }
-//
-//                dbAccess.matchDao().insertMatches(matches)
-//
-//            }
-//        }
+        val idCup = intent.getStringExtra(ID_CUP_AT)
+        if (idCup != null) {
+            lifecycleScope.launch {
+                val cup = dbAccess.cupDao().getCupById(idCup.toString())
+                val listOfTeams =
+                    dbAccess.teamDao().getTeamsByCupId(idCup.toString()).toMutableList()
+
+                if (listOfTeams.size < 2) {
+                    throw IllegalArgumentException("You need at least two teams")
+                }
+                val newMatches = mutableListOf<Match>()
+
+                val nextPowerOfTwo =
+                    1.shl((listOfTeams.size - 1).takeHighestOneBit().countTrailingZeroBits() + 1)
+                val placeholdersNeeded =
+                    nextPowerOfTwo - listOfTeams.size
+
+                val placeholderTeam = Team(
+                    id = -1,
+                    name = "Default Team",
+                    idCup = idCup.toInt()
+                )
+
+                val allTeams = listOfTeams.apply {
+                    repeat(placeholdersNeeded) { add(placeholderTeam) }
+                }
+
+                val stage = when (nextPowerOfTwo) {
+                    2 -> 1 // Final
+                    4 -> 2 // Semifinal
+                    8 -> 4 // Quarter-final
+                    16 -> 8 // Round of 16
+                    32 -> 16 // Round of 32
+                    else -> null
+                }
+
+                var firstOfKind = true
+                for (i in 0 until allTeams.size / 2) {
+                    val firstTeam = allTeams[i]
+                    val secondTeam = allTeams[allTeams.size - 1 - i]
+
+                    if (firstTeam.id != -1 || secondTeam.id != -1) {
+                        var initialRounds: Int? = 0
+                        if (cup.requiredRounds == null) {
+                            initialRounds = null
+                        }
+
+                        newMatches.add(
+                            Match(
+                                stage = stage,
+                                firstOfKind = firstOfKind,
+                                firstTeamJson = Converters().fromTeam(firstTeam),
+                                secondTeamJson = Converters().fromTeam(secondTeam),
+                                firstTeamRounds = initialRounds,
+                                secondTeamRounds = initialRounds,
+                                idCup = idCup.toInt(),
+                            )
+                        )
+                        if (cup.doubleMatch) {
+                            newMatches.add(
+                                Match(
+                                    stage = stage,
+                                    firstOfKind = false,
+                                    firstTeamJson = Converters().fromTeam(secondTeam),
+                                    secondTeamJson = Converters().fromTeam(firstTeam),
+                                    firstTeamRounds = initialRounds,
+                                    secondTeamRounds = initialRounds,
+                                    idCup = idCup.toInt(),
+                                )
+                            )
+                        }
+                        if (firstOfKind) {
+                            firstOfKind = false
+                        }
+                    }
+                }
+                dbAccess.matchDao().insertMatches(newMatches)
+            }
+        }
     }
+
 
     private fun roundRobin() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -263,7 +288,7 @@ class ActivityAddTeam : AppCompatActivity() {
                     throw IllegalArgumentException("You need at least two teams")
                 }
 
-                val matches = mutableListOf<Match>()
+                val newMatches = mutableListOf<Match>()
 
                 val isUneven = listOfTeams.size % 2 != 0
                 if (isUneven) {
@@ -284,10 +309,10 @@ class ActivityAddTeam : AppCompatActivity() {
                             val secondTeamJson = Converters().fromTeam(secondTeam)
 
                             var initialRounds: Int? = 0
-                            if (cup.roundsAmount == null) {
+                            if (cup.requiredRounds == null) {
                                 initialRounds = null
                             }
-                            matches.add(
+                            newMatches.add(
                                 Match(
                                     matchDay = matchDay,
                                     firstOfKind = firstOfKind,
@@ -299,7 +324,7 @@ class ActivityAddTeam : AppCompatActivity() {
                                 )
                             )
                             if (cup.doubleMatch) {
-                                matches.add(
+                                newMatches.add(
                                     Match(
                                         matchDay = matchDay + matchDaysAmount,
                                         firstOfKind = firstOfKind,
@@ -311,7 +336,7 @@ class ActivityAddTeam : AppCompatActivity() {
                                     )
                                 )
                             }
-                            if(firstOfKind){
+                            if (firstOfKind) {
                                 firstOfKind = false
                             }
                         }
@@ -319,7 +344,7 @@ class ActivityAddTeam : AppCompatActivity() {
                     val mixer = listOfTeams.removeAt(listOfTeams.size - 1)
                     listOfTeams.add(1, mixer)
                 }
-                dbAccess.matchDao().insertMatches(matches)
+                dbAccess.matchDao().insertMatches(newMatches)
             }
         }
     }
@@ -343,7 +368,8 @@ class ActivityAddTeam : AppCompatActivity() {
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ID_USER_MM, idUser)
-        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activityMainMenu.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(activityMainMenu)
         finish()

@@ -31,7 +31,7 @@
                 android:text="@string/initial_rounds" />
 
             <TextView
-                android:id="@+id/first_team_score"
+                android:id="@+id/first_team_points"
                 style="@style/point_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:text="@string/initial_rounds" />
 
             <TextView
-                android:id="@+id/second_team_score"
+                android:id="@+id/second_team_points"
                 style="@style/inverted_point_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,8 +83,7 @@
         style="@style/HeaderTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
         android:text=""
         app:layout_constraintStart_toStartOf="@id/first_team_frame"
         app:layout_constraintTop_toBottomOf="@id/first_team_frame" />
@@ -94,8 +93,7 @@
         style="@style/HeaderTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/second_team_frame"
         app:layout_constraintEnd_toEndOf="@id/second_team_frame" />
@@ -118,7 +116,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="2dp"
         app:backgroundTint="@color/CommonRed"
-        app:icon="@drawable/playbutton"
+        app:icon="@drawable/play_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/timer"
         app:layout_constraintStart_toEndOf="@id/guideline_margen_izquierda"
@@ -132,7 +130,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="2dp"
         app:backgroundTint="@color/CommonRed"
-        app:icon="@drawable/resetbutton"
+        app:icon="@drawable/reset_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
         app:layout_constraintStart_toEndOf="@id/timer"

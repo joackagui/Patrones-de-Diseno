@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scoreit.ActivityCupInsight
 import com.example.scoreit.ActivityCupInsight.Companion.ID_CUP_CI

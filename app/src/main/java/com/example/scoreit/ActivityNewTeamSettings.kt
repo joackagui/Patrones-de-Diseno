@@ -139,14 +139,14 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         val idCup = intent.getStringExtra(ID_CUP_NT)
         if (idTeam != null && idCup == null) {
             lifecycleScope.launch {
-                val teamName = dbAccess.teamDao().getTeamById(idTeam).name
-                binding.newTeamName.setText(teamName)
+                val name = dbAccess.teamDao().getTeamById(idTeam).name
+                binding.newTeamName.setText(name)
                 binding.deleteButton.visibility = View.VISIBLE
             }
         } else if (idTeam == null && idCup != null) {
             lifecycleScope.launch {
-                val teamName = "Team ${dbAccess.teamDao().getTeamsByCupId(idCup).size + 1}"
-                binding.newTeamName.setText(teamName)
+                val name = "Team ${dbAccess.teamDao().getTeamsByCupId(idCup).size + 1}"
+                binding.newTeamName.setText(name)
                 binding.deleteButton.visibility = View.GONE
             }
         }
@@ -156,11 +156,13 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         val idCup = intent.getStringExtra(ID_CUP_NT)
         if (idCup != null) {
             lifecycleScope.launch {
-                val teamName = binding.newTeamName.text.toString().ifBlank {
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                val rounds = cup.requiredRounds
+                val name = binding.newTeamName.text.toString().ifBlank {
                     val num = dbAccess.teamDao().getTeamsByCupId(idCup.toString()).size + 1
                     "Team $num"
                 }
-                val newTeam = Team(name = teamName, idCup = idCup.toInt())
+                val newTeam = Team(name = name, idCup = idCup.toInt(), roundsWon = rounds, roundsLost = rounds)
                 dbAccess.teamDao().insert(newTeam)
                 changeToActivityAddTeam(idCup.toString())
             }
@@ -172,12 +174,13 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         if (idTeam != null) {
             lifecycleScope.launch {
                 val team = dbAccess.teamDao().getTeamById(idTeam)
-                val newTeam = Team(
-                    id = team.id,
-                    name = binding.newTeamName.text.toString(),
-                    idCup = team.idCup
-                )
-                dbAccess.teamDao().update(newTeam)
+
+                val name = binding.newTeamName.text.toString().ifBlank {
+                    team.name
+                }
+
+                team.name = name
+                dbAccess.teamDao().update(team)
                 changeToActivityAddTeam(team.idCup.toString())
             }
         }

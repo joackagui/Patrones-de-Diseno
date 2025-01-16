@@ -6,7 +6,7 @@
     android:background="@color/DarkestGray">
 
     <TextView
-        android:id="@+id/team_name"
+        android:id="@+id/team_name_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/matches_played"
+        android:id="@+id/matches_played_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/marches_won"
+        android:id="@+id/marches_won_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/matches_lost"
+        android:id="@+id/matches_lost_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/final_points"
+        android:id="@+id/final_points_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -66,13 +66,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/in_game_points"
+        android:id="@+id/in_game_points_score_board"
         style="@style/ScoreBoardHeaderText"
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
         android:background="@color/CommonRed"
-        android:text="@string/pts_ingame"
+        android:text="@string/pts_in_game"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha"
         app:layout_constraintStart_toStartOf="@+id/guideline_margen_derecha_1"
         app:layout_constraintTop_toTopOf="parent" />

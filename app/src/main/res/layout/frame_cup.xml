@@ -28,18 +28,30 @@
             android:layout_height="match_parent"
             android:background="@drawable/border">
 
+            <ImageView
+                android:id="@+id/cup_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="25dp"
+                android:contentDescription="@string/cup_logo"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
             <TextView
                 android:id="@+id/name"
                 style="@style/HeaderTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
                 android:elevation="2dp"
-                android:gravity="center"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/cup_logo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

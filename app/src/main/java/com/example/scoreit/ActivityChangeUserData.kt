@@ -45,9 +45,10 @@ class ActivityChangeUserData : AppCompatActivity() {
             if (idUser != null) {
                 lifecycleScope.launch {
                     val user = dbAccess.userDao().getUserById(idUser)
-                    user.name = "user ${user.id}"
+                    user.name = "User ${user.id}"
                     user.email = null
                     user.password = null
+                    user.logo = null
                     dbAccess.userDao().update(user)
                     deleteEverythingOfUser(idUser)
                     changeToActivitySelectUser()

@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet.Layout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
@@ -74,7 +77,12 @@ class ActivityCupInsight : AppCompatActivity() {
             val idCup = intent.getStringExtra(ID_CUP_CI)
             if (idCup != null) {
                 lifecycleScope.launch {
-                    changeToActivityNewCupSettings(idCup)
+                    val cup = dbAccess.cupDao().getCupById(idCup)
+                    if (!cup.hasEnded) {
+                        changeToActivityNewCupSettings(idCup)
+                    } else {
+                        errorMessage()
+                    }
                 }
             }
         }
@@ -102,28 +110,31 @@ class ActivityCupInsight : AppCompatActivity() {
                 val gameMode = "${binding.gameModeText.text} ${cup.gameMode}"
                 val doubleMatch = "${binding.doubleMatchText.text} ${cup.doubleMatch}"
                 val alwaysWinner = "${binding.alwaysWinnerText.text} ${cup.alwaysWinner}"
+                val twoPointsDifference =
+                    "${binding.twoPointsDifferenceText.text} ${cup.twoPointsDifference}"
 
                 binding.cupName.text = cupName
                 binding.gameModeText.text = gameMode
                 binding.doubleMatchText.text = doubleMatch
                 binding.alwaysWinnerText.text = alwaysWinner
+                binding.twoPointsDifferenceText.text = twoPointsDifference
 
-                val points = "${binding.pointsText.text} ${cup.winningPoints}"
-                if (cup.winningPoints != null) {
+                val points = "${binding.pointsText.text} ${cup.requiredPoints}"
+                if (cup.requiredPoints != null) {
                     binding.pointsText.text = points
                 } else {
                     binding.pointsText.visibility = View.GONE
                 }
 
-                val time = "${binding.timeText.text} ${cup.finishTime}"
-                if (cup.finishTime != null) {
+                val time = "${binding.timeText.text} ${cup.requiredTime}"
+                if (cup.requiredTime != null) {
                     binding.timeText.text = time
                 } else {
                     binding.timeText.visibility = View.GONE
                 }
 
-                val rounds = "${binding.roundsText.text} ${cup.roundsAmount}"
-                if (cup.roundsAmount != null) {
+                val rounds = "${binding.roundsText.text} ${cup.requiredRounds}"
+                if (cup.requiredRounds != null) {
                     binding.roundsText.text = rounds
                 } else {
                     binding.roundsText.visibility = View.GONE
@@ -147,7 +158,7 @@ class ActivityCupInsight : AppCompatActivity() {
                 val listOfMatches = dbAccess.matchDao().getMatchesByCupId(idCup).toMutableList()
                 recyclerMatches.addDataToList(listOfMatches)
 
-                binding.recyclerPartidosCreados.apply {
+                binding.recyclerMatches.apply {
                     layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     adapter = recyclerMatches
@@ -161,18 +172,33 @@ class ActivityCupInsight : AppCompatActivity() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
             lifecycleScope.launch {
-                val listOfTeams =
-                    dbAccess.teamDao().getTeamsByCupId(idCup).toMutableList()
-                recyclerScoreBoardRows.addDataToList(listOfTeams)
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                if (cup.gameMode == "Brackets") {
+                    binding.recyclerScoreBoard.visibility = View.GONE
+                    findViewById<TextView>(R.id.team_name_score_board).visibility = View.GONE
+                    findViewById<TextView>(R.id.matches_played_score_board).visibility = View.GONE
+                    findViewById<TextView>(R.id.marches_won_score_board).visibility = View.GONE
+                    findViewById<TextView>(R.id.matches_lost_score_board).visibility = View.GONE
+                    findViewById<TextView>(R.id.final_points_score_board).visibility = View.GONE
+                    findViewById<TextView>(R.id.in_game_points_score_board).visibility = View.GONE
+                } else {
+                    val listOfTeams =
+                        dbAccess.teamDao().getTeamsByCupId(idCup).toMutableList()
+                    recyclerScoreBoardRows.addDataToList(listOfTeams)
 
-                binding.recyclerScoreBoard.apply {
-                    layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    adapter = recyclerScoreBoardRows
-                    isNestedScrollingEnabled = false
+                    binding.recyclerScoreBoard.apply {
+                        layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        adapter = recyclerScoreBoardRows
+                        isNestedScrollingEnabled = false
+                    }
                 }
             }
         }
+    }
+
+    private fun errorMessage() {
+        Toast.makeText(this, "Cup has already ended", Toast.LENGTH_LONG).show()
     }
 
     private fun changeToActivityMainMenu(idUser: String) {

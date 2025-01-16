@@ -20,12 +20,13 @@ data class Team(
     var logo: String? = null,
     var name: String,
     var finalPoints: Int = 0,
-    var inGamePoints: Int = 0,
+    var pointsWon: Int = 0,
+    var pointsLost: Int = 0,
     var matchesPlayed: Int = 0,
     var matchesWon: Int = 0,
     var matchesLost: Int = 0,
-    var roundsWon: Int? = 0,
-    var roundsLost: Int? = 0,
+    var roundsWon: Int? = null,
+    var roundsLost: Int? = null,
     var playersList: MutableList<String?> = mutableListOf(),
     val idCup: Int
 ): Serializable

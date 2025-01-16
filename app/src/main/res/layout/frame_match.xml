@@ -5,12 +5,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/top_space"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/Transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/match_day_sign"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/CommonRed"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/top_space">
 
         <TextView
             android:id="@+id/match_section"
@@ -27,7 +35,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:id="@+id/top_space"
+        android:id="@+id/middle_space"
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:background="@color/Transparent"
@@ -41,7 +49,7 @@
         app:cardCornerRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top_space">
+        app:layout_constraintTop_toBottomOf="@id/middle_space">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             style="@style/point_buttons"
@@ -50,11 +58,25 @@
             android:background="@drawable/border">
 
             <TextView
+                android:id="@+id/playable_match"
+                style="@style/NormalText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/playable_match"
+                app:layout_constraintTop_toTopOf="@id/in_game_points"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/in_game_points"/>
+
+            <TextView
                 android:id="@+id/first_team_name"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="2"
@@ -67,7 +89,7 @@
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="30dp"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:maxLines="2"
@@ -126,12 +148,6 @@
 
     </androidx.cardview.widget.CardView>
 
-    <View
-        android:id="@+id/bottom_space"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="@color/Transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_match_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

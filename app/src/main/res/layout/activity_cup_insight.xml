@@ -108,6 +108,15 @@
                 android:text="@string/always_winner" />
 
             <TextView
+                android:id="@+id/two_points_difference_text"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="2"
+                android:text="@string/two_points_difference" />
+
+            <TextView
                 android:id="@+id/resting_text"
                 style="@style/SmallText"
                 android:layout_width="wrap_content"
@@ -142,13 +151,13 @@
                 android:text="@string/matches" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerPartidosCreados"
+                android:id="@+id/recycler_matches"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

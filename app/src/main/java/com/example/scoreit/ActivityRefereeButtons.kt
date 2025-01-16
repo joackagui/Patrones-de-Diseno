@@ -2,16 +2,19 @@ package com.example.scoreit
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityCupInsight.Companion.ID_CUP_CI
 import com.example.scoreit.components.Match
+import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.database.Converters
 import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 /*
 binding.botonDescansoSegundoEquipo.setOnClickListener {
@@ -83,7 +86,7 @@ binding.botonDescansoSegundoEquipo.setOnClickListener {
 //        binding.botonSuspender.visibility = View.VISIBLE
 //    }
 
-    // funciones
+
       private fun startTimer() {
           // Verificar que haya un valor válido en el EditText
           val input = binding.input.text.toString()
@@ -105,19 +108,19 @@ binding.botonDescansoSegundoEquipo.setOnClickListener {
               override fun onFinish() {
                   isRunning = false
                   binding.timer.text = "00:00:00"
-                  binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+                  binding.startPauseButton.icon = getDrawable(R.drawable.play_button)
                   Toast.makeText(this@ActivityRefereeButtons, "¡Se terminó el tiempo!", Toast.LENGTH_SHORT).show()
               }
           }.start()
 
           isRunning = true
-          binding.startPauseButton.icon = getDrawable(R.drawable.pausebutton)
+          binding.startPauseButton.icon = getDrawable(R.drawable.pause_button)
       }
 
       private fun pauseTimer() {
           countDownTimer?.cancel()
           isRunning = false
-         binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+         binding.startPauseButton.icon = getDrawable(R.drawable.play_button)
      }
 
       private fun resetTimer() {
@@ -126,7 +129,7 @@ binding.botonDescansoSegundoEquipo.setOnClickListener {
           timeInMillis = 0L
           timeRemaining = 0L
           binding.timer.text = "00:00:00"
-          binding.startPauseButton.icon = getDrawable(R.drawable.playbutton)
+          binding.startPauseButton.icon = getDrawable(R.drawable.play_button)
           binding.input.text.clear()
       }
 
@@ -154,65 +157,9 @@ binding.botonDescansoSegundoEquipo.setOnClickListener {
 //                .obtenerTiempoDelPartido(intent.getStringExtra(ID_PARTIDO_PA).toString())
 //        }
 //    }
-//
-
-
-    private fun addPoint(isFirstTeam: Boolean) {
-        val idMatch = intent.getStringExtra(ID_MATCH_RB)
-        if (idMatch != null) {
-            lifecycleScope.launch {
-                val match_day_sign = dbAccess.matchDao().getMatchById(idMatch)
-                val idCup = match_day_sign.idCup.toString()
-                val cup = dbAccess.cupDao().getCupById(idCup)
-                val winningPoints =
-                    cup.winningPoints ?: Int.MAX_VALUE
-                val roundsLimit = cup.roundsAmount
-
-                val currentScore = if (isFirstTeam) {
-                    binding.firstTeamScore.text.toString().toInt()
-                } else {
-                    binding.secondTeamScore.text.toString().toInt()
-                }
-
-                val currentRounds = if (isFirstTeam) {
-                    match_day_sign.firstTeamRounds?.toInt() ?: 0
-                } else {
-                    match_day_sign.secondTeamRounds?.toInt() ?: 0
-                }
-
-                if (currentScore >= winningPoints) {
-                    if (roundsLimit != null && currentRounds + 1 < roundsLimit) {
-                        val newRound = (currentRounds + 1).toString()
-                        if (isFirstTeam) {
-                            match_day_sign.firstTeamRounds = newRound
-                            binding.firstTeamRounds.text = newRound
-                        } else {
-                            match_day_sign.secondTeamRounds = newRound
-                            binding.secondTeamRounds.text = newRound
-                        }
-                        match_day_sign.firstTeamPoints += binding.firstTeamScore.text.toString().toInt()
-                        match_day_sign.secondTeamPoints += binding.secondTeamScore.text.toString().toInt()
-
-                        binding.firstTeamScore.text = "0"
-                        binding.secondTeamScore.text = "0"
-
-                        dbAccess.matchDao().update(match_day_sign)
-                        // TODO: Guardar los cambios en la base de datos
-                    } else {
-                        //matchEnded(match_day_sign)
-                    }
-                } else {
-                    val newScore = (currentScore + 1).toString()
-                    if (isFirstTeam) {
-                        binding.firstTeamScore.text = newScore
-                    } else {
-                        binding.secondTeamScore.text = newScore
-                    }
-                }
-            }
-        }
-    }
 }*/
+
+//TODO
 
 class ActivityRefereeButtons : AppCompatActivity() {
 
@@ -223,108 +170,310 @@ class ActivityRefereeButtons : AppCompatActivity() {
         const val ID_MATCH_RB: String = "ID_MATCH"
     }
 
+    private var totalFirstTeamPoints = 0
+    private var totalSecondTeamPoints = 0
     private var firstTeamPoints = 0
     private var secondTeamPoints = 0
-    private var requiredDifference = 2
+    private var firstTeamRounds = 0
+    private var secondTeamRounds = 0
+    private var requiredDifference = 0
+    private var requiredPoints = 1000
+    private var requiredRounds = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRefereeButtonsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicialización de la base de datos
         dbAccess = getDatabase(this)
 
-        // Configurar botones y listeners
-        setListeners()
         setButtons()
+        setCupData()
+
+        addPointButtons()
         finishButton()
     }
 
-    private fun assignPoints(match: Match) {
-        lifecycleScope.launch {
-            val firstTeam = Converters().toTeam(match.firstTeamJson)
-            val secondTeam = Converters().toTeam(match.secondTeamJson)
+    private fun finishButton() {
+        binding.finishButton.setOnClickListener {
+            lifecycleScope.launch {
+                val idMatch = intent.getStringExtra(ID_MATCH_RB)
+                if (idMatch != null) {
+                    val match = dbAccess.matchDao().getMatchById(idMatch)
+                    val firstTeam = Converters().toTeam(match.firstTeamJson)
+                    val secondTeam = Converters().toTeam(match.secondTeamJson)
+                    val firstTeamId = firstTeam.id.toString()
+                    val secondTeamId = secondTeam.id.toString()
+                    val actualFirstTeam = dbAccess.teamDao().getTeamById(firstTeamId)
+                    val actualSecondTeam = dbAccess.teamDao().getTeamById(secondTeamId)
+                    var winner = 0
 
-
+                    if (requiredRounds == 1) {
+                        totalFirstTeamPoints = firstTeamPoints
+                        totalSecondTeamPoints = secondTeamPoints
+                        if (firstTeamPoints > secondTeamPoints) {
+                            winner = 1
+                        } else if (secondTeamPoints > firstTeamPoints) {
+                            winner = 2
+                        }
+                        if (firstTeamPoints - secondTeamPoints >= requiredDifference || secondTeamPoints - firstTeamPoints >= requiredDifference) {
+                            update(match, actualFirstTeam, actualSecondTeam, winner)
+                        } else {
+                            var message = 1
+                            if (requiredDifference == 2) message = 2
+                            errorMessage(message)
+                        }
+                    } else {
+                        if (firstTeamRounds > secondTeamRounds) {
+                            winner = 1
+                        } else if (secondTeamRounds > firstTeamRounds) {
+                            winner = 2
+                        }
+                        if (firstTeamRounds == requiredRounds || secondTeamRounds == requiredRounds) {
+                            update(match, actualFirstTeam, actualSecondTeam, winner)
+                        }
+                    }
+                }
+            }
         }
     }
 
+    private fun setCupData() {
+        val idMatch = intent.getStringExtra(ID_MATCH_RB)
+        if (idMatch != null) {
+            lifecycleScope.launch {
+                val idCup = dbAccess.matchDao().getMatchById(idMatch).idCup.toString()
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                if (cup.twoPointsDifference) {
+                    requiredDifference = 2
+                } else if (cup.alwaysWinner) {
+                    requiredDifference = 1
+                }
+                requiredPoints = cup.requiredPoints ?: 1000
 
-private fun setListeners() {
-    // Escucha de eventos para los botones de sumar y restar puntos
-    binding.firstTeamFrame.setOnClickListener { addPoint(true) }
-    binding.secondTeamFrame.setOnClickListener { addPoint(false) }
+                if (cup.requiredRounds != null) {
+                    requiredRounds = cup.requiredRounds!!
+                }
 
-    binding.finishButton.setOnClickListener { finishButton() }
-}
+                val match = dbAccess.matchDao().getMatchById(idMatch)
+                val firstTeam = Converters().toTeam(match.firstTeamJson)
+                val secondTeam = Converters().toTeam(match.secondTeamJson)
+                binding.firstTeamNameDisplay.text = firstTeam.name
+                binding.secondTeamNameDisplay.text = secondTeam.name
 
-private fun setButtons() {
-    // Configurar comportamiento de botones adicionales
-    binding.startPauseButton.setOnClickListener {
-        Snackbar.make(
-            binding.root,
-            "Función Start/Pause pendiente de implementación.",
-            Snackbar.LENGTH_SHORT
-        ).show()
+            }
+        }
     }
-    binding.resetButton.setOnClickListener {
-        resetScores()
+
+    private fun setButtons() {
+        val idMatch = intent.getStringExtra(ID_MATCH_RB)
+        if (idMatch != null) {
+            lifecycleScope.launch {
+                val match = dbAccess.matchDao().getMatchById(idMatch)
+                if (match.firstTeamRounds != null && match.secondTeamRounds != null) {
+                    binding.firstTeamRounds.visibility = View.VISIBLE
+                    binding.secondTeamRounds.visibility = View.VISIBLE
+                    val newFirstTeamRounds = "(${match.firstTeamRounds})"
+                    val newSecondTeamRounds = "(${match.secondTeamRounds})"
+                    binding.firstTeamRounds.text = newFirstTeamRounds
+                    binding.secondTeamRounds.text = newSecondTeamRounds
+                } else {
+                    binding.firstTeamRounds.visibility = View.INVISIBLE
+                    binding.secondTeamRounds.visibility = View.INVISIBLE
+                }
+            }
+        }
     }
-}
 
-private fun addPoint(isFirstTeam: Boolean) {
-    if (isFirstTeam) {
-        val newPoints = (firstTeamPoints + 1).toString()
-        binding.firstTeamScore.text = newPoints
-    } else {
-        val newPoints = (secondTeamPoints + 1).toString()
-        binding.secondTeamScore.text = newPoints
-    }
-}
+    private fun update(match: Match, firstTeam: Team, secondTeam: Team, winner: Int) {
+        lifecycleScope.launch {
+            firstTeam.pointsWon += totalFirstTeamPoints
+            firstTeam.pointsLost += totalSecondTeamPoints
 
-private fun resetScores() {
-    firstTeamPoints = 0
-    secondTeamPoints = 0
-    binding.firstTeamScore.text = "0"
-    binding.secondTeamScore.text = "0"
-}
+            secondTeam.pointsWon += totalSecondTeamPoints
+            secondTeam.pointsLost += totalFirstTeamPoints
 
-private fun checkForVictory() {
-    if ((firstTeamPoints >= secondTeamPoints + requiredDifference && firstTeamPoints >= 10) ||
-        (secondTeamPoints >= firstTeamPoints + requiredDifference && secondTeamPoints >= 10)
-    ) {
+            if (firstTeam.roundsWon != null) {
+                firstTeam.roundsWon = firstTeam.roundsWon!! + firstTeamRounds
+                firstTeam.roundsLost = firstTeam.roundsLost!! + secondTeamRounds
+            } else {
+                firstTeam.roundsWon = null
+                firstTeam.roundsLost = null
+            }
 
-    }
-}
+            if (secondTeam.roundsWon != null) {
+                secondTeam.roundsWon = secondTeam.roundsWon!! + secondTeamRounds
+                secondTeam.roundsLost = secondTeam.roundsLost!! + firstTeamRounds
+            } else {
+                secondTeam.roundsWon = null
+                secondTeam.roundsLost = null
+            }
 
-private fun finishButton() {
-    lifecycleScope.launch {
-        val matchId = intent.getStringExtra(ID_MATCH_RB)
-        if (matchId != null) {
-            val match = dbAccess.matchDao().getMatchById(matchId)
-            val idCup = match.idCup.toString()
-            match.firstTeamPoints = firstTeamPoints
-            match.secondTeamPoints = secondTeamPoints
+            match.playable = false
+
+            match.firstTeamPoints = totalFirstTeamPoints
+            match.secondTeamPoints = totalSecondTeamPoints
+
+            if (requiredRounds == 1) {
+                match.firstTeamRounds = null
+                match.secondTeamRounds = null
+            } else {
+                match.firstTeamRounds = firstTeamRounds
+                match.secondTeamRounds = secondTeamRounds
+            }
+
+            when (winner) {
+                1 -> {
+                    firstTeam.finalPoints += 3
+                    firstTeam.matchesWon += 1
+                    secondTeam.matchesLost += 1
+                }
+
+                2 -> {
+                    secondTeam.finalPoints += 3
+                    secondTeam.matchesWon += 1
+                    firstTeam.matchesLost += 1
+                }
+
+                0 -> {
+                    firstTeam.finalPoints += 1
+                    secondTeam.finalPoints += 1
+                }
+            }
+            firstTeam.matchesPlayed++
+            secondTeam.matchesPlayed++
+
             dbAccess.matchDao().update(match)
-            val firstTeam = Converters().toTeam(match.firstTeamJson)
-            val secondTeam = Converters().toTeam(match.secondTeamJson)
-            firstTeam.inGamePoints = firstTeamPoints
-            secondTeam.inGamePoints = secondTeamPoints
             dbAccess.teamDao().update(firstTeam)
             dbAccess.teamDao().update(secondTeam)
+
+            val idCup = match.idCup.toString()
+            val cup = dbAccess.cupDao().getCupById(idCup)
+            if (!cup.hasStarted) {
+                cup.hasStarted = true
+                dbAccess.cupDao().update(cup)
+            }
             changeToActivityCupInsight(idCup)
         }
     }
-}
 
+    private fun addPointButtons() {
+        binding.firstTeamFrame.setOnClickListener {
+            addPoint(true)
+        }
+        binding.secondTeamFrame.setOnClickListener {
+            addPoint(false)
+        }
+    }
 
-private fun changeToActivityCupInsight(idCup: String) {
-    val activityCupInsight = Intent(this, ActivityCupInsight::class.java)
-    activityCupInsight.putExtra(ID_CUP_CI, idCup)
+    private fun addPoint(isFirstTeam: Boolean) {
+        lifecycleScope.launch {
+            val idMatch = intent.getStringExtra(ID_MATCH_RB)
+            if (idMatch != null) {
+                if (isFirstTeam) {
+                    if (requiredRounds == 1) {
+                        if ((firstTeamPoints < requiredPoints && secondTeamPoints < requiredPoints) || (firstTeamPoints - secondTeamPoints).absoluteValue < requiredDifference) {
+                            firstTeamPoints++
+                            val newPoints = firstTeamPoints.toString()
+                            binding.firstTeamPoints.text = newPoints
+                        } else {
+                            totalFirstTeamPoints = firstTeamPoints
+                            totalSecondTeamPoints = secondTeamPoints
+                        }
+                    } else {
+                        if (firstTeamRounds < requiredRounds && secondTeamRounds < requiredRounds) {
+                            firstTeamPoints++
+                            if (firstTeamPoints > requiredPoints &&
+                                (firstTeamPoints - (secondTeamPoints + 1) > requiredDifference)
+                            ) {
+                                firstTeamPoints--
+                                firstTeamRounds++
+                                resetPoints()
+                                if (firstTeamRounds <= requiredRounds) {
+                                    val newRounds = "($firstTeamRounds)"
+                                    binding.firstTeamRounds.text = newRounds
+                                }
+                            } else {
+                                if ((firstTeamPoints < requiredPoints && secondTeamPoints < requiredPoints) || firstTeamPoints - secondTeamPoints < requiredDifference) {
+                                    val newPoints = firstTeamPoints.toString()
+                                    binding.firstTeamPoints.text = newPoints
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (requiredRounds == 1) {
+                        if ((secondTeamPoints < requiredPoints && firstTeamPoints < requiredPoints) || (firstTeamPoints - secondTeamPoints).absoluteValue < requiredDifference) {
+                            secondTeamPoints++
+                            val newPoints = secondTeamPoints.toString()
+                            binding.secondTeamPoints.text = newPoints
+                        }
+                    } else {
+                        if (secondTeamRounds < requiredRounds && firstTeamRounds < requiredRounds) {
+                            secondTeamPoints++
+                            if (secondTeamPoints > requiredPoints &&
+                                (secondTeamPoints - (firstTeamPoints + 1) > requiredDifference)
+                            ) {
+                                secondTeamPoints--
+                                secondTeamRounds++
+                                resetPoints()
+                                if (secondTeamRounds <= requiredRounds) {
+                                    val newRounds = "($secondTeamRounds)"
+                                    binding.secondTeamRounds.text = newRounds
+                                }
+                            } else {
+                                if ((firstTeamPoints < requiredPoints && secondTeamPoints < requiredPoints) || secondTeamPoints - firstTeamPoints < requiredDifference) {
+                                    val newPoints = secondTeamPoints.toString()
+                                    binding.secondTeamPoints.text = newPoints
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    startActivity(activityCupInsight)
-    finish()
-}
+    private fun resetPoints() {
+        val idMatch = intent.getStringExtra(ID_MATCH_RB)
+        if (idMatch != null) {
+            lifecycleScope.launch {
+                //val match = dbAccess.matchDao().getMatchById(idMatch)
+                //match.pointsPerRoundFirstTeam.add(firstTeamPoints.toString())
+                //match.pointsPerRoundSecondTeam.add(secondTeamPoints.toString())
+                //dbAccess.matchDao().update(match)
 
+                totalFirstTeamPoints += firstTeamPoints
+                totalSecondTeamPoints += secondTeamPoints
+                firstTeamPoints = 0
+                secondTeamPoints = 0
+                binding.firstTeamPoints.text = "0"
+                binding.secondTeamPoints.text = "0"
+            }
+        }
+    }
+
+    private fun errorMessage(message: Int) {
+        if (message == 1) {
+            Toast.makeText(
+                this@ActivityRefereeButtons,
+                "There must be a winner",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else if (message == 2) {
+            Toast.makeText(
+                this@ActivityRefereeButtons,
+                "There must be a two point difference",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun changeToActivityCupInsight(idCup: String) {
+        val activityCupInsight = Intent(this, ActivityCupInsight::class.java)
+        activityCupInsight.putExtra(ID_CUP_CI, idCup)
+
+        startActivity(activityCupInsight)
+        finish()
+    }
 }

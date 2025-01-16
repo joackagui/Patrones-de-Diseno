@@ -9,7 +9,6 @@
     <string name="add_logo">Add a Logo</string>
     <string name="add_logo_button">+</string>
     <string name="cup_date">Cup Date</string>
-
     <string name="username">Username</string>
     <string name="email">Enter Email</string>
     <string name="enter_password">Enter Password</string>
@@ -59,7 +58,7 @@
     <string name="game_mode">Mode:</string>
     <string name="team">Team</string>
     <string name="pts">Pts</string>
-    <string name="pts_ingame">pts</string>
+    <string name="pts_in_game">pts</string>
     <string name="matches_played">MP</string>
     <string name="matches_won">W</string>
     <string name="matches_lost">L</string>
@@ -68,12 +67,15 @@
     <string name="create_new_team">Create New Team</string>
     <string name="team_name">Team Name</string>
     <string name="rest_time">Rest Time:</string>
+    <string name="two_points_difference">Two Point Difference:</string>
     <string name="initial_rounds">(0)</string>
     <string name="edit_button">Edit</string>
     <string name="user_info">USER INFO</string>
     <string name="change_user">Change user</string>
     <string name="rounds">Rounds:</string>
     <string name="delete_button">Delete</string>
+    <string name="cup_logo">cup logo</string>
+    <string name="playable_match">Playable Match</string>
 
     <string-array name="game_mode_options">
         <item>Round Robin</item>
