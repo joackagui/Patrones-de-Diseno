@@ -87,6 +87,17 @@ class RecyclerMatches :
                 binding.secondTeamPoints.text = match.secondTeamPoints.toString()
             }
 
+            val isTwoLegged = dataList.count {
+                (it.firstTeamJson == match.firstTeamJson && it.secondTeamJson == match.secondTeamJson) ||
+                        (it.firstTeamJson == match.secondTeamJson && it.secondTeamJson == match.firstTeamJson)
+            } == 2
+
+            if (isTwoLegged) {
+                binding.matchDayNumber.text = if (match.firstMatch) "1 of 2" else "2 of 2"
+            } else {
+                binding.matchDayNumber.text = "1 of 1"
+            }
+
             binding.currentMatchButton.setOnClickListener {
                 if (match.playable) {
                     val activityRefereeButtons = Intent(context, ActivityRefereeButtons::class.java)

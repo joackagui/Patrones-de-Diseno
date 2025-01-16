@@ -30,5 +30,6 @@ data class Cup(
     var doubleMatch: Boolean,
     var alwaysWinner: Boolean,
     var twoPointsDifference: Boolean,
+    var playableMatches: Int = 1,
     val idUser: Int
 )

@@ -54,7 +54,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
         defaultData()
         getData()
 
-        addLogoButton()
+        //addLogoButton()
         deleteButton()
         backButton()
         saveButton()
@@ -179,6 +179,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
             binding.deleteButton.visibility = View.VISIBLE
             binding.doubleMatchCheckbox.visibility = View.GONE
             binding.roundsCheckbox.visibility = View.GONE
+            binding.gameModeSpinner.visibility = View.GONE
 
             if (hasStarted) {
                 binding.requiredPoints.visibility = View.GONE

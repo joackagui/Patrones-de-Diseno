@@ -29,5 +29,6 @@ data class Match(
     var secondTeamRounds: Int? = null,
     val pointsPerRoundFirstTeam: MutableList<String> = mutableListOf(),
     val pointsPerRoundSecondTeam: MutableList<String> = mutableListOf(),
+    val firstMatch: Boolean = true,
     val idCup: Int
 ): Serializable

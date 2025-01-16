@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.scoreit.ActivityCupInsight.Companion.ID_CUP_CI
+import com.example.scoreit.components.Cup
 import com.example.scoreit.components.Match
 import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
@@ -353,7 +354,81 @@ class ActivityRefereeButtons : AppCompatActivity() {
                 cup.hasStarted = true
                 dbAccess.cupDao().update(cup)
             }
+
+            checkForNextStage(cup, match)
             changeToActivityCupInsight(idCup)
+        }
+    }
+
+    private fun checkForNextStage(cup: Cup, match: Match) {
+        lifecycleScope.launch {
+            if (cup.gameMode != "Round Robin") {
+                val listOfMatches = dbAccess.matchDao().getMatchesByCupId(cup.id.toString())
+                val playableMatches = listOfMatches.filter { !it.playable }.size
+                if (cup.playableMatches == playableMatches) {
+                    if (cup.gameMode == "Brackets") {
+
+                    } else if (cup.gameMode == "Both") {
+                        val listOfTeams = dbAccess.teamDao().getTeamsByCupId(cup.id.toString())
+                        val sortedListOfTeams = listOfTeams.sortedWith(
+                            compareByDescending<Team> { it.finalPoints }
+                                .thenByDescending { (it.pointsWon - it.pointsLost) }
+                                .thenBy { it.name }
+                        )
+                        createNewMatches(cup, match, sortedListOfTeams)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createNewMatches(cup: Cup, match: Match, listOfTeams: List<Team>) {
+        lifecycleScope.launch {
+            var firstOfKind = true
+            val initialRounds = cup.requiredRounds ?: 0
+
+            val newMatches = mutableListOf<Match>()
+
+            val stage: Int = if (match.stage != null) {
+                match.stage - 1
+            } else {
+                1.shl(
+                    (listOfTeams.size - 1).takeHighestOneBit().countTrailingZeroBits() + 1
+                ) / 2
+            }
+
+            for (i in 0 until listOfTeams.size / 2) {
+                val firstTeam = listOfTeams[i]
+                val secondTeam = listOfTeams[listOfTeams.size - 1 - i]
+                newMatches.add(
+                    Match(
+                        stage = stage,
+                        firstOfKind = firstOfKind,
+                        firstTeamJson = Converters().fromTeam(firstTeam),
+                        secondTeamJson = Converters().fromTeam(secondTeam),
+                        firstTeamRounds = initialRounds,
+                        secondTeamRounds = initialRounds,
+                        idCup = cup.id
+                    )
+                )
+                if (cup.doubleMatch) {
+                    newMatches.add(
+                        Match(
+                            stage = stage,
+                            firstOfKind = false,
+                            firstTeamJson = Converters().fromTeam(secondTeam),
+                            secondTeamJson = Converters().fromTeam(firstTeam),
+                            firstTeamRounds = initialRounds,
+                            secondTeamRounds = initialRounds,
+                            idCup = cup.id,
+                        )
+                    )
+                }
+                if (firstOfKind) {
+                    firstOfKind = false
+                }
+            }
+            dbAccess.matchDao().insertMatches(newMatches)
         }
     }
 

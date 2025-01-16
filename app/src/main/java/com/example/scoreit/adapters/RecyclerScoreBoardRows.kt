@@ -53,8 +53,8 @@ class RecyclerScoreBoardRows : RecyclerView.Adapter<RecyclerScoreBoardRows.Score
         }
     }
 
-    private fun sortTeams(teams: MutableList<Team>): List<Team> {
-        return teams.sortedWith(
+    private fun sortTeams(listOfTeams: MutableList<Team>): List<Team> {
+        return listOfTeams.sortedWith(
             compareByDescending<Team> { it.finalPoints }
                 .thenByDescending { (it.pointsWon - it.pointsLost) }
                 .thenBy { it.name }
