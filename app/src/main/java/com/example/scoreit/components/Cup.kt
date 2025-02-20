@@ -18,7 +18,6 @@ data class Cup(
     val id: Int = 0,
     var logo: String? = null,
     var hasStarted: Boolean = false,
-    var hasEnded: Boolean = false,
     var name: String,
     var startDate: String,
     var requiredPoints: Int?,
@@ -31,5 +30,6 @@ data class Cup(
     var alwaysWinner: Boolean,
     var twoPointsDifference: Boolean,
     var playableMatches: Int = 1,
+    var winner: String?,
     val idUser: Int
 )

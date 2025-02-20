@@ -77,13 +77,24 @@ class ActivityCupInsight : AppCompatActivity() {
             if (idCup != null) {
                 lifecycleScope.launch {
                     val cup = dbAccess.cupDao().getCupById(idCup)
-                    if (!cup.hasEnded) {
-                        changeToActivityNewCupSettings(idCup)
+                    if (cup.winner != null) {
+                        deleteCup(idCup)
                     } else {
-                        errorMessage()
+                        changeToActivityNewCupSettings(idCup)
                     }
                 }
             }
+        }
+    }
+
+    private fun deleteCup(idCup: String) {
+        lifecycleScope.launch {
+            dbAccess.matchDao().deleteMatchesByIdCup(idCup)
+            dbAccess.teamDao().deleteTeamsByIdCup(idCup)
+            dbAccess.cupDao().deleteById(idCup)
+
+            val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
+            changeToActivityMainMenu(idUser)
         }
     }
 
@@ -146,6 +157,17 @@ class ActivityCupInsight : AppCompatActivity() {
                 } else {
                     binding.restingText.visibility = View.GONE
                 }
+
+                val winnerName = cup.winner
+                if (winnerName != null) {
+                    val deleteText = "Delete"
+                    binding.editButton.text = deleteText
+
+                    binding.winnerTag.visibility = View.VISIBLE
+                    binding.winnerName.visibility = View.VISIBLE
+                    binding.winnerName.text = winnerName
+                    finishMessage()
+                }
             }
         }
     }
@@ -196,7 +218,7 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
-    private fun errorMessage() {
+    private fun finishMessage() {
         Toast.makeText(this, "Cup has already ended", Toast.LENGTH_LONG).show()
     }
 

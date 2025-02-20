@@ -212,7 +212,8 @@ class ActivityNewCupSettings : AppCompatActivity() {
         var restingAmount: Int? = null
         var requiredRounds: Int? = null
         val doubleMatch = binding.doubleMatchCheckbox.isChecked
-        val alwaysWinner = binding.alwaysWinnerCheckbox.isChecked
+        val alwaysWinner = if (doubleMatch) binding.alwaysWinnerCheckbox.isChecked else true
+
         val twoPointsDifference =
             binding.twoPointsDifferenceCheckbox.isChecked
 
@@ -262,7 +263,8 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 doubleMatch = doubleMatch,
                 alwaysWinner = alwaysWinner,
                 twoPointsDifference = twoPointsDifference,
-                idUser = idUser.toInt()
+                idUser = idUser.toInt(),
+                winner = null,
             )
 
             if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() == "") {
@@ -278,7 +280,6 @@ class ActivityNewCupSettings : AppCompatActivity() {
 
     private fun backButton() {
         binding.backButton.setOnClickListener {
-
             val idUser = intent.getStringExtra(ID_USER_NC)
             val idCup = intent.getStringExtra(ID_CUP_NC)
             val cupJson = intent.getStringExtra(CUP_JSON_NC)
@@ -395,7 +396,8 @@ class ActivityNewCupSettings : AppCompatActivity() {
                     doubleMatch = doubleMatch,
                     alwaysWinner = alwaysWinner,
                     twoPointsDifference = twoPointsDifference,
-                    idUser = idUser.toInt()
+                    idUser = idUser.toInt(),
+                    winner = null,
                 )
 
                 if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() == "") {

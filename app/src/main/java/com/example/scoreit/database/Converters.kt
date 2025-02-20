@@ -31,10 +31,9 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromList(value: List<String>?): String? = value?.joinToString(",")
+    fun fromList(value: List<String>): String = value.joinToString(",")
 
     @TypeConverter
-    fun toList(value: String?): List<String> = value?.split(",") ?: emptyList()
-
+    fun toList(value: String): List<String> = value.split(",")
 
 }

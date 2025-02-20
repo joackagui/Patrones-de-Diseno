@@ -17,25 +17,8 @@ interface MatchDao {
     @Query("SELECT * FROM `Match` WHERE idCup =:idCup")
     suspend fun getMatchesByCupId(idCup: String): List<Match>
 
-    @Query(
-        """
-        SELECT c.restingAmount
-        FROM `Match` m
-        INNER JOIN Cup c ON m.idCup = c.id
-        WHERE m.id = :idMatch
-    """
-    )
-    suspend fun getRestingAmount(idMatch: String): Int
-
-    @Query(
-        """
-        SELECT c.doubleMatch
-        FROM `Match` m
-        INNER JOIN Cup c ON m.idCup = c.id
-        WHERE m.id = :idMatch
-    """
-    )
-    suspend fun getIfTwoMatches(idMatch: String): Boolean
+    @Query("SELECT * FROM `Match` WHERE matchDay =:matchDay")
+    suspend fun getMatchesByMatchDay(matchDay: String): List<Match>
 
     @Update
     suspend fun update(match: Match)

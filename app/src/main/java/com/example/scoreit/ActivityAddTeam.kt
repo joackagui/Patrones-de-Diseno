@@ -185,8 +185,8 @@ class ActivityAddTeam : AppCompatActivity() {
                     }
 
                     else -> {
-                        //roundRobin()
-                        //brackets()
+                        //TODO
+                        //roundRobin(idCup)
                     }
                 }
             }
@@ -233,13 +233,12 @@ class ActivityAddTeam : AppCompatActivity() {
                 4 -> 2 // Semifinal
                 8 -> 4 // Quarter-final
                 16 -> 8 // Round of 16
-                32 -> 16 // Round of 32
                 else -> null
             }
 
             var firstOfKind = true
             var initialRounds: Int? = 0
-            if(cup.requiredRounds == null){
+            if (cup.requiredRounds == null) {
                 initialRounds = null
             }
 
@@ -248,109 +247,125 @@ class ActivityAddTeam : AppCompatActivity() {
                 val secondTeam = allTeams[allTeams.size - 1 - i]
 
                 if (firstTeam.id != -1 && secondTeam.id != -1) {
-                    newMatches.add(
-                        Match(
-                            stage = stage,
-                            firstOfKind = firstOfKind,
-                            firstTeamJson = Converters().fromTeam(firstTeam),
-                            secondTeamJson = Converters().fromTeam(secondTeam),
-                            firstTeamRounds = initialRounds,
-                            secondTeamRounds = initialRounds,
-                            idCup = idCup.toInt(),
+                    if (stage != null) {
+                        newMatches.add(
+                            Match(
+                                stage = stage,
+                                matchDay = stage + i,
+                                firstOfKind = firstOfKind,
+                                firstTeamJson = Converters().fromTeam(firstTeam),
+                                secondTeamJson = Converters().fromTeam(secondTeam),
+                                firstTeamRounds = initialRounds,
+                                secondTeamRounds = initialRounds,
+                                idCup = idCup.toInt(),
+                            )
                         )
-                    )
+                    }
                     if (firstOfKind) {
                         firstOfKind = false
                     }
                     if (cup.doubleMatch) {
-                        newMatches.add(
-                            Match(
-                                stage = stage,
-                                firstOfKind = false,
-                                firstTeamJson = Converters().fromTeam(secondTeam),
-                                secondTeamJson = Converters().fromTeam(firstTeam),
-                                firstTeamRounds = initialRounds,
-                                secondTeamRounds = initialRounds,
-                                firstMatch = false,
-                                idCup = idCup.toInt(),
-                            )
-                        )
-                    }
-                } else {
-                    var pointsGiven = cup.requiredPoints ?: 10
-                    val roundsGiven = cup.requiredRounds
-                    if (cup.requiredPoints != null && cup.requiredRounds != null) {
-                        pointsGiven = cup.requiredPoints!! * cup.requiredRounds!!
-                    }
-                    if (firstTeam.id != -1) {
-                        newMatches.add(
-                            Match(
-                                stage = stage,
-                                firstOfKind = firstOfKind,
-                                firstTeamJson = Converters().fromTeam(firstTeam),
-                                secondTeamJson = Converters().fromTeam(secondTeam),
-                                firstTeamRounds = roundsGiven,
-                                secondTeamRounds = initialRounds,
-                                firstTeamPoints = pointsGiven,
-                                secondTeamPoints = 0,
-                                playable = false,
-                                idCup = idCup.toInt(),
-                            )
-                        )
-                        if (firstOfKind) {
-                            firstOfKind = false
-                        }
-                        if (cup.doubleMatch) {
+                        if (stage != null) {
                             newMatches.add(
                                 Match(
                                     stage = stage,
-                                    firstOfKind = firstOfKind,
+                                    matchDay = stage + i,
+                                    firstOfKind = false,
                                     firstTeamJson = Converters().fromTeam(secondTeam),
                                     secondTeamJson = Converters().fromTeam(firstTeam),
                                     firstTeamRounds = initialRounds,
-                                    secondTeamRounds = roundsGiven,
-                                    firstTeamPoints = 0,
-                                    secondTeamPoints = pointsGiven,
-                                    playable = false,
+                                    secondTeamRounds = initialRounds,
                                     firstMatch = false,
                                     idCup = idCup.toInt(),
                                 )
                             )
                         }
-                    } else if (secondTeam.id != -1) {
-                        newMatches.add(
-                            Match(
-                                stage = stage,
-                                firstOfKind = firstOfKind,
-                                firstTeamJson = Converters().fromTeam(firstTeam),
-                                secondTeamJson = Converters().fromTeam(secondTeam),
-                                firstTeamRounds = initialRounds,
-                                secondTeamRounds = roundsGiven,
-                                firstTeamPoints = 0,
-                                secondTeamPoints = pointsGiven,
-                                playable = false,
-                                idCup = idCup.toInt(),
-                            )
-                        )
-                        if (firstOfKind) {
-                            firstOfKind = false
-                        }
-                        if (cup.doubleMatch) {
+                    }
+                } else {
+                    var pointsGiven = cup.requiredPoints ?: 100
+                    val roundsGiven = cup.requiredRounds
+                    if (cup.requiredPoints != null && cup.requiredRounds != null) {
+                        pointsGiven = cup.requiredPoints!! * cup.requiredRounds!!
+                    }
+                    if (secondTeam.id == -1) {
+                        if (stage != null) {
                             newMatches.add(
                                 Match(
                                     stage = stage,
+                                    matchDay = stage + i,
                                     firstOfKind = firstOfKind,
-                                    firstTeamJson = Converters().fromTeam(secondTeam),
-                                    secondTeamJson = Converters().fromTeam(firstTeam),
+                                    firstTeamJson = Converters().fromTeam(firstTeam),
+                                    secondTeamJson = Converters().fromTeam(secondTeam),
                                     firstTeamRounds = roundsGiven,
                                     secondTeamRounds = initialRounds,
                                     firstTeamPoints = pointsGiven,
                                     secondTeamPoints = 0,
                                     playable = false,
-                                    firstMatch = false,
                                     idCup = idCup.toInt(),
                                 )
                             )
+                        }
+                        if (firstOfKind) {
+                            firstOfKind = false
+                        }
+                        if (cup.doubleMatch) {
+                            if (stage != null) {
+                                newMatches.add(
+                                    Match(
+                                        stage = stage,
+                                        matchDay = stage + i,
+                                        firstTeamJson = Converters().fromTeam(secondTeam),
+                                        secondTeamJson = Converters().fromTeam(firstTeam),
+                                        firstTeamRounds = initialRounds,
+                                        secondTeamRounds = roundsGiven,
+                                        firstTeamPoints = 0,
+                                        secondTeamPoints = pointsGiven,
+                                        playable = false,
+                                        firstMatch = false,
+                                        idCup = idCup.toInt(),
+                                    )
+                                )
+                            }
+                        }
+                    } else if (firstTeam.id == -1) {
+                        if (stage != null) {
+                            newMatches.add(
+                                Match(
+                                    stage = stage,
+                                    matchDay = stage + i,
+                                    firstOfKind = firstOfKind,
+                                    firstTeamJson = Converters().fromTeam(firstTeam),
+                                    secondTeamJson = Converters().fromTeam(secondTeam),
+                                    firstTeamRounds = initialRounds,
+                                    secondTeamRounds = roundsGiven,
+                                    firstTeamPoints = 0,
+                                    secondTeamPoints = pointsGiven,
+                                    playable = false,
+                                    idCup = idCup.toInt(),
+                                )
+                            )
+                        }
+                        if (firstOfKind) {
+                            firstOfKind = false
+                        }
+                        if (cup.doubleMatch) {
+                            if (stage != null) {
+                                newMatches.add(
+                                    Match(
+                                        stage = stage,
+                                        matchDay = stage + i,
+                                        firstTeamJson = Converters().fromTeam(secondTeam),
+                                        secondTeamJson = Converters().fromTeam(firstTeam),
+                                        firstTeamRounds = roundsGiven,
+                                        secondTeamRounds = initialRounds,
+                                        firstTeamPoints = pointsGiven,
+                                        secondTeamPoints = 0,
+                                        playable = false,
+                                        firstMatch = false,
+                                        idCup = idCup.toInt(),
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -362,7 +377,6 @@ class ActivityAddTeam : AppCompatActivity() {
             updateCup(idCup)
         }
     }
-
 
     private fun roundRobin(idCup: String) {
         lifecycleScope.launch {

@@ -134,6 +134,29 @@
                 android:maxLines="2"
                 android:text="@string/rounds" />
 
+            <TextView
+                android:id="@+id/winner_tag"
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/CommonRed"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/winner"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/winner_name"
+                style="@style/LargeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/CommonRed"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text=""
+                android:visibility="gone" />
+
             <include layout="@layout/header_score_board" />
 
             <androidx.recyclerview.widget.RecyclerView
