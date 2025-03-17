@@ -88,7 +88,10 @@ class ActivityAddTeam : AppCompatActivity() {
 
     private fun addButton() {
         binding.addTeamButton.setOnClickListener {
-            changeToActivityNewTeamSettings()
+            val idCup = intent.getStringExtra(ID_CUP_AT)
+            if (idCup != null) {
+                changeToActivityNewTeamSettings(idCup)
+            }
         }
     }
 
@@ -476,25 +479,19 @@ class ActivityAddTeam : AppCompatActivity() {
         finish()
     }
 
-    private fun changeToActivityNewTeamSettings() {
-        val idCup = intent.getStringExtra(ID_CUP_AT)
-        if (idCup != null) {
-            val activityNewTeamSettings = Intent(this, ActivityNewTeamSettings::class.java)
-            activityNewTeamSettings.putExtra(ID_CUP_NT, idCup)
+    private fun changeToActivityNewTeamSettings(idCup: String) {
+        val activityNewTeamSettings = Intent(this, ActivityNewTeamSettings::class.java)
+        activityNewTeamSettings.putExtra(ID_CUP_NT, idCup)
 
-            startActivity(activityNewTeamSettings)
-        }
+        startActivity(activityNewTeamSettings)
     }
 
     private fun changeToActivityNewCupSettings(lastCupJson: String) {
-        val idCup = intent.getStringExtra(ID_CUP_AT)
-        if (idCup != null) {
-            val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-            activityNewCupSettings.putExtra(CUP_JSON_NC, lastCupJson)
+        val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
+        activityNewCupSettings.putExtra(CUP_JSON_NC, lastCupJson)
 
-            startActivity(activityNewCupSettings)
-            finish()
-        }
+        startActivity(activityNewCupSettings)
+        finish()
     }
 
     private fun changeToActivityChangeUserData(idUser: String) {

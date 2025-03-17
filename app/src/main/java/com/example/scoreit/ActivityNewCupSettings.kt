@@ -79,7 +79,10 @@ class ActivityNewCupSettings : AppCompatActivity() {
         val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
 
         userButton.setOnClickListener {
-            changeToActivityChangeUserData()
+            val idUser = intent.getStringExtra(ID_USER_NC)
+            if (idUser != null) {
+                changeToActivityChangeUserData(idUser)
+            }
         }
 
         scoreItCup.setOnClickListener {
@@ -593,9 +596,9 @@ class ActivityNewCupSettings : AppCompatActivity() {
         finish()
     }
 
-    private fun changeToActivityChangeUserData() {
+    private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
-        activityChangeUserData.putExtra(ID_USER_CUD, intent.getStringExtra(ID_USER_NC))
+        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
 
         startActivity(activityChangeUserData)
     }

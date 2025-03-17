@@ -111,8 +111,7 @@ class ActivityLogIn : AppCompatActivity() {
         val activityMainMenu = Intent(this@ActivityLogIn, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ID_USER_MM, idUser)
 
-        activityMainMenu.flags =
-            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(activityMainMenu)
         finish()

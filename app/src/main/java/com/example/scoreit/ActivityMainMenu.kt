@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
 import com.example.scoreit.ActivityNewCupSettings.Companion.ID_USER_NC
 import com.example.scoreit.adapters.RecyclerCups
-import com.example.scoreit.databinding.ActivityMainMenuBinding
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
+import com.example.scoreit.databinding.ActivityMainMenuBinding
 import kotlinx.coroutines.launch
 
 class ActivityMainMenu : AppCompatActivity() {
@@ -47,8 +47,11 @@ class ActivityMainMenu : AppCompatActivity() {
             changeToActivityChangeUserData()
         }
 
-        scoreItCup.setOnClickListener{
-            changeToActivityMainMenu()
+        scoreItCup.setOnClickListener {
+            val idUser = intent.getStringExtra(ID_USER_MM)
+            if(idUser != null) {
+                changeToActivityMainMenu(idUser)
+            }
         }
     }
 
@@ -103,15 +106,12 @@ class ActivityMainMenu : AppCompatActivity() {
         startActivity(activityChangeUserData)
     }
 
-    private fun changeToActivityMainMenu() {
-        val idUser = intent.getStringExtra(ID_USER_MM)
-        if(idUser != null){
-            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-            activityMainMenu.putExtra(ID_USER_MM, idUser)
-            activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    private fun changeToActivityMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-            startActivity(activityMainMenu)
-            finish()
-        }
+        startActivity(activityMainMenu)
+        finish()
     }
 }

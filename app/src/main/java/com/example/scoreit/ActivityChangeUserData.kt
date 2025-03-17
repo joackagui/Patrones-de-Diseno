@@ -67,7 +67,7 @@ class ActivityChangeUserData : AppCompatActivity() {
                     user.email = binding.userEmail.text.toString()
                     user.password = binding.userPassword.text.toString()
                     dbAccess.userDao().update(user)
-                    changeToActivityMainMenu()
+                    changeToActivityMainMenu(idUser)
                 }
             }
         }
@@ -91,16 +91,13 @@ class ActivityChangeUserData : AppCompatActivity() {
         }
     }
 
-    private fun changeToActivityMainMenu() {
-        val idUser = intent.getStringExtra(ID_USER_CUD)
-        if (idUser != null) {
-            val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-            activityMainMenu.putExtra(ID_USER_MM, idUser)
-            activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    private fun changeToActivityMainMenu(idUser: String) {
+        val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
+        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-            startActivity(activityMainMenu)
-            finish()
-        }
+        startActivity(activityMainMenu)
+        finish()
     }
 
     private fun changeToActivitySelectUser() {
