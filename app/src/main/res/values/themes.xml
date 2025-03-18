@@ -125,4 +125,8 @@
         <item name="android:fontFamily">@font/score_it</item>
     </style>
 
+    <style name="screenOrientation">
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+
 </resources>

@@ -33,31 +33,6 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/add_logo_text"
-                style="@style/NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="12dp"
-                android:text="@string/add_logo"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/add_logo_button"
-                style="@style/NormalText"
-                android:layout_width="54dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/CommonRed"
-                android:padding="12dp"
-                android:text="@string/add_logo_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_logo_text" />
-
             <EditText
                 android:id="@+id/new_cup_name"
                 style="@style/EditTextHintStyle"
@@ -71,7 +46,7 @@
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_logo_button" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/new_start_date"
@@ -89,30 +64,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/new_cup_name" />
 
-            <Spinner
-                android:id="@+id/game_mode_spinner"
-                android:layout_width="320dp"
-                android:layout_height="65dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/DarkestRed"
-                android:entries="@array/game_mode_options"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/new_start_date" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/points_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:checked="false"
-                android:contentDescription="@string/want_score"
-                android:padding="12dp"
-                android:thumb="@drawable/thumb"
-                app:layout_constraintStart_toStartOf="@id/new_cup_name"
-                app:layout_constraintTop_toBottomOf="@id/game_mode_spinner"
-                app:track="@drawable/track" />
-
             <EditText
                 android:id="@+id/required_points"
                 style="@style/EditTextHintStyle"
@@ -124,38 +75,9 @@
                 android:enabled="false"
                 android:hint="@string/cup_points_text"
                 android:inputType="number"
-                app:layout_constraintBottom_toBottomOf="@id/points_switch"
+                app:layout_constraintTop_toBottomOf="@id/new_start_date"
                 app:layout_constraintEnd_toEndOf="@id/new_cup_name"
-                app:layout_constraintStart_toEndOf="@+id/points_switch"
-                app:layout_constraintTop_toTopOf="@id/points_switch" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/time_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:contentDescription="@string/want_time"
-                android:padding="12dp"
-                android:thumb="@drawable/thumb"
-                app:layout_constraintStart_toStartOf="@id/new_cup_name"
-                app:layout_constraintTop_toBottomOf="@id/points_switch"
-                app:track="@drawable/track" />
-
-            <EditText
-                android:id="@+id/required_time"
-                style="@style/EditTextHintStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:autofillHints="10"
-                android:backgroundTint="@color/DarkestRed"
-                android:enabled="false"
-                android:hint="@string/time_amount"
-                android:inputType="number"
-                app:layout_constraintBottom_toBottomOf="@id/time_switch"
-                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
-                app:layout_constraintStart_toEndOf="@+id/time_switch"
-                app:layout_constraintTop_toTopOf="@id/time_switch" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <CheckBox
                 android:id="@+id/double_match_checkbox"
@@ -167,7 +89,7 @@
                 android:padding="12dp"
                 android:text="@string/home_and_away"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@id/required_time" />
+                app:layout_constraintTop_toBottomOf="@id/required_points" />
 
             <CheckBox
                 android:id="@+id/always_winner_checkbox"
@@ -196,79 +118,6 @@
                 app:layout_constraintTop_toBottomOf="@id/always_winner_checkbox" />
 
             <CheckBox
-                android:id="@+id/resting_checkbox"
-                style="@style/NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="@string/rest_times_text"
-                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/two_points_difference_checkbox" />
-
-            <TextView
-                android:id="@+id/resting_amount_text"
-                style="@style/NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="12dp"
-                android:text="@string/rest_quantity_edit_text"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
-                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/resting_checkbox" />
-
-            <com.shawnlin.numberpicker.NumberPicker
-                android:id="@+id/resting_amount_number_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:contentDescription="@string/select_rest_quantity"
-                android:padding="12dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
-                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/resting_amount_text"
-                app:np_dividerColor="@color/DarkestRed"
-                app:np_max="10"
-                app:np_orientation="horizontal"
-                app:np_selectedTextColor="@color/White"
-                app:np_textColor="@color/White" />
-
-            <TextView
-                android:id="@+id/resting_minutes_text"
-                style="@style/NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="100dp"
-                android:padding="12dp"
-                android:text="@string/minutes_text"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
-                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/resting_amount_number_picker" />
-
-            <com.shawnlin.numberpicker.NumberPicker
-                android:id="@+id/resting_minutes_number_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:contentDescription="@string/select_minutes"
-                android:padding="12dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/guideline_vertical2"
-                app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/resting_minutes_text"
-                app:np_dividerColor="@color/DarkestRed"
-                app:np_max="20"
-                app:np_orientation="horizontal"
-                app:np_selectedTextColor="@color/White"
-                app:np_textColor="@color/White" />
-
-            <CheckBox
                 android:id="@+id/rounds_checkbox"
                 style="@style/NormalText"
                 android:layout_width="wrap_content"
@@ -278,7 +127,7 @@
                 android:padding="12dp"
                 android:text="@string/rounds_text"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
-                app:layout_constraintTop_toBottomOf="@+id/resting_minutes_number_picker" />
+                app:layout_constraintTop_toBottomOf="@+id/two_points_difference_checkbox" />
 
             <TextView
                 android:id="@+id/rounds_amount_text"

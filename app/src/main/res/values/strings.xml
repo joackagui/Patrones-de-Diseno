@@ -77,10 +77,4 @@
     <string name="cup_logo">cup logo</string>
     <string name="playable_match">Playable Match</string>
     <string name="winner">Winner:</string>
-
-    <string-array name="game_mode_options">
-        <item>Round Robin</item>
-        <item>Brackets</item>
-        <item>Both</item>
-    </string-array>
 </resources>

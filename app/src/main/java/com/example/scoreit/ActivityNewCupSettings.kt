@@ -4,11 +4,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -28,14 +25,6 @@ class ActivityNewCupSettings : AppCompatActivity() {
     private lateinit var binding: ActivityNewCupSettingsBinding
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var dbAccess: AppDataBase
-    private var logo: String? = null
-
-    private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                logo = uri.toString()
-            }
-        }
 
     companion object {
         const val ID_USER_NC: String = "ID_USER"
@@ -54,23 +43,14 @@ class ActivityNewCupSettings : AppCompatActivity() {
         defaultData()
         getData()
 
-        //addLogoButton()
         deleteButton()
         backButton()
         saveButton()
     }
 
-    private fun addLogoButton() {
-        binding.addLogoButton.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-    }
-
     private fun defaultData() {
         configureSwitches()
         configureDatePicker()
-        configureSpinner()
-        restingCheckbox()
         roundsCheckbox()
     }
 
@@ -129,28 +109,10 @@ class ActivityNewCupSettings : AppCompatActivity() {
         binding.newCupName.setText(cup.name)
         binding.newStartDate.text = cup.startDate
         binding.requiredPoints.setText(cup.requiredPoints.toString())
-        binding.requiredTime.setText(cup.requiredTime.toString())
         binding.doubleMatchCheckbox.isChecked = cup.doubleMatch
         binding.alwaysWinnerCheckbox.isChecked = cup.alwaysWinner
         binding.twoPointsDifferenceCheckbox.isChecked = cup.twoPointsDifference
 
-        if (cup.restingTime != null && cup.restingAmount != null) {
-            binding.restingCheckbox.isChecked = true
-            binding.restingMinutesNumberPicker.isEnabled = true
-            binding.restingAmountNumberPicker.isEnabled = true
-            binding.restingMinutesText.visibility = View.VISIBLE
-            binding.restingMinutesNumberPicker.visibility = View.VISIBLE
-            binding.restingAmountText.visibility = View.VISIBLE
-            binding.restingAmountNumberPicker.visibility = View.VISIBLE
-            binding.restingMinutesNumberPicker.value = cup.restingTime!!
-            binding.restingAmountNumberPicker.value = cup.restingAmount!!
-        } else {
-            binding.restingCheckbox.isChecked = false
-            binding.restingMinutesNumberPicker.value = 1
-            binding.restingAmountNumberPicker.value = 1
-            binding.restingMinutesText.visibility = View.GONE
-            binding.restingMinutesNumberPicker.visibility = View.GONE
-        }
         if (cup.requiredRounds != null) {
             binding.roundsCheckbox.isChecked = true
             binding.roundsAmountNumberPicker.isEnabled = true
@@ -163,43 +125,19 @@ class ActivityNewCupSettings : AppCompatActivity() {
             binding.roundsAmountNumberPicker.visibility = View.GONE
             binding.roundsAmountNumberPicker.value = 2
         }
-        if (cup.requiredTime == null) {
-            binding.timeSwitch.isChecked = false
-            binding.requiredTime.isEnabled = false
-            binding.requiredTime.text = null
-        }
-        if (cup.requiredPoints == null) {
-            binding.pointsSwitch.isChecked = false
-            binding.requiredPoints.isEnabled = false
-            binding.requiredPoints.text = null
-        }
-
-        binding.gameModeSpinner.setSelection(
-            resources.getStringArray(R.array.game_mode_options).indexOf(cup.gameMode)
-        )
 
         if (wasCreated) {
             binding.deleteButton.visibility = View.VISIBLE
             binding.doubleMatchCheckbox.visibility = View.GONE
             binding.roundsCheckbox.visibility = View.GONE
-            binding.gameModeSpinner.visibility = View.GONE
 
             if (hasStarted) {
                 binding.requiredPoints.visibility = View.GONE
-                binding.requiredTime.visibility = View.GONE
-                binding.timeSwitch.visibility = View.GONE
-                binding.pointsSwitch.visibility = View.GONE
                 binding.twoPointsDifferenceCheckbox.visibility = View.GONE
-                binding.restingCheckbox.visibility = View.GONE
                 binding.roundsCheckbox.visibility = View.GONE
                 binding.alwaysWinnerCheckbox.visibility = View.GONE
-                binding.restingMinutesText.visibility = View.GONE
-                binding.restingMinutesNumberPicker.visibility = View.GONE
-                binding.restingAmountText.visibility = View.GONE
-                binding.restingAmountNumberPicker.visibility = View.GONE
                 binding.roundsAmountText.visibility = View.GONE
                 binding.roundsAmountNumberPicker.visibility = View.GONE
-                binding.gameModeSpinner.visibility = View.GONE
                 binding.doubleMatchCheckbox.visibility = View.GONE
             }
         }
@@ -209,10 +147,6 @@ class ActivityNewCupSettings : AppCompatActivity() {
         var name = binding.newCupName.text.toString()
         val startDate = binding.newStartDate.text.toString()
         var requiredPoints: Int? = null
-        var requiredTime: Int? = null
-        val gameMode = binding.gameModeSpinner.selectedItem.toString()
-        var restingTime: Int? = null
-        var restingAmount: Int? = null
         var requiredRounds: Int? = null
         val doubleMatch = binding.doubleMatchCheckbox.isChecked
         val alwaysWinner = if (doubleMatch) binding.alwaysWinnerCheckbox.isChecked else true
@@ -226,42 +160,18 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 name = "Cup ${cupCount + 1}"
             }
 
-            if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() != "") {
+            if (binding.requiredPoints.text.toString() != "") {
                 requiredPoints = binding.requiredPoints.text.toString().toInt()
-            }
-
-            if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() != "") {
-                requiredTime = binding.requiredTime.text.toString().toInt()
-            }
-
-            if (binding.restingCheckbox.isChecked) {
-                restingTime = binding.restingMinutesNumberPicker.value
-                restingAmount = binding.restingAmountNumberPicker.value
             }
 
             if (binding.roundsCheckbox.isChecked) {
                 requiredRounds = binding.roundsAmountNumberPicker.value
             }
 
-            if (logo == null) {
-                logo = "drawable/cup_logo.jpg"
-            }
-
-            if (binding.requiredTime.isEnabled && binding.requiredPoints.isEnabled
-                || !binding.requiredTime.isEnabled && !binding.requiredPoints.isEnabled
-            ) {
-                throw IllegalStateException("What have you done? you must only choose one option")
-            }
-
             val newCup = Cup(
                 name = name,
-                logo = logo!!,
                 startDate = startDate,
                 requiredPoints = requiredPoints,
-                requiredTime = requiredTime,
-                gameMode = gameMode,
-                restingTime = restingTime,
-                restingAmount = restingAmount,
                 requiredRounds = requiredRounds,
                 doubleMatch = doubleMatch,
                 alwaysWinner = alwaysWinner,
@@ -270,9 +180,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 winner = null,
             )
 
-            if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() == "") {
-                errorMessage(1)
-            } else if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
+            if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
                 errorMessage(2)
             } else {
                 val idCup = dbAccess.cupDao().insert(newCup).toInt()
@@ -340,18 +248,10 @@ class ActivityNewCupSettings : AppCompatActivity() {
         lifecycleScope.launch {
             val cup = dbAccess.cupDao().getCupById(idCup)
 
-            if (logo == null) {
-                logo = cup.logo
-            }
-
             if (!cup.hasStarted) {
                 var name = binding.newCupName.text.toString()
                 val startDate = binding.newStartDate.text.toString()
                 var winningPoints: Int? = null
-                var finishTime: Int? = null
-                val gameMode = binding.gameModeSpinner.selectedItem.toString()
-                var restingTime: Int? = null
-                var restingAmount: Int? = null
                 var requiredRounds: Int? = null
                 val doubleMatch = binding.doubleMatchCheckbox.isChecked
                 val alwaysWinner = binding.alwaysWinnerCheckbox.isChecked
@@ -368,33 +268,15 @@ class ActivityNewCupSettings : AppCompatActivity() {
                     winningPoints = binding.requiredPoints.text.toString().toInt()
                 }
 
-                if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() != "") {
-                    finishTime = binding.requiredTime.text.toString().toInt()
-                }
-
-                if (binding.restingCheckbox.isChecked) {
-                    restingTime = binding.restingMinutesNumberPicker.value
-                    restingAmount = binding.restingAmountNumberPicker.value
-                }
-
                 if (binding.roundsCheckbox.isChecked) {
                     requiredRounds = binding.roundsAmountNumberPicker.value
                 }
 
-                if (binding.requiredTime.isEnabled && binding.requiredPoints.isEnabled
-                    || !binding.requiredTime.isEnabled && !binding.requiredPoints.isEnabled
-                ) {
-                    throw IllegalStateException("What have you done? you must only choose one option")
-                }
                 val newCup = Cup(
                     id = idCup.toInt(),
                     name = name,
                     startDate = startDate,
                     requiredPoints = winningPoints,
-                    requiredTime = finishTime,
-                    gameMode = gameMode,
-                    restingTime = restingTime,
-                    restingAmount = restingAmount,
                     requiredRounds = requiredRounds,
                     doubleMatch = doubleMatch,
                     alwaysWinner = alwaysWinner,
@@ -403,9 +285,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
                     winner = null,
                 )
 
-                if (binding.requiredTime.isEnabled && binding.requiredTime.text.toString() == "") {
-                    errorMessage(1)
-                } else if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
+                if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
                     errorMessage(2)
                 } else {
                     dbAccess.cupDao().update(newCup)
@@ -421,17 +301,6 @@ class ActivityNewCupSettings : AppCompatActivity() {
         }
     }
 
-    private fun restingCheckbox() {
-        binding.restingCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            val visibility = if (isChecked) View.VISIBLE else View.GONE
-            binding.restingMinutesText.visibility = visibility
-            binding.restingMinutesNumberPicker.visibility = visibility
-
-            binding.restingAmountText.visibility = visibility
-            binding.restingAmountNumberPicker.visibility = visibility
-        }
-    }
-
     private fun roundsCheckbox() {
         binding.roundsCheckbox.setOnCheckedChangeListener { _, isChecked ->
             val visibility = if (isChecked) View.VISIBLE else View.GONE
@@ -441,45 +310,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
     }
 
     private fun configureSwitches() {
-        binding.timeSwitch.isUseMaterialThemeColors = false
-        binding.pointsSwitch.isUseMaterialThemeColors = false
-
-        binding.timeSwitch.isChecked = false
-        binding.requiredTime.isEnabled = false
-        binding.pointsSwitch.isChecked = true
         binding.requiredPoints.isEnabled = true
-
-        binding.timeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.requiredTime.isEnabled = true
-
-                binding.pointsSwitch.isChecked = false
-                binding.requiredPoints.isEnabled = false
-                binding.requiredPoints.text = null
-
-                binding.twoPointsDifferenceCheckbox.visibility = View.GONE
-            } else {
-                if (!binding.pointsSwitch.isChecked) {
-                    binding.timeSwitch.isChecked = true
-                }
-            }
-        }
-
-        binding.pointsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.requiredPoints.isEnabled = true
-                binding.timeSwitch.isChecked = false
-                binding.requiredTime.isEnabled = false
-                binding.requiredTime.text = null
-
-                binding.twoPointsDifferenceCheckbox.isChecked = false
-                binding.twoPointsDifferenceCheckbox.visibility = View.VISIBLE
-            } else {
-                if (!binding.timeSwitch.isChecked) {
-                    binding.pointsSwitch.isChecked = true
-                }
-            }
-        }
 
         binding.twoPointsDifferenceCheckbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -560,12 +391,6 @@ class ActivityNewCupSettings : AppCompatActivity() {
             12 -> "DEC"
             else -> "JAN"
         }
-    }
-
-    private fun configureSpinner() {
-        val gameMode = resources.getStringArray(R.array.game_mode_options)
-        val adapter = ArrayAdapter(this, R.layout.spinner_item_style, gameMode)
-        binding.gameModeSpinner.adapter = adapter
     }
 
     private fun errorMessage(number: Int) {

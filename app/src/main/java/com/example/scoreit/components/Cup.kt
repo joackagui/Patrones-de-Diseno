@@ -16,15 +16,10 @@ import androidx.room.PrimaryKey
 data class Cup(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    var logo: String? = null,
     var hasStarted: Boolean = false,
     var name: String,
     var startDate: String,
     var requiredPoints: Int?,
-    var requiredTime: Int?,
-    var gameMode: String,
-    var restingTime: Int?,
-    var restingAmount: Int?,
     var requiredRounds: Int?,
     var doubleMatch: Boolean,
     var alwaysWinner: Boolean,

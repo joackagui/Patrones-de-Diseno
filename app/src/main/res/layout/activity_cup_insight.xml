@@ -81,15 +81,6 @@
                 android:text="@string/points" />
 
             <TextView
-                android:id="@+id/time_text"
-                style="@style/SmallText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:maxLines="2"
-                android:text="@string/time" />
-
-            <TextView
                 android:id="@+id/double_match_text"
                 style="@style/SmallText"
                 android:layout_width="wrap_content"
@@ -115,15 +106,6 @@
                 android:layout_marginTop="10dp"
                 android:maxLines="2"
                 android:text="@string/two_points_difference" />
-
-            <TextView
-                android:id="@+id/resting_text"
-                style="@style/SmallText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:maxLines="2"
-                android:text="@string/rest_time" />
 
             <TextView
                 android:id="@+id/rounds_text"

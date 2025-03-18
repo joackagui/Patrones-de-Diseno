@@ -80,7 +80,7 @@
 
     <TextView
         android:id="@+id/first_team_name_display"
-        style="@style/HeaderTitleText"
+        style="@style/LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -90,51 +90,13 @@
 
     <TextView
         android:id="@+id/second_team_name_display"
-        style="@style/HeaderTitleText"
+        style="@style/LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:text=""
         app:layout_constraintBottom_toTopOf="@id/second_team_frame"
         app:layout_constraintEnd_toEndOf="@id/second_team_frame" />
-
-    <TextView
-        android:id="@+id/timer"
-        style="@style/TimeIndicatorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/timer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startPauseButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="2dp"
-        app:backgroundTint="@color/CommonRed"
-        app:icon="@drawable/play_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/timer"
-        app:layout_constraintStart_toEndOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/resetButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="2dp"
-        app:backgroundTint="@color/CommonRed"
-        app:icon="@drawable/reset_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline_margen_derecha"
-        app:layout_constraintStart_toEndOf="@id/timer"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/second_team_rest_button"
