@@ -114,22 +114,14 @@ class ActivityNewCupSettings : AppCompatActivity() {
         binding.twoPointsDifferenceCheckbox.isChecked = cup.twoPointsDifference
 
         if (cup.requiredRounds != null) {
-            binding.roundsCheckbox.isChecked = true
-            binding.roundsAmountNumberPicker.isEnabled = true
             binding.roundsAmountNumberPicker.value = cup.requiredRounds!!
-            binding.roundsAmountText.visibility = View.VISIBLE
-            binding.roundsAmountNumberPicker.visibility = View.VISIBLE
         } else {
-            binding.roundsCheckbox.isChecked = false
-            binding.roundsAmountText.visibility = View.GONE
-            binding.roundsAmountNumberPicker.visibility = View.GONE
             binding.roundsAmountNumberPicker.value = 2
         }
 
         if (wasCreated) {
             binding.deleteButton.visibility = View.VISIBLE
             binding.doubleMatchCheckbox.visibility = View.GONE
-            binding.roundsCheckbox.visibility = View.GONE
 
             if (hasStarted) {
                 binding.requiredPoints.visibility = View.GONE
@@ -149,10 +141,8 @@ class ActivityNewCupSettings : AppCompatActivity() {
         var requiredPoints: Int? = null
         var requiredRounds: Int? = null
         val doubleMatch = binding.doubleMatchCheckbox.isChecked
-        val alwaysWinner = if (doubleMatch) binding.alwaysWinnerCheckbox.isChecked else true
-
-        val twoPointsDifference =
-            binding.twoPointsDifferenceCheckbox.isChecked
+        val alwaysWinner = binding.alwaysWinnerCheckbox.isChecked
+        val twoPointsDifference = if(binding.alwaysWinnerCheckbox.isChecked) binding.twoPointsDifferenceCheckbox.isChecked else false
 
         lifecycleScope.launch {
             if (binding.newCupName.text.toString().isBlank()) {
@@ -181,7 +171,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
             )
 
             if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
-                errorMessage(2)
+                errorMessage()
             } else {
                 val idCup = dbAccess.cupDao().insert(newCup).toInt()
                 changeToActivityAddTeam(idCup.toString())
@@ -286,7 +276,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 )
 
                 if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
-                    errorMessage(2)
+                    errorMessage()
                 } else {
                     dbAccess.cupDao().update(newCup)
                 }
@@ -393,16 +383,8 @@ class ActivityNewCupSettings : AppCompatActivity() {
         }
     }
 
-    private fun errorMessage(number: Int) {
-        when (number) {
-            1 -> {
-                Toast.makeText(this, "You must insert Time", Toast.LENGTH_LONG).show()
-            }
-
-            2 -> {
-                Toast.makeText(this, "You must insert Points", Toast.LENGTH_LONG).show()
-            }
-        }
+    private fun errorMessage() {
+        Toast.makeText(this, "You must insert Points", Toast.LENGTH_LONG).show()
     }
 
     private fun changeToActivityAddTeam(idCup: String) {

@@ -192,7 +192,14 @@ class ActivityCupInsight : AppCompatActivity() {
     }
 
     private fun finishMessage() {
-        Toast.makeText(this, "Cup has already ended", Toast.LENGTH_LONG).show()
+        val idCup = intent.getStringExtra(ID_CUP_CI)
+        if (idCup != null) {
+            lifecycleScope.launch {
+                val cup = dbAccess.cupDao().getCupById(idCup)
+                val finishMessage = "The ${cup.name} has finished"
+                Toast.makeText(this@ActivityCupInsight, finishMessage, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun changeToActivityMainMenu(idUser: String) {

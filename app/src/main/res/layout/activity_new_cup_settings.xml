@@ -33,10 +33,22 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/cup_logo"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/cup_logo"
+                android:elevation="2dp"
+                android:src="@drawable/score_it_coup"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/new_cup_name"
                 style="@style/EditTextHintStyle"
-                android:layout_width="320dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:autofillHints="name"
@@ -44,14 +56,14 @@
                 android:hint="@string/cup_name"
                 android:inputType="text"
                 android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toStartOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@id/cup_logo" />
 
             <Button
                 android:id="@+id/new_start_date"
                 style="?android:spinnerStyle"
-                android:layout_width="320dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/DarkestRed"
@@ -60,8 +72,8 @@
                 android:text="@string/jan_01_2020"
                 android:textColor="@color/TransparentWhite"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toStartOf="@id/guideline_mitad_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/new_cup_name" />
 
             <EditText
@@ -69,15 +81,15 @@
                 style="@style/EditTextHintStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
                 android:autofillHints="10"
                 android:backgroundTint="@color/DarkestRed"
                 android:enabled="false"
                 android:hint="@string/cup_points_text"
                 android:inputType="number"
-                app:layout_constraintTop_toBottomOf="@id/new_start_date"
-                app:layout_constraintEnd_toEndOf="@id/new_cup_name"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="@id/guideline_vertical2"
+                app:layout_constraintStart_toStartOf="@id/guideline_mitad_vertical"
+                app:layout_constraintTop_toBottomOf="@id/new_start_date" />
 
             <CheckBox
                 android:id="@+id/double_match_checkbox"
@@ -110,10 +122,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:checked="false"
-                android:padding="12dp"
                 android:enabled="false"
-                android:textColor="@color/TransparentWhite"
+                android:padding="12dp"
                 android:text="@string/two_point_difference"
+                android:textColor="@color/TransparentWhite"
                 app:layout_constraintStart_toEndOf="@id/guideline_mitad_vertical"
                 app:layout_constraintTop_toBottomOf="@id/always_winner_checkbox" />
 

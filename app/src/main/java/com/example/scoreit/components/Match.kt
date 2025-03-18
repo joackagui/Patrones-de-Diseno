@@ -27,8 +27,6 @@ data class Match(
     var secondTeamPoints: Int = 0,
     var firstTeamRounds: Int? = null,
     var secondTeamRounds: Int? = null,
-    var pointsPerRoundFirstTeam: String = "",
-    var pointsPerRoundSecondTeam: String = "",
     val firstMatch: Boolean = true,
     var idWinner: Int? = null,
     val idCup: Int
