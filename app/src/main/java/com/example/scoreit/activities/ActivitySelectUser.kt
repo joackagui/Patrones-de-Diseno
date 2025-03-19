@@ -1,10 +1,10 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.scoreit.adapters.RecyclerUsers
+import com.example.scoreit.recyclers.RecyclerUsers
 import com.example.scoreit.components.User
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase

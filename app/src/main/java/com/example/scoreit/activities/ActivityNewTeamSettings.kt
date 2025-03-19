@@ -1,4 +1,4 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.scoreit.ActivityAddTeam.Companion.ID_CUP_AT
-import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
-import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
+import com.example.scoreit.R
 import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
@@ -188,7 +186,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
 
     private fun changeToActivityAddTeam(idCup: String) {
         val activityAddTeam = Intent(this, ActivityAddTeam::class.java)
-        activityAddTeam.putExtra(ID_CUP_AT, idCup)
+        activityAddTeam.putExtra(ActivityAddTeam.Companion.ID_CUP_AT, idCup)
 
         startActivity(activityAddTeam)
         finish()
@@ -196,7 +194,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
 
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
         activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(activityMainMenu)
@@ -205,7 +203,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
 
     private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
-        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+        activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, idUser)
 
         startActivity(activityChangeUserData)
         finish()

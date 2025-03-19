@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/refereeButtons"
     style="@style/Background"
-    tools:context=".ActivityRefereeButtons">
+    tools:context=".activities.ActivityRefereeButtons">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/first_team_frame"

@@ -1,4 +1,4 @@
-package com.example.scoreit.adapters
+package com.example.scoreit.recyclers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scoreit.ActivityRefereeButtons
-import com.example.scoreit.ActivityRefereeButtons.Companion.ID_MATCH_RB
+import com.example.scoreit.activities.ActivityRefereeButtons
+import com.example.scoreit.activities.ActivityRefereeButtons.Companion.ID_MATCH_RB
 import com.example.scoreit.components.Match
 import com.example.scoreit.databinding.FrameMatchBinding
 import com.example.scoreit.database.Converters

@@ -1,4 +1,4 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.scoreit.ActivityCupInsight.Companion.ID_CUP_CI
 import com.example.scoreit.components.Match
 import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
@@ -334,7 +333,7 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
     private fun changeToActivityCupInsight(idCup: String) {
         val activityCupInsight = Intent(this, ActivityCupInsight::class.java)
-        activityCupInsight.putExtra(ID_CUP_CI, idCup)
+        activityCupInsight.putExtra(ActivityCupInsight.Companion.ID_CUP_CI, idCup)
 
         startActivity(activityCupInsight)
         finish()

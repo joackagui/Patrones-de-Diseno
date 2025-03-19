@@ -1,4 +1,4 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
-import com.example.scoreit.ActivityNewCupSettings.Companion.ID_USER_NC
-import com.example.scoreit.adapters.RecyclerCups
+import com.example.scoreit.R
+import com.example.scoreit.recyclers.RecyclerCups
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityMainMenuBinding
@@ -93,7 +92,7 @@ class ActivityMainMenu : AppCompatActivity() {
     private fun changeToNewCupSettings(idUser: String) {
         binding.createNewCup.setOnClickListener {
             val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-            activityNewCupSettings.putExtra(ID_USER_NC, idUser)
+            activityNewCupSettings.putExtra(ActivityNewCupSettings.Companion.ID_USER_NC, idUser)
 
             startActivity(activityNewCupSettings)
         }
@@ -101,7 +100,7 @@ class ActivityMainMenu : AppCompatActivity() {
 
     private fun changeToActivityChangeUserData() {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
-        activityChangeUserData.putExtra(ID_USER_CUD, intent.getStringExtra(ID_USER_MM))
+        activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, intent.getStringExtra(ID_USER_MM))
 
         startActivity(activityChangeUserData)
     }

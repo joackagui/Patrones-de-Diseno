@@ -1,12 +1,12 @@
-package com.example.scoreit.adapters
+package com.example.scoreit.recyclers
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scoreit.ActivityNewTeamSettings
-import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_TEAM_NT
+import com.example.scoreit.activities.ActivityNewTeamSettings
+import com.example.scoreit.activities.ActivityNewTeamSettings.Companion.ID_TEAM_NT
 import com.example.scoreit.components.Team
 import com.example.scoreit.databinding.FrameTeamBinding
 

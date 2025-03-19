@@ -1,10 +1,9 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityChangeUserDataBinding
@@ -93,7 +92,7 @@ class ActivityChangeUserData : AppCompatActivity() {
 
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
         activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(activityMainMenu)

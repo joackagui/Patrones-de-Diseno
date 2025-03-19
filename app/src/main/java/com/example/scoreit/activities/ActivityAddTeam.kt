@@ -1,4 +1,4 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,11 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
-import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.ActivityNewCupSettings.Companion.CUP_JSON_NC
-import com.example.scoreit.ActivityNewTeamSettings.Companion.ID_CUP_NT
-import com.example.scoreit.adapters.RecyclerTeams
+import com.example.scoreit.R
+import com.example.scoreit.activities.ActivityNewTeamSettings.Companion.ID_CUP_NT
+import com.example.scoreit.recyclers.RecyclerTeams
 import com.example.scoreit.components.Match
 import com.example.scoreit.components.Team
 import com.example.scoreit.database.AppDataBase
@@ -281,7 +279,7 @@ class ActivityAddTeam : AppCompatActivity() {
 
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
         activityMainMenu.flags =
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
@@ -298,7 +296,7 @@ class ActivityAddTeam : AppCompatActivity() {
 
     private fun changeToActivityNewCupSettings(lastCupJson: String) {
         val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-        activityNewCupSettings.putExtra(CUP_JSON_NC, lastCupJson)
+        activityNewCupSettings.putExtra(ActivityNewCupSettings.Companion.CUP_JSON_NC, lastCupJson)
 
         startActivity(activityNewCupSettings)
         finish()
@@ -306,7 +304,7 @@ class ActivityAddTeam : AppCompatActivity() {
 
     private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
-        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+        activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, idUser)
 
         startActivity(activityChangeUserData)
     }

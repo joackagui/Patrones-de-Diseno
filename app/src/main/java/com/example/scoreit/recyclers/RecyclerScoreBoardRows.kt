@@ -1,4 +1,4 @@
-package com.example.scoreit.adapters
+package com.example.scoreit.recyclers
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.example.scoreit.adapters
+package com.example.scoreit.recyclers
 
 import android.content.Context
 import android.content.Intent
@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scoreit.ActivityLogIn
-import com.example.scoreit.ActivityLogIn.Companion.ID_USER_LI
-import com.example.scoreit.ActivityMainMenu
-import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.ActivitySignUp
-import com.example.scoreit.ActivitySignUp.Companion.ID_USER_SU
+import com.example.scoreit.activities.ActivityLogIn
+import com.example.scoreit.activities.ActivityLogIn.Companion.ID_USER_LI
+import com.example.scoreit.activities.ActivityMainMenu
+import com.example.scoreit.activities.ActivityMainMenu.Companion.ID_USER_MM
+import com.example.scoreit.activities.ActivitySignUp
+import com.example.scoreit.activities.ActivitySignUp.Companion.ID_USER_SU
 import com.example.scoreit.components.User
 import com.example.scoreit.databinding.FrameUserBinding
 

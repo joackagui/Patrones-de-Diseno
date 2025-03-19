@@ -17,56 +17,60 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".ActivitySelectUser"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:name=".activities.ActivitySelectUser"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".ActivityChangeUserData"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityChangeUserData"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityNewTeamSettings"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityNewTeamSettings"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityAddTeam"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityAddTeam"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivitySignUp"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivitySignUp"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityCupInsight"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityCupInsight"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityLogIn"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityLogIn"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityRefereeButtons"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityRefereeButtons"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityNewCupSettings"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityNewCupSettings"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityMainMenu"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".activities.ActivityMainMenu"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

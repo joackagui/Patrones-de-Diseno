@@ -1,4 +1,4 @@
-package com.example.scoreit
+package com.example.scoreit.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,11 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.scoreit.ActivityChangeUserData.Companion.ID_USER_CUD
-import com.example.scoreit.ActivityMainMenu.Companion.ID_USER_MM
-import com.example.scoreit.ActivityNewCupSettings.Companion.ID_CUP_NC
-import com.example.scoreit.adapters.RecyclerMatches
-import com.example.scoreit.adapters.RecyclerScoreBoardRows
+import com.example.scoreit.R
+import com.example.scoreit.recyclers.RecyclerMatches
+import com.example.scoreit.recyclers.RecyclerScoreBoardRows
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityCupInsightBinding
@@ -204,7 +202,7 @@ class ActivityCupInsight : AppCompatActivity() {
 
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
-        activityMainMenu.putExtra(ID_USER_MM, idUser)
+        activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
         activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
         startActivity(activityMainMenu)
@@ -213,14 +211,14 @@ class ActivityCupInsight : AppCompatActivity() {
 
     private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
-        activityChangeUserData.putExtra(ID_USER_CUD, idUser)
+        activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, idUser)
 
         startActivity(activityChangeUserData)
     }
 
     private fun changeToActivityNewCupSettings(idCup: String) {
         val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
-        activityNewCupSettings.putExtra(ID_CUP_NC, idCup)
+        activityNewCupSettings.putExtra(ActivityNewCupSettings.Companion.ID_CUP_NC, idCup)
 
         startActivity(activityNewCupSettings)
     }

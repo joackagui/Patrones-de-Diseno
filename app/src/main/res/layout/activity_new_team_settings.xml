@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/Background"
-    tools:context=".ActivityNewTeamSettings">
+    tools:context=".activities.ActivityNewTeamSettings">
 
     <include layout="@layout/header_main" />
 
