@@ -14,7 +14,7 @@ import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
 import com.example.scoreit.pointsController.Controller
 import com.example.scoreit.pointsController.FinishCommand
 import com.example.scoreit.pointsController.FirstTeamAddPointCommand
-import com.example.scoreit.pointsController.LogicalProcess
+import com.example.scoreit.pointsController.PointsManager
 import com.example.scoreit.pointsController.SecondTeamAddPointCommand
 import kotlinx.coroutines.launch
 
@@ -23,7 +23,7 @@ class ActivityRefereeButtons : AppCompatActivity() {
     private lateinit var binding: ActivityRefereeButtonsBinding
     private lateinit var dbAccess: AppDataBase
     private lateinit var controller: Controller
-    private lateinit var logicalProcess: LogicalProcess
+    private lateinit var pointsManager: PointsManager
     private lateinit var firstTeamAddPointCommand: FirstTeamAddPointCommand
     private lateinit var secondTeamAddPointCommand: SecondTeamAddPointCommand
     private lateinit var finishCommand: FinishCommand
@@ -45,7 +45,7 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
         addPointButtons()
         undoButtons()
-        //finishButton()
+        finishButton()
     }
 
     private fun setCommands() {
@@ -55,13 +55,10 @@ class ActivityRefereeButtons : AppCompatActivity() {
             val cup = dbAccess.cupDao().getCupById(match.idCup.toString())
 
             controller = Controller()
-            logicalProcess = LogicalProcess(match, cup)
-            firstTeamAddPointCommand = FirstTeamAddPointCommand(binding, logicalProcess)
-            secondTeamAddPointCommand = SecondTeamAddPointCommand(binding, logicalProcess)
-            finishCommand = FinishCommand(binding, logicalProcess)
-
-            addPointButtons()
-            finishButton()
+            pointsManager = PointsManager(match, cup)
+            firstTeamAddPointCommand = FirstTeamAddPointCommand(binding, pointsManager)
+            secondTeamAddPointCommand = SecondTeamAddPointCommand(binding, pointsManager)
+            finishCommand = FinishCommand(binding, pointsManager)
         }
     }
 
@@ -77,7 +74,7 @@ class ActivityRefereeButtons : AppCompatActivity() {
                     val idSecondTeam = match.idSecondTeam
                     val firstTeam = dbAccess.teamDao().getTeamById(idFirstTeam.toString())
                     val secondTeam = dbAccess.teamDao().getTeamById(idSecondTeam.toString())
-                    controller.setController(finishCommand)
+                    controller.setCommand(finishCommand)
                     var message: Int = controller.execute()
                     if (message < 10) {
                         if (message == -1) {
@@ -100,11 +97,11 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
     private fun addPointButtons() {
         binding.firstTeamFrame.setOnClickListener {
-            controller.setController(firstTeamAddPointCommand)
+            controller.setCommand(firstTeamAddPointCommand)
             controller.execute()
         }
         binding.secondTeamFrame.setOnClickListener {
-            controller.setController(secondTeamAddPointCommand)
+            controller.setCommand(secondTeamAddPointCommand)
             controller.execute()
         }
 
@@ -155,23 +152,23 @@ class ActivityRefereeButtons : AppCompatActivity() {
         lifecycleScope.launch {
             val idCup = match.idCup.toString()
             val cup = dbAccess.cupDao().getCupById(idCup)
-            firstTeam.pointsWon += logicalProcess.totalFirstTeamPoints
-            firstTeam.pointsLost += logicalProcess.totalSecondTeamPoints
+            firstTeam.pointsWon += pointsManager.totalFirstTeamPoints
+            firstTeam.pointsLost += pointsManager.totalSecondTeamPoints
 
-            secondTeam.pointsWon += logicalProcess.totalSecondTeamPoints
-            secondTeam.pointsLost += logicalProcess.totalFirstTeamPoints
+            secondTeam.pointsWon += pointsManager.totalSecondTeamPoints
+            secondTeam.pointsLost += pointsManager.totalFirstTeamPoints
 
             if (firstTeam.roundsWon != null) {
-                firstTeam.roundsWon = firstTeam.roundsWon!! + (logicalProcess.firstTeamRounds)
-                firstTeam.roundsLost = firstTeam.roundsLost!! + (logicalProcess.secondTeamRounds)
+                firstTeam.roundsWon = firstTeam.roundsWon!! + (pointsManager.firstTeamRounds)
+                firstTeam.roundsLost = firstTeam.roundsLost!! + (pointsManager.secondTeamRounds)
             } else {
                 firstTeam.roundsWon = null
                 firstTeam.roundsLost = null
             }
 
             if (secondTeam.roundsWon != null) {
-                secondTeam.roundsWon = secondTeam.roundsWon!! + (logicalProcess.secondTeamRounds)
-                secondTeam.roundsLost = secondTeam.roundsLost!! + (logicalProcess.firstTeamRounds)
+                secondTeam.roundsWon = secondTeam.roundsWon!! + (pointsManager.secondTeamRounds)
+                secondTeam.roundsLost = secondTeam.roundsLost!! + (pointsManager.firstTeamRounds)
             } else {
                 secondTeam.roundsWon = null
                 secondTeam.roundsLost = null
@@ -179,15 +176,15 @@ class ActivityRefereeButtons : AppCompatActivity() {
 
             match.playable = false
 
-            match.firstTeamPoints = logicalProcess.totalFirstTeamPoints
-            match.secondTeamPoints = logicalProcess.totalSecondTeamPoints
+            match.firstTeamPoints = pointsManager.totalFirstTeamPoints
+            match.secondTeamPoints = pointsManager.totalSecondTeamPoints
 
-            if (logicalProcess.requiredRounds == 1) {
+            if (pointsManager.requiredRounds == 1) {
                 match.firstTeamRounds = null
                 match.secondTeamRounds = null
             } else {
-                match.firstTeamRounds = logicalProcess.firstTeamRounds
-                match.secondTeamRounds = logicalProcess.secondTeamRounds
+                match.firstTeamRounds = pointsManager.firstTeamRounds
+                match.secondTeamRounds = pointsManager.secondTeamRounds
             }
 
             when (winner) {

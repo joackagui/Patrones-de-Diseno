@@ -4,36 +4,35 @@ import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
 
 class FinishCommand : ICommand {
     private var binding: ActivityRefereeButtonsBinding
-    private var logicalProcess: LogicalProcess
+    private var pointsManager: PointsManager
 
-    constructor(binding: ActivityRefereeButtonsBinding, logicalProcess: LogicalProcess) {
+    constructor(binding: ActivityRefereeButtonsBinding, pointsManager: PointsManager) {
         this.binding = binding
-        this.logicalProcess = logicalProcess
-
+        this.pointsManager = pointsManager
     }
 
     override fun execute(): Int {
         var winner = 0
-        if (logicalProcess.requiredRounds == 1) {
-            logicalProcess.totalFirstTeamPoints = logicalProcess.firstTeamPoints
-            logicalProcess.totalSecondTeamPoints = logicalProcess.secondTeamPoints
-            if (logicalProcess.firstTeamPoints > logicalProcess.secondTeamPoints) {
+        if (pointsManager.requiredRounds == 1) {
+            pointsManager.totalFirstTeamPoints = pointsManager.firstTeamPoints
+            pointsManager.totalSecondTeamPoints = pointsManager.secondTeamPoints
+            if (pointsManager.firstTeamPoints > pointsManager.secondTeamPoints) {
                 winner = 1
-            } else if (logicalProcess.secondTeamPoints > logicalProcess.firstTeamPoints) {
+            } else if (pointsManager.secondTeamPoints > pointsManager.firstTeamPoints) {
                 winner = 2
             }
-            return if (logicalProcess.firstTeamPoints - logicalProcess.secondTeamPoints >= logicalProcess.requiredDifference || logicalProcess.secondTeamPoints - logicalProcess.firstTeamPoints >= logicalProcess.requiredDifference) {
+            return if (pointsManager.firstTeamPoints - pointsManager.secondTeamPoints >= pointsManager.requiredDifference || pointsManager.secondTeamPoints - pointsManager.firstTeamPoints >= pointsManager.requiredDifference) {
                 winner
             } else {
-                if (logicalProcess.requiredDifference == 1) 10 else 11
+                if (pointsManager.requiredDifference == 1) 10 else 11
             }
         } else {
-            if (logicalProcess.firstTeamRounds > logicalProcess.secondTeamRounds) {
+            if (pointsManager.firstTeamRounds > pointsManager.secondTeamRounds) {
                 winner = 1
-            } else if (logicalProcess.secondTeamRounds > logicalProcess.firstTeamRounds) {
+            } else if (pointsManager.secondTeamRounds > pointsManager.firstTeamRounds) {
                 winner = 2
             }
-            if (logicalProcess.firstTeamRounds == logicalProcess.requiredRounds || logicalProcess.secondTeamRounds == logicalProcess.requiredRounds) {
+            if (pointsManager.firstTeamRounds == pointsManager.requiredRounds || pointsManager.secondTeamRounds == pointsManager.requiredRounds) {
                 return winner
             }
         }

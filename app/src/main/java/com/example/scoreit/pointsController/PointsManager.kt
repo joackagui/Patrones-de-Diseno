@@ -3,7 +3,7 @@ package com.example.scoreit.pointsController
 import com.example.scoreit.components.Cup
 import com.example.scoreit.components.Match
 
-class LogicalProcess {
+class PointsManager {
     private var match: Match
     private var cup: Cup
 

@@ -5,7 +5,7 @@ import java.util.Stack
 class Controller : ICommand {
     private val commandHistory = Stack<ICommand>()
 
-    fun setController(command: ICommand) {
+    fun setCommand(command: ICommand) {
         commandHistory.push(command)
     }
 

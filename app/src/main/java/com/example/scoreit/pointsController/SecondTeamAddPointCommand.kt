@@ -1,58 +1,72 @@
 package com.example.scoreit.pointsController
 
 import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
-import kotlin.math.absoluteValue
 
 class SecondTeamAddPointCommand : ICommand {
     private var binding: ActivityRefereeButtonsBinding
-    private var logicalProcess: LogicalProcess
+    private var pointsManager: PointsManager
 
-    constructor(binding: ActivityRefereeButtonsBinding, logicalProcess: LogicalProcess) {
+    constructor(binding: ActivityRefereeButtonsBinding, pointsManager: PointsManager) {
         this.binding = binding
-        this.logicalProcess = logicalProcess
+        this.pointsManager = pointsManager
     }
 
     override fun execute(): Int {
-        if (logicalProcess.requiredRounds == 1) {
-            if ((logicalProcess.secondTeamPoints < logicalProcess.requiredPoints && logicalProcess.firstTeamPoints < logicalProcess.requiredPoints) || (logicalProcess.firstTeamPoints - logicalProcess.secondTeamPoints).absoluteValue < logicalProcess.requiredDifference) {
-                logicalProcess.secondTeamPoints++
-                val newPoints = logicalProcess.secondTeamPoints.toString()
-                binding.secondTeamPoints.text = newPoints
-            }
-        } else {
-            if (logicalProcess.secondTeamRounds < logicalProcess.requiredRounds && logicalProcess.firstTeamRounds < logicalProcess.requiredRounds) {
-                logicalProcess.secondTeamPoints++
-                if (logicalProcess.secondTeamPoints > logicalProcess.requiredPoints &&
-                    (logicalProcess.secondTeamPoints - (logicalProcess.firstTeamPoints) >= logicalProcess.requiredDifference)
-                ) {
-                    logicalProcess.secondTeamPoints--
-                    logicalProcess.secondTeamRounds++
+        if (pointsManager.requiredRounds == 1) {
+            val firstTeamReachedGoal = pointsManager.firstTeamPoints >= pointsManager.requiredPoints &&
+                    (pointsManager.firstTeamPoints - pointsManager.secondTeamPoints) >= pointsManager.requiredDifference
+            val secondTeamReachedGoal = pointsManager.secondTeamPoints >= pointsManager.requiredPoints &&
+                    (pointsManager.secondTeamPoints - pointsManager.firstTeamPoints) >= pointsManager.requiredDifference
 
-                    logicalProcess.resetPoints()
+            if (firstTeamReachedGoal || secondTeamReachedGoal) {
+                return 0
+            }
+
+            pointsManager.secondTeamPoints++
+            binding.secondTeamPoints.text = pointsManager.secondTeamPoints.toString()
+
+        } else {
+            if (pointsManager.secondTeamRounds < pointsManager.requiredRounds &&
+                pointsManager.firstTeamRounds < pointsManager.requiredRounds) {
+
+                val firstTeamReachedGoal = pointsManager.firstTeamPoints >= pointsManager.requiredPoints &&
+                        (pointsManager.firstTeamPoints - pointsManager.secondTeamPoints) >= pointsManager.requiredDifference
+                val secondTeamReachedGoal = pointsManager.secondTeamPoints >= pointsManager.requiredPoints &&
+                        (pointsManager.secondTeamPoints - pointsManager.firstTeamPoints) >= pointsManager.requiredDifference
+
+                if (firstTeamReachedGoal || secondTeamReachedGoal) {
+                    return 0
+                }
+
+                pointsManager.secondTeamPoints++
+                if (pointsManager.secondTeamPoints >= pointsManager.requiredPoints &&
+                    (pointsManager.secondTeamPoints - pointsManager.firstTeamPoints) >= pointsManager.requiredDifference) {
+
+                    pointsManager.secondTeamRounds++
+                    pointsManager.resetPoints()
+
                     binding.firstTeamPoints.text = "0"
                     binding.secondTeamPoints.text = "0"
-                    if (logicalProcess.secondTeamRounds <= logicalProcess.requiredRounds) {
-                        val newRounds = "(${logicalProcess.secondTeamRounds})"
-                        binding.secondTeamRounds.text = newRounds
+                    if (pointsManager.secondTeamRounds <= pointsManager.requiredRounds) {
+                        val secondTeamRoundsText = "(${pointsManager.secondTeamRounds})"
+                        binding.secondTeamRounds.text = secondTeamRoundsText
                     }
                 } else {
-                    if ((logicalProcess.firstTeamPoints <= logicalProcess.requiredPoints && logicalProcess.secondTeamPoints <= logicalProcess.requiredPoints) || logicalProcess.secondTeamPoints - logicalProcess.firstTeamPoints < logicalProcess.requiredDifference) {
-                        val newPoints = logicalProcess.secondTeamPoints.toString()
-                        binding.secondTeamPoints.text = newPoints
-                    }
+                    binding.secondTeamPoints.text = pointsManager.secondTeamPoints.toString()
                 }
             }
         }
         return 0
     }
 
+
     override fun undo() {
-        if (logicalProcess.secondTeamPoints > 0) {
-            logicalProcess.secondTeamPoints--
-            binding.secondTeamPoints.text = logicalProcess.secondTeamPoints.toString()
-        } else if (logicalProcess.secondTeamRounds > 0) {
-            logicalProcess.secondTeamRounds--
-            val newRounds = "(${logicalProcess.secondTeamRounds})"
+        if (pointsManager.secondTeamPoints > 0) {
+            pointsManager.secondTeamPoints--
+            binding.secondTeamPoints.text = pointsManager.secondTeamPoints.toString()
+        } else if (pointsManager.secondTeamRounds > 0) {
+            pointsManager.secondTeamRounds--
+            val newRounds = "(${pointsManager.secondTeamRounds})"
             binding.secondTeamRounds.text = newRounds
         }
     }
