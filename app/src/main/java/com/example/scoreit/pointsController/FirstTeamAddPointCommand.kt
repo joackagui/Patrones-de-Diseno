@@ -1,7 +1,6 @@
 package com.example.scoreit.pointsController
 
 import com.example.scoreit.databinding.ActivityRefereeButtonsBinding
-import kotlin.math.absoluteValue
 
 class FirstTeamAddPointCommand : ICommand {
     private var binding: ActivityRefereeButtonsBinding
