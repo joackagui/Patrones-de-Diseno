@@ -35,12 +35,10 @@
         <activity
             android:name=".activities.ActivityNewTeamSettings"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityAddTeam"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivitySignUp"
@@ -50,7 +48,6 @@
         <activity
             android:name=".activities.ActivityCupInsight"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityLogIn"
@@ -60,7 +57,6 @@
         <activity
             android:name=".activities.ActivityRefereeButtons"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ActivityNewCupSettings"

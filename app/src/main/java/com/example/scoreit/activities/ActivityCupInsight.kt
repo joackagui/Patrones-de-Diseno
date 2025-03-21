@@ -9,16 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.scoreit.R
-import com.example.scoreit.recyclers.RecyclerMatches
-import com.example.scoreit.recyclers.RecyclerScoreBoardRows
 import com.example.scoreit.database.AppDataBase
 import com.example.scoreit.database.AppDataBase.Companion.getDatabase
 import com.example.scoreit.databinding.ActivityCupInsightBinding
+import com.example.scoreit.recyclers.RecyclerMatches
+import com.example.scoreit.recyclers.RecyclerScoreBoardRows
 import kotlinx.coroutines.launch
 
 class ActivityCupInsight : AppCompatActivity() {
 
-    private val recyclerMatches: RecyclerMatches by lazy { RecyclerMatches() }
+    private lateinit var recyclerMatches: RecyclerMatches
     private val recyclerScoreBoardRows: RecyclerScoreBoardRows by lazy { RecyclerScoreBoardRows() }
     private lateinit var binding: ActivityCupInsightBinding
     private lateinit var dbAccess: AppDataBase
@@ -34,6 +34,8 @@ class ActivityCupInsight : AppCompatActivity() {
         setContentView(view)
 
         dbAccess = getDatabase(this)
+
+        recyclerMatches = RecyclerMatches(dbAccess, lifecycleScope)
 
         setHeader()
         setCupData()
@@ -127,11 +129,7 @@ class ActivityCupInsight : AppCompatActivity() {
                 binding.twoPointsDifferenceText.text = twoPointsDifference
 
                 val points = "${binding.pointsText.text} ${cup.requiredPoints}"
-                if (cup.requiredPoints != null) {
-                    binding.pointsText.text = points
-                } else {
-                    binding.pointsText.visibility = View.GONE
-                }
+                binding.pointsText.text = points
 
                 val rounds = "${binding.roundsText.text} ${cup.requiredRounds}"
                 if (cup.requiredRounds != null) {

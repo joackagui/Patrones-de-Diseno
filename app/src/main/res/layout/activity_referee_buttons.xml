@@ -5,6 +5,16 @@
     android:id="@+id/refereeButtons"
     style="@style/Background"
     tools:context=".activities.ActivityRefereeButtons">
+    <Button
+        android:id="@+id/undo_button"
+        style="@style/NormalText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/CommonRed"
+        android:text="@string/undo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/first_team_frame"
@@ -99,30 +109,6 @@
         app:layout_constraintEnd_toEndOf="@id/second_team_frame" />
 
     <Button
-        android:id="@+id/second_team_rest_button"
-        style="@style/NormalText"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/CommonRed"
-        android:text="@string/rest"
-        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toBottomOf="@id/second_team_frame" />
-
-    <Button
-        android:id="@+id/first_team_rest_button"
-        style="@style/NormalText"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/White"
-        android:text="@string/rest"
-        android:textColor="@color/CommonRed"
-        app:layout_constraintBottom_toTopOf="@id/first_team_frame"
-        app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha" />
-
-
-    <Button
         android:id="@+id/finish_button"
         style="@style/NormalText"
         android:layout_width="0dp"
@@ -132,17 +118,6 @@
         android:text="@string/finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_margen_derecha" />
-
-    <Button
-        android:id="@+id/suspend_button"
-        style="@style/NormalText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/CommonRed"
-        android:text="@string/suspend"
-        app:layout_constraintStart_toStartOf="@id/guideline_margen_izquierda"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_margen_izquierda"

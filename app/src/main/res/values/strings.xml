@@ -48,7 +48,7 @@
     <string name="position_table">Position Table</string>
     <string name="time">Time:</string>
     <string name="points">Points:</string>
-    <string name="rest">Rest</string>
+    <string name="undo">Undo</string>
     <string name="finish">Finish</string>
     <string name="suspend">Suspend</string>
     <string name="timer">00:00:00</string>

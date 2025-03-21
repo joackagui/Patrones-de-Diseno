@@ -11,7 +11,7 @@ import com.example.scoreit.components.Team
 import com.example.scoreit.databinding.FrameTeamBinding
 
 class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
-    private val listaDatos = mutableListOf<Team>()
+    private val dataList = mutableListOf<Team>()
     private var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
@@ -20,10 +20,10 @@ class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        holder.binding(listaDatos[position])
+        holder.binding(dataList[position])
     }
 
-    override fun getItemCount(): Int = listaDatos.size
+    override fun getItemCount(): Int = dataList.size
 
     inner class TeamViewHolder(private val binding: FrameTeamBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -40,8 +40,8 @@ class RecyclerTeams : RecyclerView.Adapter<RecyclerTeams.TeamViewHolder>() {
     }
 
     fun addDataToList(list: MutableList<Team>) {
-        listaDatos.clear()
-        listaDatos.addAll(list)
+        dataList.clear()
+        dataList.addAll(list)
     }
 }
 

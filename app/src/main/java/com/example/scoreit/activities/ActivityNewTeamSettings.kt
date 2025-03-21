@@ -43,14 +43,14 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         val idCup = intent.getStringExtra(ID_CUP_NT)
 
         userButton.setOnClickListener {
-            if(idTeam == null && idCup != null){
+            if (idTeam == null && idCup != null) {
                 lifecycleScope.launch {
                     val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
                     deleteCup(idCup)
                     changeToActivityChangeUserData(idUser)
                 }
 
-            } else if(idTeam != null && idCup == null){
+            } else if (idTeam != null && idCup == null) {
                 lifecycleScope.launch {
                     val newIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
                     val idUser = dbAccess.cupDao().getCupById(newIdCup).idUser.toString()
@@ -61,14 +61,14 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         }
 
         scoreItCup.setOnClickListener {
-            if(idTeam == null && idCup != null){
+            if (idTeam == null && idCup != null) {
                 lifecycleScope.launch {
                     val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
                     deleteCup(idCup)
                     changeToActivityMainMenu(idUser)
                 }
 
-            } else if(idTeam != null && idCup == null){
+            } else if (idTeam != null && idCup == null) {
                 lifecycleScope.launch {
                     val newIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
                     val idUser = dbAccess.cupDao().getCupById(newIdCup).idUser.toString()
@@ -110,7 +110,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
             val idTeam = intent.getStringExtra(ID_TEAM_NT)
             val idCup = intent.getStringExtra(ID_CUP_NT)
             if (idTeam == null && idCup != null) {
-                addTeam()
+                addTeam(idCup)
             }
             if (idTeam != null && idCup == null) {
                 updateTeam()
@@ -118,7 +118,7 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         }
     }
 
-    private fun deleteTeam(idTeam: String){
+    private fun deleteTeam(idTeam: String) {
         lifecycleScope.launch {
             val actualIdCup = dbAccess.teamDao().getTeamById(idTeam).idCup.toString()
             dbAccess.teamDao().deleteById(idTeam)
@@ -150,20 +150,18 @@ class ActivityNewTeamSettings : AppCompatActivity() {
         }
     }
 
-    private fun addTeam() {
-        val idCup = intent.getStringExtra(ID_CUP_NT)
-        if (idCup != null) {
-            lifecycleScope.launch {
-                val cup = dbAccess.cupDao().getCupById(idCup)
-                val rounds = cup.requiredRounds
-                val name = binding.newTeamName.text.toString().ifBlank {
-                    val num = dbAccess.teamDao().getTeamsByCupId(idCup.toString()).size + 1
-                    "Team $num"
-                }
-                val newTeam = Team(name = name, idCup = idCup.toInt(), roundsWon = rounds, roundsLost = rounds)
-                dbAccess.teamDao().insert(newTeam)
-                changeToActivityAddTeam(idCup.toString())
+    private fun addTeam(idCup: String) {
+        lifecycleScope.launch {
+            val cup = dbAccess.cupDao().getCupById(idCup)
+            val rounds = cup.requiredRounds
+            val name = binding.newTeamName.text.toString().ifBlank {
+                val num = dbAccess.teamDao().getTeamsByCupId(idCup.toString()).size + 1
+                "Team $num"
             }
+            val newTeam =
+                Team(name = name, idCup = idCup.toInt(), roundsWon = rounds, roundsLost = rounds)
+            dbAccess.teamDao().insert(newTeam)
+            changeToActivityAddTeam(idCup.toString())
         }
     }
 

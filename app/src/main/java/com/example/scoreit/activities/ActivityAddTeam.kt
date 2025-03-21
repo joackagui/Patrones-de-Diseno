@@ -216,8 +216,8 @@ class ActivityAddTeam : AppCompatActivity() {
                     val secondTeam = listOfTeams[listOfTeams.size - 1 - i]
 
                     if (firstTeam.id != -1 && secondTeam.id != -1) {
-                        val firstTeamJson = Converters().fromTeam(firstTeam)
-                        val secondTeamJson = Converters().fromTeam(secondTeam)
+                        val idFirstTeam = firstTeam.id
+                        val idSecondTeam = secondTeam.id
 
                         var initialRounds: Int? = 0
                         if (cup.requiredRounds == null) {
@@ -227,8 +227,8 @@ class ActivityAddTeam : AppCompatActivity() {
                             Match(
                                 matchDay = matchDay,
                                 firstOfKind = firstOfKind,
-                                firstTeamJson = firstTeamJson,
-                                secondTeamJson = secondTeamJson,
+                                idFirstTeam = idFirstTeam,
+                                idSecondTeam = idSecondTeam,
                                 firstTeamRounds = initialRounds,
                                 secondTeamRounds = initialRounds,
                                 idCup = idCup.toInt()
@@ -239,8 +239,8 @@ class ActivityAddTeam : AppCompatActivity() {
                                 Match(
                                     matchDay = matchDay + matchDaysAmount,
                                     firstOfKind = firstOfKind,
-                                    firstTeamJson = secondTeamJson,
-                                    secondTeamJson = firstTeamJson,
+                                    idFirstTeam = idSecondTeam,
+                                    idSecondTeam = idSecondTeam,
                                     firstTeamRounds = initialRounds,
                                     secondTeamRounds = initialRounds,
                                     firstMatch = false,

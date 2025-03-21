@@ -46,6 +46,5 @@ class RecyclerCups :
     fun addDataToList(list: MutableList<Cup>) {
         dataList.clear()
         dataList.addAll(list.reversed())
-        //dataList.addAll(list.sortedByDescending { it.startDate })
     }
 }

@@ -135,7 +135,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
     private fun createCup(idUser: String) {
         var name = binding.newCupName.text.toString()
         val startDate = binding.newStartDate.text.toString()
-        var requiredPoints: Int? = null
+        var requiredPoints = 0
         var requiredRounds: Int? = null
         val doubleMatch = binding.doubleMatchCheckbox.isChecked
         val alwaysWinner = binding.alwaysWinnerCheckbox.isChecked
@@ -147,7 +147,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
                 name = "Cup ${cupCount + 1}"
             }
 
-            if (binding.requiredPoints.text.toString() != "") {
+            if (binding.requiredPoints.text.toString() != "" && binding.requiredPoints.text.toString().toInt() != 0) {
                 requiredPoints = binding.requiredPoints.text.toString().toInt()
             }
 
@@ -238,7 +238,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
             if (!cup.hasStarted) {
                 var name = binding.newCupName.text.toString()
                 val startDate = binding.newStartDate.text.toString()
-                var winningPoints: Int? = null
+                var winningPoints = 0
                 var requiredRounds: Int? = null
                 val doubleMatch = binding.doubleMatchCheckbox.isChecked
                 val alwaysWinner = binding.alwaysWinnerCheckbox.isChecked
@@ -272,7 +272,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
                     winner = null,
                 )
 
-                if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == "") {
+                if (binding.requiredPoints.isEnabled && binding.requiredPoints.text.toString() == ""  && binding.requiredPoints.text.toString().toInt() != 0) {
                     errorMessage()
                 } else {
                     dbAccess.cupDao().update(newCup)

@@ -19,7 +19,7 @@ data class Cup(
     var hasStarted: Boolean = false,
     var name: String,
     var startDate: String,
-    var requiredPoints: Int?,
+    var requiredPoints: Int,
     var requiredRounds: Int?,
     var doubleMatch: Boolean,
     var alwaysWinner: Boolean,
