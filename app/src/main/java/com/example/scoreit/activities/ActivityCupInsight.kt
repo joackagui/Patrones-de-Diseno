@@ -18,37 +18,62 @@ import kotlinx.coroutines.launch
 
 class ActivityCupInsight : AppCompatActivity() {
 
+    // Adaptador para la lista de partidos
     private lateinit var recyclerMatches: RecyclerMatches
+
+    // Inicialización perezosa del adaptador para la tabla de posiciones
     private val recyclerScoreBoardRows: RecyclerScoreBoardRows by lazy { RecyclerScoreBoardRows() }
+
+    // Binding para la actividad de visualización de la copa
     private lateinit var binding: ActivityCupInsightBinding
+
+    // Acceso a la base de datos
     private lateinit var dbAccess: AppDataBase
 
+    // Objeto companion para definir constantes
     companion object {
-        const val ID_CUP_CI: String = "ID_CUP"
+        const val ID_CUP_CI: String = "ID_CUP" // Clave para pasar el ID de la copa entre actividades
     }
 
+    // Se llama a onCreate cuando la actividad es creada
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inflar el layout usando view binding
         binding = ActivityCupInsightBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        // Inicializar el acceso a la base de datos
         dbAccess = getDatabase(this)
 
+        // Inicializar el adaptador de partidos
         recyclerMatches = RecyclerMatches(dbAccess, lifecycleScope)
 
+        // Configurar la cabecera con los botones de usuario y copa
         setHeader()
+
+        // Establecer los datos de la copa en la UI
         setCupData()
+
+        // Configurar el RecyclerView para la tabla de posiciones
         setUpRecyclerScoreBoard()
+
+        // Configurar el RecyclerView para la lista de partidos
         setUpRecyclerViewMatches()
+
+        // Configurar el botón de retroceso
         backButton()
+
+        // Configurar el botón de edición
         editButton()
     }
 
+    // Función para configurar la cabecera con los botones de usuario y copa
     private fun AppCompatActivity.setHeader() {
         val userButton = findViewById<ImageView>(R.id.user_button)
         val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
 
+        // Configurar el listener del botón de usuario
         userButton.setOnClickListener {
             lifecycleScope.launch {
                 val idCup = intent.getStringExtra(ID_CUP_CI)
@@ -59,6 +84,7 @@ class ActivityCupInsight : AppCompatActivity() {
             }
         }
 
+        // Configurar el listener del botón de copa
         scoreItCup.setOnClickListener {
             val idCup = intent.getStringExtra(ID_CUP_CI)
             if (idCup != null) {
@@ -70,6 +96,7 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el botón de edición
     private fun editButton() {
         binding.editButton.setOnClickListener {
             val idCup = intent.getStringExtra(ID_CUP_CI)
@@ -77,8 +104,10 @@ class ActivityCupInsight : AppCompatActivity() {
                 lifecycleScope.launch {
                     val cup = dbAccess.cupDao().getCupById(idCup)
                     if (cup.winner != null) {
+                        // Si la copa ya tiene un ganador, eliminar la copa
                         deleteCup(idCup)
                     } else {
+                        // Si no tiene ganador, navegar a la actividad de configuración de nueva copa
                         changeToActivityNewCupSettings(idCup)
                     }
                 }
@@ -86,17 +115,21 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
+    // Función para eliminar la copa y sus datos asociados
     private fun deleteCup(idCup: String) {
         lifecycleScope.launch {
+            // Eliminar partidos, equipos y la copa de la base de datos
             dbAccess.matchDao().deleteMatchesByIdCup(idCup)
             dbAccess.teamDao().deleteTeamsByIdCup(idCup)
             dbAccess.cupDao().deleteById(idCup)
 
+            // Navegar al menú principal
             val idUser = dbAccess.cupDao().getCupById(idCup).idUser.toString()
             changeToActivityMainMenu(idUser)
         }
     }
 
+    // Función para configurar el botón de retroceso
     private fun backButton() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
@@ -110,6 +143,7 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
+    // Función para establecer los datos de la copa en la UI
     private fun setCupData() {
         lifecycleScope.launch {
             val idCup = intent.getStringExtra(ID_CUP_CI)
@@ -122,6 +156,7 @@ class ActivityCupInsight : AppCompatActivity() {
                 val twoPointsDifference =
                     "${binding.twoPointsDifferenceText.text} ${cup.twoPointsDifference}"
 
+                // Establecer los valores en los campos de texto de la UI
                 binding.cupName.text = cupName
                 binding.gameModeText.text = gameMode
                 binding.doubleMatchText.text = doubleMatch
@@ -140,18 +175,23 @@ class ActivityCupInsight : AppCompatActivity() {
 
                 val winnerName = cup.winner
                 if (winnerName != null) {
-                    val deleteText = "Delete"
+                    // Si hay un ganador, cambiar el texto del botón de edición a "Eliminar"
+                    val deleteText = "Eliminar"
                     binding.editButton.text = deleteText
 
+                    // Mostrar el nombre del ganador en la UI
                     binding.winnerTag.visibility = View.VISIBLE
                     binding.winnerName.visibility = View.VISIBLE
                     binding.winnerName.text = winnerName
+
+                    // Mostrar un mensaje de que la copa ha finalizado
                     finishMessage()
                 }
             }
         }
     }
 
+    // Función para configurar el RecyclerView de partidos
     private fun setUpRecyclerViewMatches() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
@@ -169,6 +209,7 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el RecyclerView de la tabla de posiciones
     private fun setUpRecyclerScoreBoard() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
@@ -187,17 +228,19 @@ class ActivityCupInsight : AppCompatActivity() {
         }
     }
 
+    // Función para mostrar un mensaje de que la copa ha finalizado
     private fun finishMessage() {
         val idCup = intent.getStringExtra(ID_CUP_CI)
         if (idCup != null) {
             lifecycleScope.launch {
                 val cup = dbAccess.cupDao().getCupById(idCup)
-                val finishMessage = "The ${cup.name} has finished"
+                val finishMessage = "La copa ${cup.name} ha finalizado"
                 Toast.makeText(this@ActivityCupInsight, finishMessage, Toast.LENGTH_LONG).show()
             }
         }
     }
 
+    // Función para navegar al menú principal
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
@@ -207,6 +250,7 @@ class ActivityCupInsight : AppCompatActivity() {
         finish()
     }
 
+    // Función para navegar a la actividad de cambio de datos de usuario
     private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
         activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, idUser)
@@ -214,6 +258,7 @@ class ActivityCupInsight : AppCompatActivity() {
         startActivity(activityChangeUserData)
     }
 
+    // Función para navegar a la actividad de configuración de nueva copa
     private fun changeToActivityNewCupSettings(idCup: String) {
         val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
         activityNewCupSettings.putExtra(ActivityNewCupSettings.Companion.ID_CUP_NC, idCup)

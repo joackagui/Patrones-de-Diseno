@@ -20,33 +20,52 @@ import kotlinx.coroutines.launch
 
 class ActivityAddTeam : AppCompatActivity() {
 
+    // Inicialización perezosa del adaptador RecyclerTeams
     private val recyclerTeams: RecyclerTeams by lazy { RecyclerTeams() }
+
+    // Binding para la actividad de agregar equipo
     private lateinit var binding: ActivityAddTeamBinding
+
+    // Acceso a la base de datos
     private lateinit var dbAccess: AppDataBase
 
+    // Objeto companion para definir constantes
     companion object {
-        const val ID_CUP_AT: String = "ID_CUP"
+        const val ID_CUP_AT: String = "ID_CUP" // Clave para pasar el ID de la copa entre actividades
     }
 
+    // Se llama a onCreate cuando la actividad es creada
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inflar el layout usando view binding
         binding = ActivityAddTeamBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Inicializar el acceso a la base de datos
         dbAccess = getDatabase(this)
 
+        // Configurar la cabecera con los botones de usuario y copa
         setHeader()
+
+        // Configurar equipos por defecto si no existen
         defaultTeams()
 
+        // Configurar el botón de retroceso
         backButton()
+
+        // Configurar el botón de agregar equipo
         addButton()
+
+        // Configurar el botón de guardar
         saveButton()
     }
 
+    // Función para configurar la cabecera con los botones de usuario y copa
     private fun AppCompatActivity.setHeader() {
         val userButton = findViewById<ImageView>(R.id.user_button)
         val scoreItCup = findViewById<ImageView>(R.id.score_it_cup)
 
+        // Configurar el listener del botón de usuario
         userButton.setOnClickListener {
             lifecycleScope.launch {
                 val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -58,6 +77,7 @@ class ActivityAddTeam : AppCompatActivity() {
             }
         }
 
+        // Configurar el listener del botón de copa
         scoreItCup.setOnClickListener {
             lifecycleScope.launch {
                 val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -70,6 +90,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el botón de retroceso
     private fun backButton() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -84,6 +105,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el botón de agregar equipo
     private fun addButton() {
         binding.addTeamButton.setOnClickListener {
             val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -93,6 +115,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el botón de guardar
     private fun saveButton() {
         binding.saveButton.setOnClickListener {
             val idCup = intent.getStringExtra(ID_CUP_AT)
@@ -112,6 +135,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para establecer la cantidad de equipos en la UI
     private fun setTeamsAmount() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -123,6 +147,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para eliminar la copa y sus datos asociados
     private fun deleteCup() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -134,6 +159,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para configurar equipos por defecto si no existen
     private fun defaultTeams() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -163,14 +189,16 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para mostrar un mensaje de éxito o error
     private fun successfulMessage(success: Boolean) {
         if (success) {
-            Toast.makeText(this, "Creation successful", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Creación exitosa", Toast.LENGTH_LONG).show()
         } else {
-            Toast.makeText(this, "You need at least two teams", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Necesitas al menos dos equipos", Toast.LENGTH_LONG).show()
         }
     }
 
+    // Función para crear partidos para la copa
     private fun createMatches() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -180,6 +208,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para actualizar la copa con el número de partidos jugables
     private fun updateCup(idCup: String) {
         lifecycleScope.launch {
             val cup = dbAccess.cupDao().getCupById(idCup)
@@ -189,6 +218,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para generar partidos usando el algoritmo round-robin
     private fun roundRobin(idCup: String) {
         lifecycleScope.launch {
             val cup = dbAccess.cupDao().getCupById(idCup)
@@ -196,14 +226,14 @@ class ActivityAddTeam : AppCompatActivity() {
                 dbAccess.teamDao().getTeamsByCupId(idCup).toMutableList()
 
             if (listOfTeams.size < 2) {
-                throw IllegalArgumentException("You need at least two teams")
+                throw IllegalArgumentException("Necesitas al menos dos equipos")
             }
 
             val newMatches = mutableListOf<Match>()
 
             val isUneven = listOfTeams.size % 2 != 0
             if (isUneven) {
-                listOfTeams.add(Team(id = -1, name = "Free", idCup = idCup.toInt()))
+                listOfTeams.add(Team(id = -1, name = "Libre", idCup = idCup.toInt()))
             }
 
             val matchDaysAmount = listOfTeams.size - 1
@@ -261,6 +291,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para configurar el RecyclerView con la lista de equipos
     private fun setUpRecyclerView() {
         val idCup = intent.getStringExtra(ID_CUP_AT)
         if (idCup != null) {
@@ -277,6 +308,7 @@ class ActivityAddTeam : AppCompatActivity() {
         }
     }
 
+    // Función para navegar al menú principal
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
@@ -287,6 +319,7 @@ class ActivityAddTeam : AppCompatActivity() {
         finish()
     }
 
+    // Función para navegar a la actividad de configuración de nuevo equipo
     private fun changeToActivityNewTeamSettings(idCup: String) {
         val activityNewTeamSettings = Intent(this, ActivityNewTeamSettings::class.java)
         activityNewTeamSettings.putExtra(ID_CUP_NT, idCup)
@@ -294,6 +327,7 @@ class ActivityAddTeam : AppCompatActivity() {
         startActivity(activityNewTeamSettings)
     }
 
+    // Función para navegar a la actividad de configuración de nueva copa
     private fun changeToActivityNewCupSettings(lastCupJson: String) {
         val activityNewCupSettings = Intent(this, ActivityNewCupSettings::class.java)
         activityNewCupSettings.putExtra(ActivityNewCupSettings.Companion.CUP_JSON_NC, lastCupJson)
@@ -302,6 +336,7 @@ class ActivityAddTeam : AppCompatActivity() {
         finish()
     }
 
+    // Función para navegar a la actividad de cambio de datos de usuario
     private fun changeToActivityChangeUserData(idUser: String) {
         val activityChangeUserData = Intent(this, ActivityChangeUserData::class.java)
         activityChangeUserData.putExtra(ActivityChangeUserData.Companion.ID_USER_CUD, idUser)

@@ -13,41 +13,54 @@ import kotlinx.coroutines.launch
 
 class ActivitySignUp : AppCompatActivity() {
 
+    // Binding para la actividad de registro de usuario
     private lateinit var binding: ActivitySignUpBinding
+
+    // Acceso a la base de datos
     private lateinit var dbAccess: AppDataBase
 
+    // Objeto companion para definir constantes
     companion object {
-        const val ID_USER_SU: String = "ID_USER"
+        const val ID_USER_SU: String = "ID_USER" // Clave para pasar el ID del usuario entre actividades
     }
 
+    // Se llama a onCreate cuando la actividad es creada
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inflar el layout usando view binding
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+        // Inicializar el acceso a la base de datos
         dbAccess = getDatabase(this)
 
+        // Configurar el botón de registro
         signUpButton()
     }
 
+    // Función para configurar el botón de registro
     private fun signUpButton() {
         binding.createAccountButton.setOnClickListener {
+            // Verificar si todos los campos están completos
             if (binding.usernameSignUp.text.toString() == "" || binding.emailSignUp.text.toString() == ""
                 || binding.passwordSignUp.text.toString() == "" || binding.passwordSafetySignUp.text.toString() == ""
             ) {
-                errorMessage(1)
+                errorMessage(1) // Mostrar mensaje de error si algún campo está vacío
             } else if (binding.passwordSignUp.text.toString() != binding.passwordSafetySignUp.text.toString()) {
-                errorMessage(3)
+                errorMessage(3) // Mostrar mensaje de error si las contraseñas no coinciden
             } else if (binding.passwordSignUp.text.toString().length < 8) {
-                errorMessage(2)
+                errorMessage(2) // Mostrar mensaje de error si la contraseña es demasiado corta
             } else {
+                // Asegurarse de que ningún otro usuario esté marcado como último usuario
                 noOneIsLastUser()
+                // Guardar el nuevo usuario
                 saveUser()
             }
         }
     }
 
+    // Función para guardar el nuevo usuario en la base de datos
     private fun saveUser() {
         lifecycleScope.launch {
             val email = binding.emailSignUp.text.toString()
@@ -55,27 +68,33 @@ class ActivitySignUp : AppCompatActivity() {
             val name = binding.usernameSignUp.text.toString()
             val idUser = intent.getStringExtra(ID_USER_SU)
             if (idUser != null) {
+                // Crear un nuevo objeto User con los datos proporcionados
                 val newUser =
                     User(
                         email = email,
                         name = name,
                         password = password,
-                        lastUser = true,
+                        lastUser = true, // Marcar este usuario como el último que inició sesión
                         id = idUser.toInt()
                     )
 
+                // Actualizar el usuario en la base de datos
                 dbAccess.userDao().update(newUser)
+                // Mostrar mensaje de éxito
                 successfulMessage()
+                // Navegar al menú principal
                 changeToActivityMainMenu(idUser)
             }
         }
     }
 
+    // Función para asegurarse de que ningún otro usuario esté marcado como último usuario
     private fun noOneIsLastUser() {
         lifecycleScope.launch {
             val listOfUsers = dbAccess.userDao().getEveryUser().toMutableList()
             for (user in listOfUsers) {
                 if (user.lastUser) {
+                    // Desmarcar el último usuario anterior
                     user.lastUser = false
                     dbAccess.userDao().update(user)
                 }
@@ -83,36 +102,38 @@ class ActivitySignUp : AppCompatActivity() {
         }
     }
 
+    // Función para mostrar mensajes de error
     private fun errorMessage(number: Int) {
         when (number) {
             1 -> {
-                Toast.makeText(this, "You must fill in all fields", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
             }
 
             2 -> {
-                Toast.makeText(this, "Password too short", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "La contraseña es demasiado corta", Toast.LENGTH_LONG).show()
             }
 
             3 -> {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
             }
         }
     }
 
+    // Función para mostrar un mensaje de éxito
     private fun successfulMessage() {
-        Toast.makeText(this, "User successfully created", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Usuario creado exitosamente", Toast.LENGTH_LONG).show()
     }
 
+    // Función para navegar al menú principal
     private fun changeToActivityMainMenu(idUser: String) {
         val activityMainMenu = Intent(this, ActivityMainMenu::class.java)
         activityMainMenu.putExtra(ActivityMainMenu.Companion.ID_USER_MM, idUser)
 
+        // Limpiar la pila de actividades
         activityMainMenu.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
+        // Iniciar la actividad del menú principal
         startActivity(activityMainMenu)
-        finish()
+        finish() // Finalizar la actividad actual
     }
 }
-
-
-
