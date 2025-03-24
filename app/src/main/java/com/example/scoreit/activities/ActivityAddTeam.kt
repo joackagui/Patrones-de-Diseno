@@ -192,9 +192,9 @@ class ActivityAddTeam : AppCompatActivity() {
     // Función para mostrar un mensaje de éxito o error
     private fun successfulMessage(success: Boolean) {
         if (success) {
-            Toast.makeText(this, "Creación exitosa", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Creation successful", Toast.LENGTH_LONG).show()
         } else {
-            Toast.makeText(this, "Necesitas al menos dos equipos", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "At least two teams are required", Toast.LENGTH_LONG).show()
         }
     }
 

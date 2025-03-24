@@ -234,7 +234,7 @@ class ActivityCupInsight : AppCompatActivity() {
         if (idCup != null) {
             lifecycleScope.launch {
                 val cup = dbAccess.cupDao().getCupById(idCup)
-                val finishMessage = "La copa ${cup.name} ha finalizado"
+                val finishMessage = "${cup.name} has finished"
                 Toast.makeText(this@ActivityCupInsight, finishMessage, Toast.LENGTH_LONG).show()
             }
         }

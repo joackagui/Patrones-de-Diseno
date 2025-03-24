@@ -283,19 +283,19 @@ class ActivityRefereeButtons : AppCompatActivity() {
         if (message == 12) {
             Toast.makeText(
                 this@ActivityRefereeButtons,
-                "Hubo un error",
+                "There was an error",
                 Toast.LENGTH_SHORT
             ).show()
         } else if (message == 1) {
             Toast.makeText(
                 this@ActivityRefereeButtons,
-                "Debe haber un ganador",
+                "There must be a winner",
                 Toast.LENGTH_SHORT
             ).show()
         } else if (message == 2) {
             Toast.makeText(
                 this@ActivityRefereeButtons,
-                "Debe haber una diferencia de dos puntos",
+                "There must be a difference of two points",
                 Toast.LENGTH_SHORT
             ).show()
         }

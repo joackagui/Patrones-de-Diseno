@@ -107,21 +107,13 @@ class ActivityLogIn : AppCompatActivity() {
     // Función para mostrar mensajes de error
     private fun errorMessage(number: Int) {
         when (number) {
-            1 -> {
-                Toast.makeText(this, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
-            }
+            1 -> { Toast.makeText(this, "Must fill every field", Toast.LENGTH_LONG).show() }
 
-            2 -> {
-                Toast.makeText(this, "Contraseña demasiado corta", Toast.LENGTH_LONG).show()
-            }
+            2 -> { Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_LONG).show() }
 
-            3 -> {
-                Toast.makeText(this, "El usuario no existe", Toast.LENGTH_LONG).show()
-            }
+            3 -> { Toast.makeText(this, "This user doesn't exist", Toast.LENGTH_LONG).show() }
 
-            4 -> {
-                Toast.makeText(this, "Correo electrónico o contraseña incorrectos", Toast.LENGTH_LONG).show()
-            }
+            4 -> { Toast.makeText(this, "Email or password incorrect", Toast.LENGTH_LONG).show() }
         }
     }
 

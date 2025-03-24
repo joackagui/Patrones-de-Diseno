@@ -42,15 +42,19 @@ class ActivitySignUp : AppCompatActivity() {
     // Función para configurar el botón de registro
     private fun signUpButton() {
         binding.createAccountButton.setOnClickListener {
+            val password = binding.passwordSignUp.text.toString()
+            val confirmPassword = binding.passwordSafetySignUp.text.toString()
             // Verificar si todos los campos están completos
-            if (binding.usernameSignUp.text.toString() == "" || binding.emailSignUp.text.toString() == ""
-                || binding.passwordSignUp.text.toString() == "" || binding.passwordSafetySignUp.text.toString() == ""
+            if (binding.usernameSignUp.text.toString().isEmpty() || binding.emailSignUp.text.toString().isEmpty()
+                || password.isEmpty() || confirmPassword.isEmpty()
             ) {
                 errorMessage(1) // Mostrar mensaje de error si algún campo está vacío
-            } else if (binding.passwordSignUp.text.toString() != binding.passwordSafetySignUp.text.toString()) {
+            } else if (password != confirmPassword) {
                 errorMessage(3) // Mostrar mensaje de error si las contraseñas no coinciden
-            } else if (binding.passwordSignUp.text.toString().length < 8) {
+            } else if (password.length < 8) {
                 errorMessage(2) // Mostrar mensaje de error si la contraseña es demasiado corta
+            } else if (!Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+").matches(password)) {
+                errorMessage(4)
             } else {
                 // Asegurarse de que ningún otro usuario esté marcado como último usuario
                 noOneIsLastUser()
@@ -105,23 +109,19 @@ class ActivitySignUp : AppCompatActivity() {
     // Función para mostrar mensajes de error
     private fun errorMessage(number: Int) {
         when (number) {
-            1 -> {
-                Toast.makeText(this, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
-            }
+            1 -> { Toast.makeText(this, "Must fill every field", Toast.LENGTH_LONG).show() }
 
-            2 -> {
-                Toast.makeText(this, "La contraseña es demasiado corta", Toast.LENGTH_LONG).show()
-            }
+            2 -> { Toast.makeText(this, "Password must be at least 8 characters", Toast.LENGTH_LONG).show() }
 
-            3 -> {
-                Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
-            }
-        }
+            3 -> { Toast.makeText(this, "Passwords don't match", Toast.LENGTH_LONG).show() }
+
+            4 -> { Toast.makeText(this, "Password needs Uppercase, Lowercase and Number", Toast.LENGTH_LONG).show() }}
+
     }
 
     // Función para mostrar un mensaje de éxito
     private fun successfulMessage() {
-        Toast.makeText(this, "Usuario creado exitosamente", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "User created successfully", Toast.LENGTH_LONG).show()
     }
 
     // Función para navegar al menú principal

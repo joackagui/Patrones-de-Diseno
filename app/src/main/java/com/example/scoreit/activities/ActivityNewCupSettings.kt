@@ -419,7 +419,7 @@ class ActivityNewCupSettings : AppCompatActivity() {
 
     // Función para mostrar un mensaje de error
     private fun errorMessage() {
-        Toast.makeText(this, "Debes ingresar los puntos", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Must insert points", Toast.LENGTH_LONG).show()
     }
 
     // Función para navegar a la actividad de agregar equipo
