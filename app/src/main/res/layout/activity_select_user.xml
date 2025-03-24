@@ -6,7 +6,7 @@
     style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ActivitySelectUser">
+    tools:context=".controller.activities.ActivitySelectUser">
 
     <include layout="@layout/header_sign_up" />
 

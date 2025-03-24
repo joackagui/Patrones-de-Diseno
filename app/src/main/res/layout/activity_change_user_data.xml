@@ -6,7 +6,7 @@
     style="@style/Background"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:context=".activities.ActivityChangeUserData">
+    tools:context=".controller.activities.ActivityChangeUserData">
 
     <TextView
         android:id="@+id/title"
