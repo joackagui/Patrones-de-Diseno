@@ -89,7 +89,7 @@ class ActivityMainMenu : AppCompatActivity() {
                 // Obtener el nombre del usuario desde la base de datos
                 val userName = dbAccess.userDao().getUserById(idUser).name
                 // Crear el texto personalizado
-                val finalText = "Copas de ${userName}"
+                val finalText = "${userName}'s cup"
                 userCup.text = finalText
             }
         }
